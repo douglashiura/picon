@@ -1,0 +1,16 @@
+S:=(classe)*
+
+classe:=toke comecoClasse (objeto)* fimClasse
+
+objeto:=UID comecoObjeto (atributo [quebra] )* fimObjeto
+
+atributo:=referencia|toke [quebra] toke |toke classe
+
+comecoClasse:={
+fimClasse:=}
+comecoObjeto:=[
+fimObjeto:=]
+quebra:=;| |	|\n|=
+UID:=toke
+toke:=(a..z|.|A..Z|0..9)+
+referencia:=#toke

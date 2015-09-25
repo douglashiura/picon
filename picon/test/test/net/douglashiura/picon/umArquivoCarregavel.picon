@@ -1,0 +1,24 @@
+
+test.net.douglashiura.picon.ETipo{
+	a[]
+	b[]
+	a:b[]
+	ab:a[]
+	ab:aa[]
+	ab:aaa[]
+	ab:1[]
+	ab:12[]
+	ab:12:a[]
+	ab:12:aaa[]
+	ab:12:a:1[]
+	ab:12:aa:aa[]
+	
+	ab:12:aa:aa:1a[]
+	polo:jaragua:ano:2012:periodo:2:disciplina:p:111[]
+	polo:jaragua:ano:2012:periodo:2:disciplina:portugues:111[]
+	polo:jaragua:ano:2012:periodo:2:disciplina:port:111[]
+	agronomia:2012_2[]
+	
+	
+	
+}
