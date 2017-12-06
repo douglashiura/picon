@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import net.douglashiura.picon.Reflexao;
 
-public class TesteResolveReflexao extends Assert {
+public class TesteReflexao extends Assert {
 	class T {
 		Date data;
 		Enum a;
@@ -48,7 +48,7 @@ public class TesteResolveReflexao extends Assert {
 
 	@Test
 	public void refletirLabelDataValorData() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteResolveReflexao.T>(T.class);
+		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
 		refletor.criarPrimitivo("data", "2009/10/25 00:00", t);
 		assertEquals("2009/10/25", new SimpleDateFormat("yyyy/MM/dd").format(t.data));
@@ -56,7 +56,7 @@ public class TesteResolveReflexao extends Assert {
 
 	@Test
 	public void refletirLabelDataValorDataHora() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteResolveReflexao.T>(T.class);
+		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
 		refletor.criarPrimitivo("data", "2009/10/25 12:30", t);
 		assertEquals("2009/10/25 12:30", new SimpleDateFormat("yyyy/MM/dd hh:mm").format(t.data));
@@ -64,7 +64,7 @@ public class TesteResolveReflexao extends Assert {
 
 	@Test
 	public void refletirLabelDataNow() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteResolveReflexao.T>(T.class);
+		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
 		refletor.criarPrimitivo("data", "now", t);
 		assertEquals(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date()),
@@ -73,7 +73,7 @@ public class TesteResolveReflexao extends Assert {
 
 	@Test
 	public void refletirEnum() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteResolveReflexao.T>(T.class);
+		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
 		refletor.criarPrimitivo("a", "A", t);
 		assertEquals(Enum.A, t.a);
@@ -81,7 +81,7 @@ public class TesteResolveReflexao extends Assert {
 
 	@Test(expected = NullPointerException.class)
 	public void enumInexistente() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteResolveReflexao.T>(T.class);
+		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
 		refletor.criarPrimitivo("a", "INEXISTENTE", t);
 		assertEquals(Enum.A, t.a);
@@ -89,7 +89,7 @@ public class TesteResolveReflexao extends Assert {
 
 	@Test
 	public void refletirUuid() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteResolveReflexao.T>(T.class);
+		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
 		UUID uuid = new UUID(1l, 1l);
 		refletor.criarPrimitivo("uuid", uuid.toString(), t);

@@ -17,61 +17,61 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Reflexao<T> {
-	private static HashMap<Class<?>, Map<String, Field>> HASH_CLASSES = new HashMap<Class<?>, Map<String, Field>>();
-	private Map<String, Field> mapaField;
-	final private static TimeCompile compile = new TimeCompile();
+	private static HashMap<Class<?>, Map<String, Field>> CLASSES = new HashMap<Class<?>, Map<String, Field>>();
+	private Map<String, Field> mapaDeAtributos;
+	final private static CompiladorDeTempo compile = new CompiladorDeTempo();
 
-	public Reflexao(Class<T> class1) {
-		mapaField = HASH_CLASSES.get(class1);
-		if (mapaField == null) {
-			mapaField = new HashMap<String, Field>();
-			escanearCampos(class1);
+	public Reflexao(Class<T> classe) {
+		mapaDeAtributos = CLASSES.get(classe);
+		if (mapaDeAtributos == null) {
+			mapaDeAtributos = new HashMap<String, Field>();
+			escanearCampos(classe);
 		}
 	}
 
-	private void escanearCampos(Class<?> class1) {
-		for (Field field : class1.getDeclaredFields()) {
-			field.setAccessible(true);
-			mapaField.put(field.getName(), field);
+	private void escanearCampos(Class<?> classe) {
+		for (Field atributo : classe.getDeclaredFields()) {
+			atributo.setAccessible(true);
+			mapaDeAtributos.put(atributo.getName(), atributo);
 		}
-		if (null != class1.getSuperclass())
-			escanearCampos(class1.getSuperclass());
+		if (null != classe.getSuperclass())
+			escanearCampos(classe.getSuperclass());
 	}
 
-	public void criarPrimitivo(String label, Object value, T umObjeto) throws Exception {
-		Field field = mapaField.get(label);
-		if (field.getType().equals(Date.class)) {
+	public void criarPrimitivo(String atributo, Object valor, T umObjeto) throws Exception {
+		Field campo = mapaDeAtributos.get(atributo);
+		if (campo.getType().equals(Date.class)) {
 			try {
-				field.set(umObjeto, compile.compile(value.toString()));
+				campo.set(umObjeto, compile.compile(valor.toString()));
 			} catch (ParseException e) {
-				throw new NoSuchFieldException(value.toString());
+				throw new NoSuchFieldException(valor.toString());
 			}
-		} else if (field.getType().isEnum()) {
-			Object[] enums = field.getType().getEnumConstants();
-			for (Object valor : enums) {
-				if (valor.toString().equals(value)) {
-					field.set(umObjeto, valor);
+		} else if (campo.getType().isEnum()) {
+			Object[] enums = campo.getType().getEnumConstants();
+			for (Object umValor : enums) {
+				if (umValor.toString().equals(valor)) {
+					campo.set(umObjeto, umValor);
 					return;
 				}
 			}
-			throw new NullPointerException("Sem Enum" + field.getName() + " " + value);
-		} else if (field.getType().equals(java.util.UUID.class)) {
-			field.set(umObjeto, java.util.UUID.fromString(value.toString()));
+			throw new NullPointerException("Sem Enum" + campo.getName() + " " + valor);
+		} else if (campo.getType().equals(java.util.UUID.class)) {
+			campo.set(umObjeto, java.util.UUID.fromString(valor.toString()));
 		} else {
-			Constructor<?> c = field.getType().getDeclaredConstructor(String.class);
-			field.set(umObjeto, c.newInstance(value));
+			Constructor<?> c = campo.getType().getDeclaredConstructor(String.class);
+			campo.set(umObjeto, c.newInstance(valor));
 		}
 
 	}
 
 	public void fixar(String label, Object value, T umObjeto) throws Exception {
-		Field field = mapaField.get(label);
+		Field field = mapaDeAtributos.get(label);
 		field.set(umObjeto, value);
 	}
 
 	@SuppressWarnings("unchecked")
 	public Class<Object> getClasse(String label) {
-		return (Class<Object>) mapaField.get(label).getType();
+		return (Class<Object>) mapaDeAtributos.get(label).getType();
 	}
 
 }

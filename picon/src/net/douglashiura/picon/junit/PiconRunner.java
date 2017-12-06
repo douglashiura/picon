@@ -3,7 +3,7 @@ package net.douglashiura.picon.junit;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-import net.douglashiura.picon.ExceptionCompilacao;
+import net.douglashiura.picon.ProblemaDeCompilacao;
 import net.douglashiura.picon.PiconStore;
 
 import org.junit.runner.notification.RunNotifier;
@@ -33,7 +33,7 @@ public class PiconRunner extends BlockJUnit4ClassRunner {
 	}
 
 	private void monteOContexto(Object object) throws IOException,
-			ExceptionCompilacao, IllegalArgumentException,
+			ProblemaDeCompilacao, IllegalArgumentException,
 			IllegalAccessException {
 
 		CONTEXTO = build();
@@ -42,42 +42,42 @@ public class PiconRunner extends BlockJUnit4ClassRunner {
 		for (Field field : declarado) {
 			field.setAccessible(true);
 			if (field.get(object) == null) {
-				field.set(object, CONTEXTO.get(camel(field.getName())));
+				field.set(object, CONTEXTO.get(camelCase(field.getName())));
 			}
 		}
 	}
 
-	private String camel(String name) {
-		String piconCamel = "";
+	private String camelCase(String name) {
+		String camelCase = "";
 		boolean sinalNumerico = false;
 		boolean sinalUpper = false;
 
 		for (Character n : name.toCharArray()) {
 			if (n=='_') {
-				piconCamel += n;
+				camelCase += n;
 			} else if (Character.isUpperCase(n) && !sinalUpper) {
-				piconCamel += ":" + n;
+				camelCase += ":" + n;
 				sinalUpper = true;
 				sinalNumerico = false;
 			} else if (Character.isDigit(n) && !sinalNumerico) {
-				piconCamel += ":" + n;
+				camelCase += ":" + n;
 				sinalUpper = false;
 				sinalNumerico = true;
 			} else if (Character.isUpperCase(n) && sinalUpper) {
-				piconCamel += n;
+				camelCase += n;
 				sinalNumerico = false;
 			} else if (Character.isDigit(n) && sinalNumerico) {
-				piconCamel += n;
+				camelCase += n;
 				sinalUpper = false;
 			} else {
-				piconCamel += n;
+				camelCase += n;
 				if ((!Character.isUpperCase(n) || !Character.isDigit(n))) {
 					sinalNumerico = false;
 					sinalUpper = false;
 				}
 			}
 		}
-		return piconCamel.toLowerCase();
+		return camelCase.toLowerCase();
 
 	}
 
@@ -89,8 +89,8 @@ public class PiconRunner extends BlockJUnit4ClassRunner {
 		return CONTEXTO.get(qualificador);
 	}
 
-	public static PiconStore build() throws IOException, ExceptionCompilacao {
-		return PiconStore.build(EstrategiaDeEncontrarEMontarONs.getInstance()
+	public static PiconStore build() throws IOException, ProblemaDeCompilacao {
+		return PiconStore.build(FarejadorDeArquivos.getInstance()
 				.toString());
 	}
 

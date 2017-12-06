@@ -9,10 +9,11 @@
  * */
 package test.net.douglashiura.picon;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class Entidade extends SuperClass {
+public class Entidade extends SuperClasse {
 	private String nome;
 	private Integer idade;
 	private Entidade entidade;
@@ -20,6 +21,7 @@ public class Entidade extends SuperClass {
 	private UUID uuid;
 	private List<Enum> enums;
 	private List<String> strings;
+	private Date natal;
 
 	public List<Enum> getEnums() {
 		return enums;
@@ -50,4 +52,7 @@ public class Entidade extends SuperClass {
 		return strings;
 	}
 
+	public Date getNatal() {
+		return natal;
+	}
 }

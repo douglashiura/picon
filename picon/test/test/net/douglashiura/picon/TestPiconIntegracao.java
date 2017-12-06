@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 
-import net.douglashiura.picon.ExceptionCompilacao;
+import net.douglashiura.picon.ProblemaDeCompilacao;
 import net.douglashiura.picon.PiconStore;
 
 import org.junit.Assert;
@@ -23,7 +23,7 @@ import org.junit.Test;
 
 public class TestPiconIntegracao extends Assert {
 	@Test
-	public void test() throws ExceptionCompilacao, IOException,
+	public void test() throws ProblemaDeCompilacao, IOException,
 			URISyntaxException {
 		File file = new File(getClass().getResource("integracao").toURI());
 		InputStream input = new FileInputStream(file);
@@ -32,7 +32,7 @@ public class TestPiconIntegracao extends Assert {
 		input.close();
 
 		PiconStore picon = PiconStore.build(new String(arquivo));
-		assertEquals(22, picon.getStore().size());
+		assertEquals(29, picon.getStore().size());
 		Entidade entidade = null;
 		entidade = picon.get("UIDA");
 		assertNull(entidade.getNome());

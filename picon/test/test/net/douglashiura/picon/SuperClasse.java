@@ -2,7 +2,7 @@ package test.net.douglashiura.picon;
 
 import java.util.UUID;
 
-public abstract class SuperClass {
+public abstract class SuperClasse {
 
 	private UUID superUuid;
 

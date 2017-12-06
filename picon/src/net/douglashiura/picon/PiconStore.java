@@ -16,28 +16,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+//anglo/latino
 final public class PiconStore {
 
 	private Map<String, Object> estoque = new HashMap<String, Object>();
-	private List<Vinculo> referencias = new ArrayList<Vinculo>();
+	private List<Vinculo> vinculos = new ArrayList<Vinculo>();
 
-	PiconStore() {
-	}
+	PiconStore() {}
 
-	class Tipo {
-		public Tipo(String uid2, Class<? extends Object> class1, String s) {
-			this.tipo = class1;
-			this.uid = uid2;
-			this.config = s;
-		}
-
-		Class<?> tipo;
-		String uid;
-		String config;
-	}
-
-	public static PiconStore build(Class<?> carregador, String... fragmentos) throws IOException, ExceptionCompilacao {
+	public static PiconStore build(Class<?> carregador, String... fragmentos) throws IOException, ProblemaDeCompilacao {
 		StringBuffer all = new StringBuffer();
 		for (String frag : fragmentos) {
 			InputStream input = carregador.getResourceAsStream(frag);
@@ -49,49 +36,41 @@ final public class PiconStore {
 			all.append(new String(arquivo));
 		}
 
-		return Picon.build(new ArrayDeque<Parte>(new Fragmentador(all.toString()).getTokes()));
+		return Picon.construir(new ArrayDeque<Parte>(new Fragmentador(all.toString()).getTokes()));
 	}
 
-	public static PiconStore build(String piconolos) throws IOException, ExceptionCompilacao {
-		return Picon.build(new ArrayDeque<Parte>(new Fragmentador(piconolos).getTokes()));
+	public static PiconStore build(String piconolos) throws IOException, ProblemaDeCompilacao {
+		return Picon.construir(new ArrayDeque<Parte>(new Fragmentador(piconolos).getTokes()));
 	}
 
-	public void add(String uid, Object t) {
-		estoque.put(uid, t);
+	 void adicionar(String qualificador, Object objeto) {
+		estoque.put(qualificador, objeto);
 	};
 
-	public void addReferencia(Vinculo link) {
-		referencias.add(link);
+	void adicionarVinculo(Vinculo vinculo) {
+		vinculos.add(vinculo);
 	}
 
-	@SuppressWarnings("unchecked")
-	public <Y> Y get(String uid) {
 
-		Object a = estoque.get(uid);
-		return (Y) a;
-	}
 
-	void soldar() throws ExceptionCompilacao {
-		for (Vinculo link : referencias) {
+	void soldar() throws ProblemaDeCompilacao {
+		for (Vinculo link : vinculos) {
 			try {
 				link.processar((Map<String, Object>) estoque);
 			} catch (Exception e) {
-				throw new ExceptionCompilacao(e, link.getApelido());
+				throw new ProblemaDeCompilacao(e, link.getApelido());
 			}
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	public <Y> List<Y> list(Class<Y> classe) {
-		List<Y> lista = new ArrayList<Y>();
-		for (Object t : estoque.values())
-			if (classe.equals(t.getClass()))
-				lista.add((Y) t);
-		return lista;
+	
+	public <Y> Y get(String qualifier, Class<Y> klass) {
+		return get(qualifier);
 	}
-
-	public <Y> Y get(String uid, Class<Y> klass) {
-		return get(uid);
+	@SuppressWarnings("unchecked")
+	public <Y> Y get(String qualifier) {
+		Object objeto = estoque.get(qualifier);
+		return (Y) objeto;
 	}
 
 	public Map<String, Object> getStore() {

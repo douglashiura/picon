@@ -14,7 +14,7 @@ import java.util.List;
 
 public class Fragmentador {
 	private char QUEBRA_LINHA = '\n';
-	private char[] BREAK = { ' ', QUEBRA_LINHA, '	', '=', ';' };
+	private char[] QUEBRA = { ' ', QUEBRA_LINHA, '	', '=', ';' };
 	private char[] RESERVADO = { '{', '}', '*', '[', ']', '#','<','>' };
 	private char ESCAPAR = '\'';
 	private ArrayList<Parte> tokens;
@@ -35,7 +35,7 @@ public class Fragmentador {
 					tokens.add(anterior = new Parte(
 							new String(new char[] { e }), anterior, linha));
 					esteToke = "";
-				} else if (!ehToke(e, BREAK)) {
+				} else if (!ehToke(e, QUEBRA)) {
 					esteToke += e;
 				} else if (!esteToke.isEmpty()) {
 					tokens.add(anterior = new Parte(esteToke, anterior, linha));

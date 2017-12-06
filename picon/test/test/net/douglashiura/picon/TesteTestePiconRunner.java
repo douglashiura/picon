@@ -11,7 +11,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.ExceptionCompilacao;
+import net.douglashiura.picon.ProblemaDeCompilacao;
 import net.douglashiura.picon.PiconStore;
 import net.douglashiura.picon.junit.PiconRunner;
 
@@ -51,7 +51,7 @@ public class TesteTestePiconRunner {
 	}
 
 	@Test
-	public void montarOutroContexto() throws IOException, ExceptionCompilacao {
+	public void montarOutroContexto() throws IOException, ProblemaDeCompilacao {
 		assertTrue(a.equals(get("a", ETipo.class)));
 		assertTrue(a.equals(get("a")));
 		PiconStore outro = PiconRunner.build();

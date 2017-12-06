@@ -19,9 +19,9 @@ public class PiconListaPrimitiva<T> extends Picon<T, List<T>> {
 
 	public PiconListaPrimitiva(Class<T> classe, Deque<Parte> emChave, PiconStore contexto) throws Exception {
 		super(contexto);
-		emChave.pop().value();
-		while (!emChave.peek().value().equals("}")) {
-			String uid = emChave.pop().value();
+		emChave.pop().valor();
+		while (!emChave.peek().valor().equals("}")) {
+			String uid = emChave.pop().valor();
 			T[] enumValors = classe.getEnumConstants();
 			for (T t : enumValors) {
 				if (t.toString().equals(uid))
@@ -35,9 +35,9 @@ public class PiconListaPrimitiva<T> extends Picon<T, List<T>> {
 	@SuppressWarnings("unchecked")
 	public PiconListaPrimitiva(Deque<Parte> emChave, PiconStore contexto) throws Exception {
 		super(contexto);
-		emChave.pop().value();
-		while (!emChave.peek().value().equals("}")) {
-			String uid = emChave.pop().value();
+		emChave.pop().valor();
+		while (!emChave.peek().valor().equals("}")) {
+			String uid = emChave.pop().valor();
 			entidades.add((T) uid);
 
 		}
@@ -45,7 +45,7 @@ public class PiconListaPrimitiva<T> extends Picon<T, List<T>> {
 	}
 
 	@Override
-	public List<T> getObjeto() {
+	public List<T> obterObjeto() {
 		return entidades;
 	}
 

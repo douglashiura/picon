@@ -18,39 +18,39 @@ public class PiconLista<T> extends Picon<T, List<T>> {
 	private List<T> entidades = new ArrayList<T>();
 	public PiconLista(Class<T> classe, Deque<Parte> emChave, PiconStore contexto) throws Exception {
 		super(contexto);
-		Reflexao<T> socka = new Reflexao<T>(classe);
-		emChave.pop().value();
-		while (!emChave.peek().value().equals("}")) {
-			String uid = emChave.pop().value();
-			if (uid.equals("#")) {
-				Parte uidtoke = emChave.pop();
-				engatilhar(contexto, uidtoke);
+		Reflexao<T> instanciador = new Reflexao<T>(classe);
+		emChave.pop().valor();
+		while (!emChave.peek().valor().equals("}")) {
+			String qualificador = emChave.pop().valor();
+			if (qualificador.equals("#")) {
+				Parte qualificadorToke = emChave.pop();
+				engatilhar(contexto, qualificadorToke);
 			} else {
-				T umObjeto = montaQualificador(classe, emChave, contexto, socka);
+				T umObjeto = montaQualificador(classe, emChave, contexto, instanciador);
 				entidades.add(umObjeto);
-				contexto.add(uid, umObjeto);
+				contexto.adicionar(qualificador, umObjeto);
 			}
 
 		}
 		emChave.pop();
 	}
 
-	private void engatilhar(PiconStore contexto, final Parte uid) {
-		contexto.addReferencia(new Vinculo() {
+	private void engatilhar(PiconStore contexto, final Parte qualificador) {
+		contexto.adicionarVinculo(new Vinculo() {
 			@SuppressWarnings("unchecked")
 			public void processar(Map<String, Object> referenciaveis) {
-				entidades.add((T) referenciaveis.get(uid.value()));
+				entidades.add((T) referenciaveis.get(qualificador.valor()));
 			}
 
 			@Override
 			public Parte getApelido() {
-				return uid;
+				return qualificador;
 			}
 		});
 	}
 
 	@Override
-	public List<T> getObjeto() {
+	public List<T> obterObjeto() {
 		return entidades;
 	}
 

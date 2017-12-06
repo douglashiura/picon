@@ -37,24 +37,24 @@ public class TesteTokenizador extends Assert {
 	public void qualificadorComConstrutor() {
 		List<Parte> tokens = new Fragmentador("entidade<#referencia>").getTokes();
 		assertEquals(5, tokens.size());
-		assertEquals("entidade", tokens.get(0).value());
-		assertEquals("<", tokens.get(1).value());
-		assertEquals("#", tokens.get(2).value());
-		assertEquals("referencia", tokens.get(3).value());
-		assertEquals(">", tokens.get(4).value());
+		assertEquals("entidade", tokens.get(0).valor());
+		assertEquals("<", tokens.get(1).valor());
+		assertEquals("#", tokens.get(2).valor());
+		assertEquals("referencia", tokens.get(3).valor());
+		assertEquals(">", tokens.get(4).valor());
 	}	
 
 	@Test
 	public void qualificadorComConstrutorComDuasReferencias() {
 		List<Parte> tokens = new Fragmentador("entidade<#referencia #douglas>").getTokes();
 		assertEquals(7, tokens.size());
-		assertEquals("entidade", tokens.get(0).value());
-		assertEquals("<", tokens.get(1).value());
-		assertEquals("#", tokens.get(2).value());
-		assertEquals("referencia", tokens.get(3).value());
-		assertEquals("#", tokens.get(4).value());
-		assertEquals("douglas", tokens.get(5).value());
-		assertEquals(">", tokens.get(6).value());
+		assertEquals("entidade", tokens.get(0).valor());
+		assertEquals("<", tokens.get(1).valor());
+		assertEquals("#", tokens.get(2).valor());
+		assertEquals("referencia", tokens.get(3).valor());
+		assertEquals("#", tokens.get(4).valor());
+		assertEquals("douglas", tokens.get(5).valor());
+		assertEquals(">", tokens.get(6).valor());
 		
 		
 	}	

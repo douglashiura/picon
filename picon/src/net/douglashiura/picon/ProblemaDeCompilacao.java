@@ -1,10 +1,10 @@
 package net.douglashiura.picon;
 
-public class ExceptionCompilacao extends Exception {
+public class ProblemaDeCompilacao extends Exception {
 	private static final long serialVersionUID = 4692322657987854120L;
 	private Parte toke;
 
-	public ExceptionCompilacao(Throwable throwable, Parte t) {
+	public ProblemaDeCompilacao(Throwable throwable, Parte t) {
 		super(throwable);
 		toke = t;
 	}
@@ -15,14 +15,14 @@ public class ExceptionCompilacao extends Exception {
 	}
 
 	public String tokes() {
-		String string = "";
-		Parte tokeT = toke;
-		int i = 3;
-		while (tokeT != null && 0 < i--) {
-			string = tokeT.value() + " " + string;
-			tokeT = tokeT.getAnterior();
+		String linha = "";
+		Parte inicio = toke;
+		int maximoDeTokes = 3;
+		while (inicio != null && 0 < maximoDeTokes--) {
+			linha = inicio.valor() + " " + linha;
+			inicio = inicio.getAnterior();
 		}
-		return string;
+		return linha;
 	}
 
 	public Parte getToke() {

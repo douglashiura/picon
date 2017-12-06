@@ -10,31 +10,34 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-class EstrategiaDeEncontrarEMontarONs {
+class FarejadorDeArquivos {
 
-	final private static EstrategiaDeEncontrarEMontarONs UNICO = new EstrategiaDeEncontrarEMontarONs();
+	private static final String EXTENSAO = ".picon";
 
-	private String O_N = "";
+	private static final FarejadorDeArquivos UNICO = new FarejadorDeArquivos();
 
-	private EstrategiaDeEncontrarEMontarONs() {
+	private String texto;
+
+	private FarejadorDeArquivos() {
+		texto = "";
 		try {
-			EstrategiaDeEncontrarEMontarONs.class.getClassLoader();
+			FarejadorDeArquivos.class.getClassLoader();
 			Enumeration<URL> resources = ClassLoader.getSystemResources("");
-			List<File> piconolos = new ArrayList<File>();
+			List<File> piconolosfilos = new ArrayList<File>();
 			while (resources.hasMoreElements()) {
 				URL url = (URL) resources.nextElement();
-				ler(new File(url.toURI()), piconolos);
+				ler(new File(url.toURI()), piconolosfilos);
 			}
-			
+
 			StringBuffer all = new StringBuffer();
-			for (File picoloszinho : piconolos) {
-				InputStream input = new FileInputStream(picoloszinho);
+			for (File filos : piconolosfilos) {
+				InputStream input = new FileInputStream(filos);
 				byte[] arquivo = new byte[input.available()];
 				input.read(arquivo);
 				input.close();
 				all.append(new String(arquivo));
 			}
-			O_N = all.toString();
+			texto = all.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
@@ -43,20 +46,20 @@ class EstrategiaDeEncontrarEMontarONs {
 	}
 
 	private void ler(File file, List<File> picons) {
-		if (file.isFile() && file.getName().endsWith(".picon"))
+		if (file.isFile() && file.getName().endsWith(EXTENSAO))
 			picons.add(file);
 		if (file.isDirectory())
 			for (File filho : file.listFiles())
 				ler(filho, picons);
 	}
 
-	public static EstrategiaDeEncontrarEMontarONs getInstance() {
+	public static FarejadorDeArquivos getInstance() {
 		return UNICO;
 	}
 
 	@Override
 	public String toString() {
-		return O_N;
+		return texto;
 	}
 
 }

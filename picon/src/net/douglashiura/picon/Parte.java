@@ -20,7 +20,7 @@ public class Parte {
 		this.linha = linha;
 	}
 
-	public String value() {
+	public String valor() {
 		return valor;
 	}
 

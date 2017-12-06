@@ -18,14 +18,14 @@ public class PiconAtributoEntidade<T> extends Picon<T, T> {
 		this(classe, new Reflexao<T>(classe), emColchetesComecoClasse, contexto);
 	}
 
-	public PiconAtributoEntidade(Class<T> classe, Reflexao<T> reflexao, Deque<Parte> emColchetesComecoClasse, PiconStore contexto)
+	public PiconAtributoEntidade(Class<T> classe, Reflexao<T> instanciador, Deque<Parte> emColchetesComecoClasse, PiconStore contexto)
 			throws Exception {
 		super(contexto);
-		umObjeto = montaQualificador(classe, emColchetesComecoClasse, contexto, reflexao);
+		umObjeto = montaQualificador(classe, emColchetesComecoClasse, contexto, instanciador);
 
 	}
 
-	public T getObjeto() {
+	public T obterObjeto() {
 		return umObjeto;
 	}
 }

@@ -16,32 +16,32 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class Picon<T, O> {
-	PiconStore master;
+	PiconStore contexto;
 
 	Picon(PiconStore contexto) {
-		master = contexto;
+		this.contexto = contexto;
 	}
 
-	public abstract O getObjeto();
+	public abstract O obterObjeto();
 
 	@SuppressWarnings("unchecked")
-	final public synchronized static <T> PiconStore build(Deque<Parte> emClasse)
-			throws ExceptionCompilacao {
+	final public synchronized static <T> PiconStore construir(Deque<Parte> emClasse)
+			throws ProblemaDeCompilacao {
 		PiconStore contexto = new PiconStore();
 		while (!emClasse.isEmpty()) {
 			try {
 				Class<T> classe;
-				classe = (Class<T>) Class.forName(emClasse.pop().value());
+				classe = (Class<T>) Class.forName(emClasse.pop().valor());
 				emClasse.pop();
-				while (!emClasse.peek().value().equals("}")) {
-					String qualificador = emClasse.pop().value();
+				while (!emClasse.peek().valor().equals("}")) {
+					String qualificador = emClasse.pop().valor();
 					PiconAtributoEntidade<T> picon = new PiconAtributoEntidade<T>(
 							classe, emClasse, contexto);
-					contexto.add(qualificador, picon.getObjeto());
+					contexto.adicionar(qualificador, picon.obterObjeto());
 				}
 				emClasse.pop();
 			} catch (Exception e) {
-				throw new ExceptionCompilacao(e, emClasse.element());
+				throw new ProblemaDeCompilacao(e, emClasse.element());
 			}
 		}
 		contexto.soldar();
@@ -53,33 +53,33 @@ public abstract class Picon<T, O> {
 			T umObjeto) throws Exception {
 		emColchetes.pop();
 		while (!emColchetes.isEmpty()
-				&& !emColchetes.peek().value().equals("]"))
+				&& !emColchetes.peek().valor().equals("]"))
 			escolha(emColchetes, socka, umObjeto);
 		emColchetes.pop();
 	}
 
-	final private void escolha(Deque<Parte> emLabel, Reflexao<T> fundidor,
+	final private void escolha(Deque<Parte> emCampo, Reflexao<T> fundidor,
 			T umObjeto) throws Exception {
-		String label = emLabel.pop().value();
-		String value = emLabel.pop().value();
-		Parte toke = emLabel.peek();
-		String proximo = toke.value();
-		switch (Escolha.qual(value, proximo)) {
+		String campo = emCampo.pop().valor();
+		String valor = emCampo.pop().valor();
+		Parte toke = emCampo.peek();
+		String proximo = toke.valor();
+		switch (Escolha.qual(valor, proximo)) {
 		case REFERENCIA:
-			fazerReferencia(label, emLabel, umObjeto, fundidor);
+			fazerReferencia(campo, emCampo, umObjeto, fundidor);
 			break;
 		case VALUE:
 			try {
-				fazerValor(fundidor, umObjeto, label, value);
+				fazerValor(fundidor, umObjeto, campo, valor);
 			} catch (NullPointerException e) {
-				throw new ExceptionCompilacao(null, toke);
+				throw new ProblemaDeCompilacao(null, toke);
 			}
 			break;
 		case COMPOSTO:
-			fazerAtributoEntidade(emLabel, fundidor, label, umObjeto);
+			fazerAtributoEntidade(emCampo, fundidor, campo, umObjeto);
 			break;
 		case LISTA:
-			fazerLista(emLabel, value, label, fundidor, umObjeto);
+			fazerLista(emCampo, valor, campo, fundidor, umObjeto);
 			break;
 		}
 
@@ -91,43 +91,43 @@ public abstract class Picon<T, O> {
 	}
 
 	@SuppressWarnings("unchecked")
-	final private void fazerLista(Deque<Parte> emValue, String value,
-			String label, Reflexao<T> reflect, T umObjeto) throws Exception {
+	final private void fazerLista(Deque<Parte> emValor, String valor,
+			String campo, Reflexao<T> refletor, T umObjeto) throws Exception {
 
-		if ("String".equals(value) || Class.forName(value).isEnum()) {
-			if ("String".equals(value)) {
+		if ("String".equals(valor) || Class.forName(valor).isEnum()) {
+			if ("String".equals(valor)) {
 				PiconListaPrimitiva<String> picon = new PiconListaPrimitiva<String>(
-						emValue, master);
-				reflect.fixar(label, (T) picon.getObjeto(), umObjeto);
+						emValor, contexto);
+				refletor.fixar(campo, (T) picon.obterObjeto(), umObjeto);
 			} else {
 				PiconListaPrimitiva<Object> picon = new PiconListaPrimitiva<Object>(
-						(Class<Object>) Class.forName(value), emValue, master);
-				reflect.fixar(label, (T) picon.getObjeto(), umObjeto);
+						(Class<Object>) Class.forName(valor), emValor, contexto);
+				refletor.fixar(campo, (T) picon.obterObjeto(), umObjeto);
 			}
 		} else {
 			PiconLista<Object> picon = new PiconLista<Object>(
-					(Class<Object>) Class.forName(value), emValue, master);
-			reflect.fixar(label, (T) picon.getObjeto(), umObjeto);
+					(Class<Object>) Class.forName(valor), emValor, contexto);
+			refletor.fixar(campo, (T) picon.obterObjeto(), umObjeto);
 		}
 
 	}
 
-	final private void fazerAtributoEntidade(Deque<Parte> emValue,
+	final private void fazerAtributoEntidade(Deque<Parte> emValor,
 			Reflexao<T> socka, String label, T umObjeto) throws Exception {
-		PiconAtributoEntidade<Object> pi = new PiconAtributoEntidade<Object>(
-				socka.getClasse(label), emValue, master);
-		socka.fixar(label, pi.getObjeto(), umObjeto);
+		PiconAtributoEntidade<Object> entidades = new PiconAtributoEntidade<Object>(
+				socka.getClasse(label), emValor, contexto);
+		socka.fixar(label, entidades.obterObjeto(), umObjeto);
 
 	}
 
-	final private void fazerReferencia(final String label,
-			final Deque<Parte> value, final T umObjeto, final Reflexao<T> socka) {
-		final Parte toke = value.pop();
-		final String uid = toke.value();
-		master.addReferencia(new Vinculo() {
+	final private void fazerReferencia(final String campo,
+			final Deque<Parte> valor, final T umObjeto, final Reflexao<T> instanciador) {
+		final Parte toke = valor.pop();
+		final String qualificador = toke.valor();
+		contexto.adicionarVinculo(new Vinculo() {
 			public void processar(Map<String, Object> referenciaveis)
 					throws Exception {
-				socka.fixar(label, referenciaveis.get(uid), umObjeto);
+				instanciador.fixar(campo, referenciaveis.get(qualificador), umObjeto);
 			}
 
 			@Override
@@ -139,16 +139,16 @@ public abstract class Picon<T, O> {
 	}
 
 	T montaQualificador(Class<T> classe, Deque<Parte> emChave,
-			PiconStore contexto, Reflexao<T> socka)
+			PiconStore contexto, Reflexao<T> instanciador)
 			throws InstantiationException, IllegalAccessException,
 			InvocationTargetException, NoSuchMethodException, Exception {
 		T umObjeto;
-		if (emChave.peek().value().equals("<")) {
+		if (emChave.peek().valor().equals("<")) {
 			umObjeto = criarObjetoComConstrutor(classe, emChave, contexto);
 		} else {
 			umObjeto = classe.newInstance();
 		}
-		processaAtributo(emChave, socka, umObjeto);
+		processaAtributo(emChave, instanciador, umObjeto);
 		return umObjeto;
 	}
 
@@ -160,16 +160,16 @@ public abstract class Picon<T, O> {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		List<Object> objetos = new ArrayList<Object>();
 		emChave.pop();
-		while (!emChave.peek().value().equals(">")) {
-			if (emChave.peek().value().equals("#")) {
+		while (!emChave.peek().valor().equals(">")) {
+			if (emChave.peek().valor().equals("#")) {
 				emChave.pop();
 				Parte qualificador = emChave.pop();
-				Object objeto = contexto.get(qualificador.value());
+				Object objeto = contexto.get(qualificador.valor());
 				objetos.add(objeto);
 				classes.add(objeto.getClass());
 			} else {
-				Parte string = emChave.pop();
-				Object valor = novo(string.value());
+				Parte parte = emChave.pop();
+				Object valor = novo(parte.valor());
 				objetos.add(valor);
 				classes.add(valor.getClass());
 			}
@@ -181,23 +181,22 @@ public abstract class Picon<T, O> {
 		objetos.toArray(barney);
 		primitivos(barnabe);
 		umObjeto = classe.getDeclaredConstructor(barnabe).newInstance(barney);
-
 		emChave.pop();
 		return umObjeto;
 	}
 
-	private void primitivos(Class<?>[] barnabe) {
-		for (int i = 0; i < barnabe.length; i++)
-			if (barnabe[i].equals(Long.class))
-				barnabe[i] = Long.TYPE;
+	private void primitivos(Class<?>[] classes) {
+		for (int i = 0; i < classes.length; i++)
+			if (classes[i].equals(Long.class))
+				classes[i] = Long.TYPE;
 	}
 
-	private Object novo(String string) {
+	private Object novo(String corda) {
 		try {
-			return Long.parseLong(string);
+			return Long.parseLong(corda);
 
 		} catch (NumberFormatException e) {
-			return string;
+			return corda;
 		}
 	}
 

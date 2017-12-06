@@ -80,7 +80,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TimeCompile {
+public class CompiladorDeTempo {
 
 	private static final DateFormat FORMATO = new SimpleDateFormat(
 			"yyyy/MM/dd HH:mm");

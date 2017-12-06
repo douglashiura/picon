@@ -32,7 +32,18 @@ test.net.douglashiura.picon.Entidade{t[strings String {douglas}]}
 test.net.douglashiura.picon.Entidade{f[strings String {douglas pedro}]}
 test.net.douglashiura.picon.Entidade{as[strings String {}]}
 
+test.net.douglashiura.picon.Entidade{
+	exemplo:de:data[natal='2017/12/25 00:00']
+	agora[natal=now]
+	proximo:ano[natal='+1/12/25']
+	mes:anterior[natal='2017/-1/25']
+}
 
+test.net.douglashiura.picon.EntidadeComConstrutor{
+	construtor:douglas<'Douglas'>[]
+	referencia<#construtor:douglas>[]
+	dois:parametros<'Douglas' #construtor:douglas>[]
+}
 
 
 test.net.douglashiura.picon.Entidade{UID9[]}
