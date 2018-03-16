@@ -60,14 +60,10 @@ public class TesteTestePiconRunnerCamelCase {
 		assertEquals(ab12A1, get("ab:12:a:1"));
 		assertEquals(ab12AaAa, get("ab:12:aa:aa"));
 		assertEquals(ab12AaAa1a, get("ab:12:aa:aa:1a"));
-		assertEquals(poloJaraguaAno2012Periodo2DisciplinaP111,
-				get("polo:jaragua:ano:2012:periodo:2:disciplina:p:111"));
-		assertEquals(poloJaraguaAno2012Periodo2DisciplinaPortugues111,
-				get("polo:jaragua:ano:2012:periodo:2:disciplina:portugues:111"));
-		assertEquals(poloJaraguaAno2012Periodo2DisciplinaPORT111,
-				get("polo:jaragua:ano:2012:periodo:2:disciplina:port:111"));
-		assertEquals(agronomia2012_2,
-				get("agronomia:2012_2"));
+		assertEquals(poloJaraguaAno2012Periodo2DisciplinaP111, get("polo:jaragua:ano:2012:periodo:2:disciplina:p:111"));
+		assertEquals(poloJaraguaAno2012Periodo2DisciplinaPortugues111, get("polo:jaragua:ano:2012:periodo:2:disciplina:portugues:111"));
+		assertEquals(poloJaraguaAno2012Periodo2DisciplinaPORT111, get("polo:jaragua:ano:2012:periodo:2:disciplina:port:111"));
+		assertEquals(agronomia2012_2, get("agronomia:2012_2"));
 
 	}
 

@@ -11,42 +11,40 @@ package test.net.douglashiura.picon;
 
 import java.util.List;
 
-import net.douglashiura.picon.Parte;
-import net.douglashiura.picon.Fragmentador;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import net.douglashiura.picon.Fragmentador;
+import net.douglashiura.picon.Parte;
 
 public class TesteTokenizador extends Assert {
 
 	@Test
 	public void vazio() {
-		assertEquals(0, new Fragmentador("").getTokes().size());
+		assertEquals(0, new Fragmentador("").getTokens().size());
 	}
-	
+
 	@Test
 	public void essesTokesEstranhos() {
-		List<Parte> tokens = new Fragmentador("pedro[]\ndouglas<#pedro>[]").getTokes();
-		assertEquals(10, tokens.size());		
-		
-	}
-	
+		List<Parte> tokens = new Fragmentador("pedro[]\ndouglas<#pedro>[]").getTokens();
+		assertEquals(10, tokens.size());
 
-			
-			@Test
+	}
+
+	@Test
 	public void qualificadorComConstrutor() {
-		List<Parte> tokens = new Fragmentador("entidade<#referencia>").getTokes();
+		List<Parte> tokens = new Fragmentador("entidade<#referencia>").getTokens();
 		assertEquals(5, tokens.size());
 		assertEquals("entidade", tokens.get(0).valor());
 		assertEquals("<", tokens.get(1).valor());
 		assertEquals("#", tokens.get(2).valor());
 		assertEquals("referencia", tokens.get(3).valor());
 		assertEquals(">", tokens.get(4).valor());
-	}	
+	}
 
 	@Test
 	public void qualificadorComConstrutorComDuasReferencias() {
-		List<Parte> tokens = new Fragmentador("entidade<#referencia #douglas>").getTokes();
+		List<Parte> tokens = new Fragmentador("entidade<#referencia #douglas>").getTokens();
 		assertEquals(7, tokens.size());
 		assertEquals("entidade", tokens.get(0).valor());
 		assertEquals("<", tokens.get(1).valor());
@@ -55,41 +53,38 @@ public class TesteTokenizador extends Assert {
 		assertEquals("#", tokens.get(4).valor());
 		assertEquals("douglas", tokens.get(5).valor());
 		assertEquals(">", tokens.get(6).valor());
-		
-		
-	}	
 
-	
-	
+	}
+
 	//
 	@Test
 	public void lixo() {
-		assertEquals(0, new Fragmentador(" ").getTokes().size());
+		assertEquals(0, new Fragmentador(" ").getTokens().size());
 	}
 
 	@Test
 	public void toke() {
-		assertEquals(1, new Fragmentador("toke").getTokes().size());
-		assertNull(new Fragmentador("toke").getTokes().get(0).getAnterior());
+		assertEquals(1, new Fragmentador("toke").getTokens().size());
+		assertNull(new Fragmentador("toke").getTokens().get(0).getAnterior());
 	}
 
 	@Test
 	public void reservado() {
-		assertEquals(1, new Fragmentador("{").getTokes().size());
-		assertNull(new Fragmentador("{").getTokes().get(0).getAnterior());
+		assertEquals(1, new Fragmentador("{").getTokens().size());
+		assertNull(new Fragmentador("{").getTokens().get(0).getAnterior());
 	}
 
 	//
 
 	@Test
 	public void lixolixo() {
-		assertEquals(0, new Fragmentador(" 	").getTokes().size());
+		assertEquals(0, new Fragmentador(" 	").getTokens().size());
 	}
 
 	@Test
 	public void reservadoReservado() {
 		List<Parte> tokens;
-		assertEquals(2, (tokens = new Fragmentador("{{").getTokes()).size());
+		assertEquals(2, (tokens = new Fragmentador("{{").getTokens()).size());
 		assertNotNull(tokens.get(1).getAnterior());
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 	}
@@ -97,39 +92,36 @@ public class TesteTokenizador extends Assert {
 	@Test
 	public void tokeToke() {
 		List<Parte> tokens;
-		assertEquals(2,
-				(tokens = new Fragmentador("toke toke").getTokes()).size());
+		assertEquals(2, (tokens = new Fragmentador("toke toke").getTokens()).size());
 		assertNotNull(tokens.get(1).getAnterior());
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 	}
 
-	
-	
 	//
 	@Test
 	public void lixoReservado() {
-		assertEquals(1, new Fragmentador(" {").getTokes().size());
+		assertEquals(1, new Fragmentador(" {").getTokens().size());
 	}
 
 	@Test
 	public void reservadoLixo() {
-		assertEquals(1, new Fragmentador("{ ").getTokes().size());
+		assertEquals(1, new Fragmentador("{ ").getTokens().size());
 	}
 
 	@Test
 	public void lixoToke() {
-		assertEquals(1, new Fragmentador(" toke").getTokes().size());
+		assertEquals(1, new Fragmentador(" toke").getTokens().size());
 	}
 
 	@Test
 	public void tokeLixo() {
-		assertEquals(1, new Fragmentador("toke ").getTokes().size());
+		assertEquals(1, new Fragmentador("toke ").getTokens().size());
 	}
 
 	@Test
 	public void reservadoToke() {
 		List<Parte> tokens;
-		assertEquals(2, (tokens = new Fragmentador("{toke").getTokes()).size());
+		assertEquals(2, (tokens = new Fragmentador("{toke").getTokens()).size());
 		assertNotNull(tokens.get(1).getAnterior());
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 	}
@@ -137,7 +129,7 @@ public class TesteTokenizador extends Assert {
 	@Test
 	public void tokeReservado() {
 		List<Parte> tokens;
-		assertEquals(2, (tokens = new Fragmentador("toke{").getTokes()).size());
+		assertEquals(2, (tokens = new Fragmentador("toke{").getTokens()).size());
 		assertNotNull(tokens.get(1).getAnterior());
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 	}
@@ -145,24 +137,23 @@ public class TesteTokenizador extends Assert {
 	//
 	@Test
 	public void lixoReservadoLixo() {
-		assertEquals(1, new Fragmentador(" { ").getTokes().size());
+		assertEquals(1, new Fragmentador(" { ").getTokens().size());
 	}
 
 	@Test
 	public void lixoTokeLixo() {
-		assertEquals(1, new Fragmentador(" toke ").getTokes().size());
+		assertEquals(1, new Fragmentador(" toke ").getTokens().size());
 	}
 
 	@Test
 	public void tokeLixoToke() {
-		assertEquals(2, new Fragmentador("toke toke").getTokes().size());
+		assertEquals(2, new Fragmentador("toke toke").getTokens().size());
 	}
 
 	@Test
 	public void tokeReservadoToke() {
 		List<Parte> tokens;
-		assertEquals(3,
-				(tokens = new Fragmentador("toke{toke").getTokes()).size());
+		assertEquals(3, (tokens = new Fragmentador("toke{toke").getTokens()).size());
 		assertNotNull(tokens.get(1).getAnterior());
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 		assertEquals(tokens.get(1), tokens.get(2).getAnterior());
@@ -170,97 +161,93 @@ public class TesteTokenizador extends Assert {
 
 	@Test
 	public void reservadoTokeReservado() {
-		assertEquals(3, new Fragmentador("{toke{").getTokes().size());
+		assertEquals(3, new Fragmentador("{toke{").getTokens().size());
 	}
 
 	@Test
 	public void reservadoLixoReservado() {
-		assertEquals(2, new Fragmentador("{ {").getTokes().size());
+		assertEquals(2, new Fragmentador("{ {").getTokens().size());
 	}
 
 	@Test
 	public void pulandoVazio() {
-		assertEquals(1, new Fragmentador("''").getTokes().size());
+		assertEquals(1, new Fragmentador("''").getTokens().size());
 	}
 
 	@Test
 	public void pulandoA() {
-		assertEquals(1, new Fragmentador("'a'").getTokes().size());
+		assertEquals(1, new Fragmentador("'a'").getTokens().size());
 	}
 
 	@Test
 	public void pulandoABC() {
-		assertEquals(1, new Fragmentador("'abcd'").getTokes().size());
+		assertEquals(1, new Fragmentador("'abcd'").getTokens().size());
 	}
 
 	@Test
 	public void pulandoAgua_Viva() {
-		assertEquals(1, new Fragmentador("'Agua Viva'").getTokes().size());
+		assertEquals(1, new Fragmentador("'Agua Viva'").getTokens().size());
 	}
 
 	@Test
 	public void pulandoAgua_RESERVADO_Viva() {
-		assertEquals(1, new Fragmentador("'Agua#Viva'").getTokes().size());
+		assertEquals(1, new Fragmentador("'Agua#Viva'").getTokens().size());
 	}
 
 	@Test
 	public void pulandoPulando() {
-		assertEquals(2, new Fragmentador("''''").getTokes().size());
+		assertEquals(2, new Fragmentador("''''").getTokens().size());
 	}
 
 	@Test
 	public void pulandoToke() {
-		assertEquals(2, new Fragmentador("''toke").getTokes().size());
+		assertEquals(2, new Fragmentador("''toke").getTokens().size());
 	}
 
 	@Test
 	public void pulandoReservado() {
-		assertEquals(2, new Fragmentador("''#").getTokes().size());
+		assertEquals(2, new Fragmentador("''#").getTokens().size());
 	}
 
 	@Test
 	public void pulandoLixo() {
-		assertEquals(1, new Fragmentador("'' ").getTokes().size());
+		assertEquals(1, new Fragmentador("'' ").getTokens().size());
 	}
 
 	@Test
 	public void lixoPulando() {
-		assertEquals(1, new Fragmentador(" ''").getTokes().size());
+		assertEquals(1, new Fragmentador(" ''").getTokens().size());
 	}
 
 	@Test
 	public void reservadoPulando() {
-		assertEquals(2, new Fragmentador("#''").getTokes().size());
+		assertEquals(2, new Fragmentador("#''").getTokens().size());
 	}
 
 	@Test
 	public void tokePulando() {
-		assertEquals(2, new Fragmentador("toke''").getTokes().size());
+		assertEquals(2, new Fragmentador("toke''").getTokens().size());
 	}
 
 	@Test
 	public void tokeLixoPulando() {
-		assertEquals(2, new Fragmentador("toke ''").getTokes().size());
+		assertEquals(2, new Fragmentador("toke ''").getTokens().size());
 	}
 
 	@Test
 	public void tokeReferenciaPulando() {
-		assertEquals(3, new Fragmentador("toke#''").getTokes().size());
+		assertEquals(3, new Fragmentador("toke#''").getTokens().size());
 	}
 
 	@Test
 	public void tokePulandoToke() {
-		assertEquals(3, new Fragmentador("toke''toke").getTokes().size());
+		assertEquals(3, new Fragmentador("toke''toke").getTokens().size());
 	}
 
 	@Test
 	public void PulandoTokepulandoLixoReferenciaTokePulando() {
-		List<Parte> tokens;
-		assertEquals(
-				7,
-				(tokens = new Fragmentador(
-						"toke='toke skip toke' toke '' #toke '#toke' ")
-						.getTokes()).size());
+		List<Parte> tokens = new Fragmentador("toke='toke skip toke' toke '' #toke '#toke' ").getTokens();
+		assertEquals(7, tokens.size());
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 		assertEquals(tokens.get(1), tokens.get(2).getAnterior());
 		assertEquals(tokens.get(2), tokens.get(3).getAnterior());
@@ -277,8 +264,7 @@ public class TesteTokenizador extends Assert {
 	@Test
 	public void quebraLinhaQuebraLinhaTokeTokeReservadorqQuebraLinhatokeToke() {
 		List<Parte> tokens;
-		assertEquals(5, (tokens = new Fragmentador(
-				"\n\ntoke toke{\ntoke\n\n\ntoke").getTokes()).size());
+		assertEquals(5, (tokens = new Fragmentador("\n\ntoke toke{\ntoke\n\n\ntoke").getTokens()).size());
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 		assertEquals(tokens.get(1), tokens.get(2).getAnterior());
 		assertEquals(tokens.get(2), tokens.get(3).getAnterior());
@@ -292,8 +278,7 @@ public class TesteTokenizador extends Assert {
 	@Test
 	public void quebraLinhaPulandoEmQuebraLinhaToke() {
 		List<Parte> tokens;
-		assertEquals(2,
-				(tokens = new Fragmentador("\n'\n\n\n'toke").getTokes()).size());
+		assertEquals(2, (tokens = new Fragmentador("\n'\n\n\n'toke").getTokens()).size());
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 		assertEquals(5, tokens.get(0).getLinha());
 		assertEquals(5, tokens.get(1).getLinha());

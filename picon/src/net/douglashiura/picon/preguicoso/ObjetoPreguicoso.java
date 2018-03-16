@@ -1,6 +1,5 @@
 package net.douglashiura.picon.preguicoso;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ public class ObjetoPreguicoso<T> {
 		this.parametros = new ArrayList<>();
 	}
 
-	public T instanciar() throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException {
+	public T instanciar(ContextoPreguisoso contexto) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException {
 		T objeto;
 		if (parametros.isEmpty())
 			objeto = klass.newInstance();
@@ -28,19 +27,15 @@ public class ObjetoPreguicoso<T> {
 		return objeto;
 	}
 
-	private T instanciarComConstrutor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Constructor<?>[] construtores = klass.getDeclaredConstructors();
-		for (Constructor<?> constructor : construtores) {
-			Class<?>[] parametrosDoConstrutor = constructor.getParameterTypes();
-			if (parametrosDoConstrutor.length == parametros.size()) {
-				Object[] initargs = new Object[parametrosDoConstrutor.length];
-				for (int i = 0; i < parametrosDoConstrutor.length; i++) {
-						
-				}
-				constructor.newInstance(initargs);
-			}
+	private T instanciarComConstrutor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+		Class<?>[] barnabe = new Class<?>[parametros.size()];
+		Object[] barney = new Object[parametros.size()];
+		for (int i = 0; i < parametros.size(); i++) {
+			ParametroPreguicoso parametro = parametros.get(0);
+			barnabe[i] = parametro.getKlass();
+			barney[i] = parametro.getValor();
 		}
-		throw new RuntimeException("Without constructor");
+		return klass.getDeclaredConstructor(barnabe).newInstance(barney);
 	}
 
 	public void adicionar(CampoPreguisoso campo) {
@@ -51,5 +46,4 @@ public class ObjetoPreguicoso<T> {
 	public void adicionar(ParametroPreguicoso parametro) {
 		parametros.add(parametro);
 	}
-
 }

@@ -81,7 +81,7 @@ public class Fragmentador {
 		return false;
 	}
 
-	public List<Parte> getTokes() {
+	public List<Parte> getTokens() {
 		return tokens;
 	}
 

@@ -36,11 +36,11 @@ final public class PiconStore {
 			all.append(new String(arquivo));
 		}
 
-		return Picon.construir(new ArrayDeque<Parte>(new Fragmentador(all.toString()).getTokes()));
+		return Picon.construir(new ArrayDeque<Parte>(new Fragmentador(all.toString()).getTokens()));
 	}
 
 	public static PiconStore build(String piconolos) throws IOException, ProblemaDeCompilacao {
-		return Picon.construir(new ArrayDeque<Parte>(new Fragmentador(piconolos).getTokes()));
+		return Picon.construir(new ArrayDeque<Parte>(new Fragmentador(piconolos).getTokens()));
 	}
 
 	 void adicionar(String qualificador, Object objeto) {

@@ -32,7 +32,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void umaListaVazia() throws Exception {
 		String texto = "{}";
-		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconLista<Entidade> picon = new PiconLista<Entidade>(Entidade.class, iterator, contexto());
 		Assert.assertEquals(0, picon.obterObjeto().size());
 	}
@@ -40,7 +40,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void umaListaUmAtributoVazio() throws Exception {
 		String texto = "{UID[]}";
-		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconLista<Entidade> picon = new PiconLista<Entidade>(Entidade.class, iterator, contexto());
 
 		List<Entidade> lista = picon.obterObjeto();
@@ -52,7 +52,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void umaListaComConstrutorUmAtributoVazio() throws Exception {
 		String texto = "{douglas<#mane>[]}";
-		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore store = contexto();
 		EntidadeComConstrutor mane = new EntidadeComConstrutor();
 		violaAcesso(store, mane);
@@ -66,7 +66,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void umaListaComConstrutorUmAtributoVazioComDois() throws Exception {
 		String texto = "{douglas<#mane>[] \n pedro[]}";
-		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore store = contexto();
 		EntidadeComConstrutor mane = new EntidadeComConstrutor();
 		violaAcesso(store, mane);
@@ -80,7 +80,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void umaListaComConstrutorUmAtributoVazioComDoisComMaisUm() throws Exception {
 		String texto = "{douglas<#mane>[] \n pedro[]\n douglas2<#mane>[]}";
-		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore store = contexto();
 		EntidadeComConstrutor mane = new EntidadeComConstrutor();
 		violaAcesso(store, mane);
@@ -94,7 +94,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void umaListaComConstrutorUmAtributoVazioComDoisInvertido() throws Exception {
 		String texto = "{pedro[] douglas<#mane>[]}";
-		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore store = contexto();
 		EntidadeComConstrutor mane = new EntidadeComConstrutor();
 		violaAcesso(store, mane);
@@ -108,7 +108,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void umaListaComConstrutorPrimitivoUmAtributoVazio() throws Exception {
 		String texto = "{douglas<Agua>[]}";
-		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore store = contexto();
 		PiconLista<EntidadeComConstrutor> picon = new PiconLista<EntidadeComConstrutor>(EntidadeComConstrutor.class,
 				tokens, store);
@@ -120,7 +120,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void umaListaComConstrutorPrimitivoEReferenciaUmAtributoVazio() throws Exception {
 		String texto = "{douglas<Agua #mane>[]}";
-		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore store = contexto();
 		EntidadeComConstrutor mane = new EntidadeComConstrutor();
 		violaAcesso(store, mane);
@@ -135,7 +135,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void construtorDeLong() throws Exception {
 		String texto = "{douglas<10 Agua>[]}";
-		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore store = contexto();
 		EntidadeComConstrutor mane = new EntidadeComConstrutor();
 		violaAcesso(store, mane);
@@ -150,7 +150,7 @@ public class TestPiconAtibutoLista {
 	@Test
 	public void umaListaComConstrutorReferenciaEPrimitivoUmAtributoVazio() throws Exception {
 		String texto = "{douglas<#mane Agua>[]}";
-		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokes());
+		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore store = contexto();
 		EntidadeComConstrutor mane = new EntidadeComConstrutor();
 		violaAcesso(store, mane);
