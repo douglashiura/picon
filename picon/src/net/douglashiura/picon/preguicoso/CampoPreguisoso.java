@@ -15,7 +15,8 @@ public class CampoPreguisoso {
 
 	}
 
-	public void configure(Object objeto) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
+	public void configure(Object objeto) throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+			IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException {
 		Field campoDeclarado = objeto.getClass().getDeclaredField(campo);
 		campoDeclarado.setAccessible(Boolean.TRUE);
 		Constructor<?> c = campoDeclarado.getType().getDeclaredConstructor(String.class);

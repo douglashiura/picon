@@ -1,19 +1,25 @@
 package net.douglashiura.picon.preguicoso;
 
-public class ParametroPreguicoso {
-	private Object valor;
-	private Class<?> klass;
+public class ParametroPreguicoso implements Parametro {
+	private String valor;
 
 	public ParametroPreguicoso(String valor) {
+		this.valor = valor;
 
 	}
 
-	public Class<?> getKlass() {
-		return null;
+	private Object tentarConverter(String corda) {
+		try {
+			return Long.parseLong(corda);
+		} catch (NumberFormatException e) {
+			return corda;
+		}
 	}
 
-	public Object getValor() {
-		return null;
+	@Override
+
+	public Object getValor(ContextoPreguisoso contextoPreguisoso) {
+		return tentarConverter(valor);
 	}
 
 }

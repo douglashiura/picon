@@ -7,7 +7,7 @@ import java.util.List;
 public class ObjetoPreguicoso<T> {
 	private Class<T> klass;
 	private List<CampoPreguisoso> campos;
-	private List<ParametroPreguicoso> parametros;
+	private List<Parametro> parametros;
 
 	public ObjetoPreguicoso(Class<T> klass) {
 		this.klass = klass;
@@ -15,25 +15,29 @@ public class ObjetoPreguicoso<T> {
 		this.parametros = new ArrayList<>();
 	}
 
-	public T instanciar(ContextoPreguisoso contexto) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException {
+	public T instanciar(ContextoPreguisoso contexto)
+			throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException,
+			IllegalArgumentException, NoSuchMethodException, InvocationTargetException {
 		T objeto;
 		if (parametros.isEmpty())
 			objeto = klass.newInstance();
 		else
-			objeto = instanciarComConstrutor();
+			objeto = instanciarComConstrutor(contexto);
 		for (CampoPreguisoso campo : campos) {
 			campo.configure(objeto);
 		}
 		return objeto;
 	}
 
-	private T instanciarComConstrutor() throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	private T instanciarComConstrutor(ContextoPreguisoso contexto) throws InstantiationException, IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
 		Class<?>[] barnabe = new Class<?>[parametros.size()];
 		Object[] barney = new Object[parametros.size()];
 		for (int i = 0; i < parametros.size(); i++) {
-			ParametroPreguicoso parametro = parametros.get(0);
-			barnabe[i] = parametro.getKlass();
-			barney[i] = parametro.getValor();
+			Parametro parametro = parametros.get(i);
+			Object valor = parametro.getValor(contexto);
+			barney[i] = valor;
+			barnabe[i] = valor.getClass();
 		}
 		return klass.getDeclaredConstructor(barnabe).newInstance(barney);
 	}
@@ -43,7 +47,7 @@ public class ObjetoPreguicoso<T> {
 
 	}
 
-	public void adicionar(ParametroPreguicoso parametro) {
+	public void adicionarParametro(Parametro parametro) {
 		parametros.add(parametro);
 	}
 }

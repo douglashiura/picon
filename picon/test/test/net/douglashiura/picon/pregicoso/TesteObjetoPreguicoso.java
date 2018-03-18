@@ -11,6 +11,8 @@ import net.douglashiura.picon.preguicoso.CampoPreguisoso;
 import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
 import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
 import net.douglashiura.picon.preguicoso.ParametroPreguicoso;
+import net.douglashiura.picon.preguicoso.ParametroRefereciaPreguicoso;
+import net.douglashiura.picon.preguicoso.Qualificadores;
 import test.net.douglashiura.picon.Entidade;
 import test.net.douglashiura.picon.EntidadeComConstrutor;
 
@@ -22,6 +24,7 @@ public class TesteObjetoPreguicoso {
 	@Before
 	public void setUp() {
 		objetoEntidade = new ObjetoPreguicoso<>(Entidade.class);
+
 	}
 
 	@Test
@@ -32,20 +35,26 @@ public class TesteObjetoPreguicoso {
 
 	@Test
 	public void instanciarComConstrutor() throws Exception {
-		ObjetoPreguicoso<EntidadeComConstrutor> objetoEntidadeComConstrutor = new ObjetoPreguicoso<>(EntidadeComConstrutor.class);
-		objetoEntidadeComConstrutor.adicionar(new ParametroPreguicoso("Douglas"));
+		ObjetoPreguicoso<EntidadeComConstrutor> objetoEntidadeComConstrutor = new ObjetoPreguicoso<>(
+				EntidadeComConstrutor.class);
+		objetoEntidadeComConstrutor.adicionarParametro(new ParametroPreguicoso("Douglas"));
 		EntidadeComConstrutor objeto = objetoEntidadeComConstrutor.instanciar(contexto);
 		assertEquals("Douglas", objeto.obterNome());
 	}
 
 	@Test
 	public void instanciarComConstrutorComDoisParametros() throws Exception {
-		ObjetoPreguicoso<EntidadeComConstrutor> objetoEntidadeComConstrutor = new ObjetoPreguicoso<>(EntidadeComConstrutor.class);
-		objetoEntidadeComConstrutor.adicionar(new ParametroPreguicoso("Douglas"));
-		objetoEntidadeComConstrutor.adicionar(new ParametroPreguicoso("#pedro"));
+		Qualificadores qualificadores = new Qualificadores();
+		ObjetoPreguicoso<EntidadeComConstrutor> objetoPedro = new ObjetoPreguicoso<>(EntidadeComConstrutor.class);
+		qualificadores.put("pedro", objetoPedro);
+		contexto = new ContextoPreguisoso(qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> objetoEntidadeComConstrutor = new ObjetoPreguicoso<>(
+				EntidadeComConstrutor.class);
+		objetoEntidadeComConstrutor.adicionarParametro(new ParametroPreguicoso("Douglas"));
+		objetoEntidadeComConstrutor.adicionarParametro(new ParametroRefereciaPreguicoso("pedro"));
 		EntidadeComConstrutor objeto = objetoEntidadeComConstrutor.instanciar(contexto);
 		assertEquals("Douglas", objeto.obterNome());
-		assertEquals(null, objeto.obterPedro());
+		assertEquals(contexto.get("pedro"), objeto.obterPedro());
 	}
 
 	@Test
