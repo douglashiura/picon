@@ -12,14 +12,10 @@ package net.douglashiura.picon.linguagem;
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
-import java.util.Map;
-
-import net.douglashiura.picon.PiconStore;
-import net.douglashiura.picon.Reflexao;
-import net.douglashiura.picon.Vinculo;
 
 public class PiconLista extends Picon {
 	private List<Object> entidades = new ArrayList<Object>();
+
 	public PiconLista(Class classe, Deque<Parte> emChave, Qualificadores contexto) throws Exception {
 		super(contexto);
 		emChave.pop().valor();
@@ -29,9 +25,9 @@ public class PiconLista extends Picon {
 				Parte qualificadorToke = emChave.pop();
 				engatilhar(contexto, qualificadorToke);
 			} else {
-				Object umObjeto = montaQualificador( emChave, contexto);
+				Object umObjeto = montaQualificador(emChave, contexto);
 				entidades.add(umObjeto);
-//				contexto.adicionar(qualificador, umObjeto);
+				// contexto.adicionar(qualificador, umObjeto);
 			}
 
 		}
@@ -39,17 +35,17 @@ public class PiconLista extends Picon {
 	}
 
 	private void engatilhar(Qualificadores contexto, final Parte qualificador) {
-//		contexto.adicionarVinculo(new Vinculo() {
-//			@SuppressWarnings("unchecked")
-//			public void processar(Map<String, Object> referenciaveis) {
-//				entidades.add((T) referenciaveis.get(qualificador.valor()));
-//			}
-//
-//			@Override
-//			public Parte getApelido() {
-//				return qualificador;
-//			}
-//		});
+		// contexto.adicionarVinculo(new Vinculo() {
+		// @SuppressWarnings("unchecked")
+		// public void processar(Map<String, Object> referenciaveis) {
+		// entidades.add((T) referenciaveis.get(qualificador.valor()));
+		// }
+		//
+		// @Override
+		// public Parte getApelido() {
+		// return qualificador;
+		// }
+		// });
 	}
 
 }

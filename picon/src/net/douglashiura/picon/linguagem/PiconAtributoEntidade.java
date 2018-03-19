@@ -11,13 +11,11 @@ package net.douglashiura.picon.linguagem;
 
 import java.util.Deque;
 
-import net.douglashiura.picon.preguicoso.ClassePreguicosa;
-import test.net.douglashiura.picon.Entidade;
+import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
 
 public class PiconAtributoEntidade extends Picon {
 
-	public PiconAtributoEntidade(Deque<Parte> emColchetesComecoClasse, ClassePreguicosa<?> classe,
-			Qualificadores contexto) throws Exception {
+	public PiconAtributoEntidade(Deque<Parte> emColchetesComecoClasse, ObjetoPreguicoso<?> classe, Qualificadores contexto) throws Exception {
 		super(contexto);
 		Object umObjeto = montaQualificador(emColchetesComecoClasse, contexto);
 	}

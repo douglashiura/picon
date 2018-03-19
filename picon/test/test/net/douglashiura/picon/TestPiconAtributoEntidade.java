@@ -14,10 +14,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,33 +27,40 @@ import net.douglashiura.picon.linguagem.Fragmentador;
 import net.douglashiura.picon.linguagem.Parte;
 import net.douglashiura.picon.linguagem.PiconAtributoEntidade;
 import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.preguicoso.ClassePreguicosa;
+import net.douglashiura.picon.preguicoso.CampoPreguisoso;
+import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
 
 public class TestPiconAtributoEntidade {
 
 	private Qualificadores qualificadores;
+	private ObjetoPreguicoso<Entidade> objetoPreguicoso;
 
 	@Before
 	public void setUp() {
 		qualificadores = new Qualificadores();
+		objetoPreguicoso = new ObjetoPreguicoso<>(Entidade.class);
 	}
 
 	@Test
 	public void vazia() throws Exception {
 		String texto = "[]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		ClassePreguicosa<Entidade> classe= new ClassePreguicosa<>(Entidade.class,qualificadores);
-		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator,classe, qualificadores);
-		assertNotNull(qu);
+		new PiconAtributoEntidade(iterator, objetoPreguicoso, qualificadores);
+		assertEquals(0, objetoPreguicoso.getParametros().size());
+		assertEquals(0, objetoPreguicoso.getCampos().size());
 	}
 
 	@Test
 	public void nome() throws Exception {
 		String texto = "[nome=Douglas]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, null);
-		assertNotNull(picon.obterObjeto());
-		assertEquals("Douglas", picon.obterObjeto().getNome());
+		new PiconAtributoEntidade(iterator, objetoPreguicoso, qualificadores);
+		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
+		CampoPreguisoso campoNome = campos.get(0);
+		assertEquals(0, objetoPreguicoso.getParametros().size());
+		assertEquals(1, campos.size());
+		assertEquals("nome", campoNome.getCampo());
+		assertEquals("Douglas", campoNome.getValor());
 	}
 
 	@Test
@@ -195,13 +202,6 @@ public class TestPiconAtributoEntidade {
 		assertTrue(picon.obterObjeto().getEntidades().get(0).getEntidades().isEmpty());
 		assertEquals("Hiura", picon.obterObjeto().getEntidades().get(1).getNome());
 		assertEquals(3, picon.obterObjeto().getEntidades().get(1).getEntidades().size());
-	}
-
-	private void violaAcesso(PiconStore store, Entidade entidade) throws NoSuchMethodException, SecurityException,
-			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Method metodo = store.getClass().getDeclaredMethod("adicionar", String.class, Object.class);
-		metodo.setAccessible(true);
-		metodo.invoke(store, "mane", entidade);
 	}
 
 }

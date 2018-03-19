@@ -12,168 +12,131 @@ package test.net.douglashiura.picon;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import java.util.List;
 
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-import net.douglashiura.picon.PiconStore;
 import net.douglashiura.picon.linguagem.Fragmentador;
 import net.douglashiura.picon.linguagem.Parte;
 import net.douglashiura.picon.linguagem.PiconLista;
+import net.douglashiura.picon.linguagem.Qualificadores;
+import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
+import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
 
 public class TestPiconAtibutoLista {
+
+	private Qualificadores qualificadores;
+	private ContextoPreguisoso contexto;
+	private EntidadeComConstrutor mane;
+
+	@Before
+	public void setUp() throws Exception {
+		ObjetoPreguicoso<EntidadeComConstrutor> maneObjeto = new ObjetoPreguicoso<>(EntidadeComConstrutor.class);
+		qualificadores.put("mane", maneObjeto);
+		contexto = new ContextoPreguisoso(qualificadores);
+		mane = contexto.get("mane");
+	}
 
 	@Test
 	public void umaListaVazia() throws Exception {
 		String texto = "{}";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconLista<Entidade> picon = new PiconLista<Entidade>(Entidade.class, iterator, contexto());
-		Assert.assertEquals(0, picon.obterObjeto().size());
+		new PiconLista(Entidade.class, iterator, qualificadores);
 	}
 
 	@Test
 	public void umaListaUmAtributoVazio() throws Exception {
-		String texto = "{UID[]}";
+		String texto = "{uid[]}";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconLista<Entidade> picon = new PiconLista<Entidade>(Entidade.class, iterator, contexto());
-
-		List<Entidade> lista = picon.obterObjeto();
-		assertEquals(1, lista.size());
-		assertNotNull(lista.get(0));
-
+		new PiconLista(Entidade.class, iterator, qualificadores);
+		assertNotNull(qualificadores.get("uid"));
+		assertEquals(Entidade.class, qualificadores.get("uid").getClass());
 	}
 
 	@Test
 	public void umaListaComConstrutorUmAtributoVazio() throws Exception {
 		String texto = "{douglas<#mane>[]}";
 		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconStore store = contexto();
-		EntidadeComConstrutor mane = new EntidadeComConstrutor();
-		violaAcesso(store, mane);
-		PiconLista<EntidadeComConstrutor> picon = new PiconLista<EntidadeComConstrutor>(EntidadeComConstrutor.class,
-				tokens, store);
-		List<EntidadeComConstrutor> lista = picon.obterObjeto();
-		assertEquals(1, lista.size());
-		assertEquals(mane, lista.get(0).obterPedro());
+		new PiconLista(EntidadeComConstrutor.class, tokens, qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> douglas = qualificadores.get("douglas");
+		assertEquals(mane, douglas.instanciar(contexto).obterPedro());
 	}
 
 	@Test
 	public void umaListaComConstrutorUmAtributoVazioComDois() throws Exception {
 		String texto = "{douglas<#mane>[] \n pedro[]}";
 		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconStore store = contexto();
-		EntidadeComConstrutor mane = new EntidadeComConstrutor();
-		violaAcesso(store, mane);
-		PiconLista<EntidadeComConstrutor> picon = new PiconLista<EntidadeComConstrutor>(EntidadeComConstrutor.class,
-				tokens, store);
-		List<EntidadeComConstrutor> lista = picon.obterObjeto();
-		assertEquals(2, lista.size());
-		assertEquals(mane, lista.get(0).obterPedro());
+		new PiconLista(EntidadeComConstrutor.class, tokens, qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> douglas = qualificadores.get("douglas");
+		assertEquals(mane, douglas.instanciar(contexto).obterPedro());
+		assertNotNull(qualificadores.get("pedro"));
 	}
 
 	@Test
 	public void umaListaComConstrutorUmAtributoVazioComDoisComMaisUm() throws Exception {
 		String texto = "{douglas<#mane>[] \n pedro[]\n douglas2<#mane>[]}";
 		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconStore store = contexto();
-		EntidadeComConstrutor mane = new EntidadeComConstrutor();
-		violaAcesso(store, mane);
-		PiconLista<EntidadeComConstrutor> picon = new PiconLista<EntidadeComConstrutor>(EntidadeComConstrutor.class,
-				tokens, store);
-		List<EntidadeComConstrutor> lista = picon.obterObjeto();
-		assertEquals(3, lista.size());
-		assertEquals(mane, lista.get(0).obterPedro());
+		new PiconLista(EntidadeComConstrutor.class, tokens, qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> douglas = qualificadores.get("douglas");
+		assertEquals(mane, douglas.instanciar(contexto).obterPedro());
+		assertNotNull(qualificadores.get("pedro"));
+		assertNotNull(qualificadores.get("douglas2"));
 	}
 
 	@Test
 	public void umaListaComConstrutorUmAtributoVazioComDoisInvertido() throws Exception {
 		String texto = "{pedro[] douglas<#mane>[]}";
 		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconStore store = contexto();
-		EntidadeComConstrutor mane = new EntidadeComConstrutor();
-		violaAcesso(store, mane);
-		PiconLista<EntidadeComConstrutor> picon = new PiconLista<EntidadeComConstrutor>(EntidadeComConstrutor.class,
-				tokens, store);
-		List<EntidadeComConstrutor> lista = picon.obterObjeto();
-		assertEquals(2, lista.size());
-		assertEquals(mane, lista.get(1).obterPedro());
+		new PiconLista(EntidadeComConstrutor.class, tokens, qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> douglas = qualificadores.get("douglas");
+		assertEquals(mane, douglas.instanciar(contexto).obterPedro());
+		assertNotNull(qualificadores.get("pedro"));
 	}
 
 	@Test
 	public void umaListaComConstrutorPrimitivoUmAtributoVazio() throws Exception {
 		String texto = "{douglas<Agua>[]}";
 		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconStore store = contexto();
-		PiconLista<EntidadeComConstrutor> picon = new PiconLista<EntidadeComConstrutor>(EntidadeComConstrutor.class,
-				tokens, store);
-		List<EntidadeComConstrutor> lista = picon.obterObjeto();
-		assertEquals(1, lista.size());
-		assertEquals("Agua", lista.get(0).obterNome());
+		new PiconLista(EntidadeComConstrutor.class, tokens, qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> douglas = qualificadores.get("douglas");
+		EntidadeComConstrutor instanciar = douglas.instanciar(contexto);
+		assertEquals(null, instanciar.obterPedro());
+		assertEquals("Agua", instanciar.obterNome());
 	}
 
 	@Test
 	public void umaListaComConstrutorPrimitivoEReferenciaUmAtributoVazio() throws Exception {
 		String texto = "{douglas<Agua #mane>[]}";
 		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconStore store = contexto();
-		EntidadeComConstrutor mane = new EntidadeComConstrutor();
-		violaAcesso(store, mane);
-		PiconLista<EntidadeComConstrutor> picon = new PiconLista<EntidadeComConstrutor>(EntidadeComConstrutor.class,
-				tokens, store);
-		List<EntidadeComConstrutor> lista = picon.obterObjeto();
-		assertEquals(1, lista.size());
-		assertEquals("Agua", lista.get(0).obterNome());
-		assertEquals(mane, lista.get(0).obterPedro());
+		new PiconLista(EntidadeComConstrutor.class, tokens, qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> douglas = qualificadores.get("douglas");
+		EntidadeComConstrutor instanciar = douglas.instanciar(contexto);
+		assertEquals(mane, instanciar.obterPedro());
+		assertEquals("Agua", instanciar.obterNome());
 	}
 
 	@Test
 	public void construtorDeLong() throws Exception {
 		String texto = "{douglas<10 Agua>[]}";
 		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconStore store = contexto();
-		EntidadeComConstrutor mane = new EntidadeComConstrutor();
-		violaAcesso(store, mane);
-		PiconLista<EntidadeComConstrutor> picon = new PiconLista<EntidadeComConstrutor>(EntidadeComConstrutor.class,
-				tokens, store);
-		List<EntidadeComConstrutor> lista = picon.obterObjeto();
-		assertEquals(1, lista.size());
-		assertEquals(10l, lista.get(0).obterNumero());
-		assertEquals("Agua", lista.get(0).obterNome());
+		new PiconLista(EntidadeComConstrutor.class, tokens, qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> douglas = qualificadores.get("douglas");
+		EntidadeComConstrutor instanciar = douglas.instanciar(contexto);
+		assertEquals(10l, instanciar.obterNumero());
+		assertEquals("Agua", instanciar.obterNome());
 	}
 
 	@Test
 	public void umaListaComConstrutorReferenciaEPrimitivoUmAtributoVazio() throws Exception {
 		String texto = "{douglas<#mane Agua>[]}";
 		Deque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconStore store = contexto();
-		EntidadeComConstrutor mane = new EntidadeComConstrutor();
-		violaAcesso(store, mane);
-		PiconLista<EntidadeComConstrutor> picon = new PiconLista<EntidadeComConstrutor>(EntidadeComConstrutor.class,
-				tokens, store);
-		List<EntidadeComConstrutor> lista = picon.obterObjeto();
-		assertEquals(1, lista.size());
-		assertEquals("Agua", lista.get(0).obterNome());
-		assertEquals(mane, lista.get(0).obterPedro());
-	}
-
-	private PiconStore contexto() throws InstantiationException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException {
-		Constructor<PiconStore> construtor = PiconStore.class.getDeclaredConstructor();
-		construtor.setAccessible(true);
-		return construtor.newInstance();
-	}
-
-	private void violaAcesso(PiconStore store, EntidadeComConstrutor mane) throws NoSuchMethodException,
-			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Method metodo = store.getClass().getDeclaredMethod("adicionar", String.class, Object.class);
-		metodo.setAccessible(true);
-		metodo.invoke(store, "mane", mane);
+		new PiconLista(EntidadeComConstrutor.class, tokens, qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> douglas = qualificadores.get("douglas");
+		EntidadeComConstrutor instanciar = douglas.instanciar(contexto);
+		assertEquals(mane, instanciar.obterPedro());
+		assertEquals("Agua", instanciar.obterNome());
 	}
 
 }

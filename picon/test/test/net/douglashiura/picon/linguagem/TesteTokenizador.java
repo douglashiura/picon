@@ -7,7 +7,7 @@
  * douglashiura.parprimo.com
  * douglashiura@gmail.com
  * */
-package test.net.douglashiura.picon;
+package test.net.douglashiura.picon.linguagem;
 
 import java.util.List;
 
@@ -53,10 +53,8 @@ public class TesteTokenizador extends Assert {
 		assertEquals("#", tokens.get(4).valor());
 		assertEquals("douglas", tokens.get(5).valor());
 		assertEquals(">", tokens.get(6).valor());
-
 	}
 
-	//
 	@Test
 	public void lixo() {
 		assertEquals(0, new Fragmentador(" ").getTokens().size());
@@ -73,8 +71,6 @@ public class TesteTokenizador extends Assert {
 		assertEquals(1, new Fragmentador("{").getTokens().size());
 		assertNull(new Fragmentador("{").getTokens().get(0).getAnterior());
 	}
-
-	//
 
 	@Test
 	public void lixolixo() {
@@ -97,7 +93,6 @@ public class TesteTokenizador extends Assert {
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 	}
 
-	//
 	@Test
 	public void lixoReservado() {
 		assertEquals(1, new Fragmentador(" {").getTokens().size());
@@ -134,7 +129,6 @@ public class TesteTokenizador extends Assert {
 		assertEquals(tokens.get(0), tokens.get(1).getAnterior());
 	}
 
-	//
 	@Test
 	public void lixoReservadoLixo() {
 		assertEquals(1, new Fragmentador(" { ").getTokens().size());

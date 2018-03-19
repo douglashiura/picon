@@ -7,7 +7,7 @@
  * douglashiura.parprimo.com
  * douglashiura@gmail.com
  * */
-package test.net.douglashiura.picon;
+package test.net.douglashiura.picon.invoke;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,9 +16,11 @@ import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Test;
 
-import net.douglashiura.picon.Reflexao;
+import net.douglashiura.picon.preguicoso.CampoPreguisoso;
+import test.net.douglashiura.picon.Entidade;
+import test.net.douglashiura.picon.Enum;
 
-public class TesteReflexao extends Assert {
+public class TesteCampoPreguisoso extends Assert {
 	class T {
 		Date data;
 		Enum a;
@@ -26,74 +28,66 @@ public class TesteReflexao extends Assert {
 	}
 
 	@Test
-	public void criarReflexao() {
-		assertNotNull(new Reflexao<Entidade>(Entidade.class));
-	}
-
-	@Test
 	public void refletirLabelNomeValorString() throws Exception {
-		Reflexao<Entidade> refletor = new Reflexao<Entidade>(Entidade.class);
 		Entidade douglas = new Entidade();
-		refletor.criarPrimitivo("nome", "Douglas Hiura", douglas);
+		CampoPreguisoso campo = new CampoPreguisoso("nome", "Douglas Hiura");
+		campo.configure(douglas);
 		assertEquals("Douglas Hiura", douglas.getNome());
 	}
 
 	@Test
 	public void refletirLabelIdadeValorInteger() throws Exception {
-		Reflexao<Entidade> refletor = new Reflexao<Entidade>(Entidade.class);
 		Entidade douglas = new Entidade();
-		refletor.criarPrimitivo("idade", "10", douglas);
+		CampoPreguisoso campo = new CampoPreguisoso("idade", "10");
+		campo.configure(douglas);
 		assertEquals(new Integer(10), douglas.getIdade());
 	}
 
 	@Test
 	public void refletirLabelDataValorData() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
-		refletor.criarPrimitivo("data", "2009/10/25 00:00", t);
+		CampoPreguisoso campo = new CampoPreguisoso("data", "2009/10/25 00:00");
+		campo.configure(t);
 		assertEquals("2009/10/25", new SimpleDateFormat("yyyy/MM/dd").format(t.data));
 	}
 
 	@Test
 	public void refletirLabelDataValorDataHora() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
-		refletor.criarPrimitivo("data", "2009/10/25 12:30", t);
+		CampoPreguisoso campo = new CampoPreguisoso("data", "2009/10/25 12:30");
+		campo.configure(t);
 		assertEquals("2009/10/25 12:30", new SimpleDateFormat("yyyy/MM/dd hh:mm").format(t.data));
 	}
 
 	@Test
 	public void refletirLabelDataNow() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
-		refletor.criarPrimitivo("data", "now", t);
-		assertEquals(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date()),
-				new SimpleDateFormat("yyyy/MM/dd HH:mm").format(t.data));
+		CampoPreguisoso campo = new CampoPreguisoso("data", "now");
+		campo.configure(t);
+		assertEquals(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date()), new SimpleDateFormat("yyyy/MM/dd HH:mm").format(t.data));
 	}
 
 	@Test
 	public void refletirEnum() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
-		refletor.criarPrimitivo("a", "A", t);
+		CampoPreguisoso campo = new CampoPreguisoso("a", "A");
+		campo.configure(t);
 		assertEquals(Enum.A, t.a);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void enumInexistente() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
-		refletor.criarPrimitivo("a", "INEXISTENTE", t);
-		assertEquals(Enum.A, t.a);
+		CampoPreguisoso campo = new CampoPreguisoso("a", "INEXISTENTE");
+		campo.configure(t);
 	}
 
 	@Test
 	public void refletirUuid() throws Exception {
-		Reflexao<T> refletor = new Reflexao<TesteReflexao.T>(T.class);
 		T t = new T();
 		UUID uuid = new UUID(1l, 1l);
-		refletor.criarPrimitivo("uuid", uuid.toString(), t);
+		CampoPreguisoso campo = new CampoPreguisoso("uuid", uuid.toString());
+		campo.configure(t);
 		assertEquals(uuid, t.uuid);
 	}
-
 }

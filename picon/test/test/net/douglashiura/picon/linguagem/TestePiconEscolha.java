@@ -7,7 +7,7 @@
  * douglashiura.parprimo.com
  * douglashiura@gmail.com
  * */
-package test.net.douglashiura.picon;
+package test.net.douglashiura.picon.linguagem;
 
 import static org.junit.Assert.assertEquals;
 

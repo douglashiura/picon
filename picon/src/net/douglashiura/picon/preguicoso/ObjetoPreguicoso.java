@@ -18,9 +18,7 @@ public class ObjetoPreguicoso<T> {
 		this.parametros = new ArrayList<>();
 	}
 
-	public T instanciar(ContextoPreguisoso contexto)
-			throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException,
-			IllegalArgumentException, NoSuchMethodException, InvocationTargetException {
+	public T instanciar(ContextoPreguisoso contexto) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException {
 		T objeto;
 		if (parametros.isEmpty())
 			objeto = klass.newInstance();
@@ -32,8 +30,7 @@ public class ObjetoPreguicoso<T> {
 		return objeto;
 	}
 
-	private T instanciarComConstrutor(ContextoPreguisoso contexto) throws InstantiationException, IllegalAccessException, IllegalArgumentException,
-			InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+	private T instanciarComConstrutor(ContextoPreguisoso contexto) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
 		Class<?>[] barnabe = new Class<?>[parametros.size()];
 		Object[] barney = new Object[parametros.size()];
 		for (int i = 0; i < parametros.size(); i++) {
@@ -52,5 +49,13 @@ public class ObjetoPreguicoso<T> {
 
 	public void adicionarParametro(Parametro parametro) {
 		parametros.add(parametro);
+	}
+
+	public List<Parametro> getParametros() {
+		return parametros;
+	}
+
+	public List<CampoPreguisoso> getCampos() {
+		return campos;
 	}
 }

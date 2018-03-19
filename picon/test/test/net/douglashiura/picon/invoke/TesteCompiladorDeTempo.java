@@ -1,4 +1,4 @@
-package test.net.douglashiura.picon;
+package test.net.douglashiura.picon.invoke;
 
 import static org.junit.Assert.assertEquals;
 
