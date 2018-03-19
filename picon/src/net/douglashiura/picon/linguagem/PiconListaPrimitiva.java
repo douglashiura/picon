@@ -7,23 +7,23 @@
  * douglashiura.parprimo.com
  * douglashiura@gmail.com
  * */
-package net.douglashiura.picon;
+package net.douglashiura.picon.linguagem;
 
 import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
-public class PiconListaPrimitiva<T> extends Picon<T, List<T>> {
+public class PiconListaPrimitiva extends Picon {
 
-	private List<T> entidades = new ArrayList<T>();
+	private List<Object> entidades = new ArrayList<Object>();
 
-	public PiconListaPrimitiva(Class<T> classe, Deque<Parte> emChave, PiconStore contexto) throws Exception {
+	public PiconListaPrimitiva(Class<?> classe, Deque<Parte> emChave, Qualificadores contexto) throws Exception {
 		super(contexto);
 		emChave.pop().valor();
 		while (!emChave.peek().valor().equals("}")) {
 			String uid = emChave.pop().valor();
-			T[] enumValors = classe.getEnumConstants();
-			for (T t : enumValors) {
+			Object[] enumValors = classe.getEnumConstants();
+			for (Object t : enumValors) {
 				if (t.toString().equals(uid))
 					entidades.add(t);
 
@@ -33,20 +33,15 @@ public class PiconListaPrimitiva<T> extends Picon<T, List<T>> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public PiconListaPrimitiva(Deque<Parte> emChave, PiconStore contexto) throws Exception {
+	public PiconListaPrimitiva(Deque<Parte> emChave, Qualificadores contexto) throws Exception {
 		super(contexto);
 		emChave.pop().valor();
 		while (!emChave.peek().valor().equals("}")) {
 			String uid = emChave.pop().valor();
-			entidades.add((T) uid);
+			entidades.add(uid);
 
 		}
 		emChave.pop();
-	}
-
-	@Override
-	public List<T> obterObjeto() {
-		return entidades;
 	}
 
 }

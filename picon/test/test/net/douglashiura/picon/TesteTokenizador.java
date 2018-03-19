@@ -14,8 +14,8 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import net.douglashiura.picon.Fragmentador;
-import net.douglashiura.picon.Parte;
+import net.douglashiura.picon.linguagem.Fragmentador;
+import net.douglashiura.picon.linguagem.Parte;
 
 public class TesteTokenizador extends Assert {
 

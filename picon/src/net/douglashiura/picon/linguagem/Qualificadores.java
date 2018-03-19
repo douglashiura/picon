@@ -1,7 +1,9 @@
-package net.douglashiura.picon.preguicoso;
+package net.douglashiura.picon.linguagem;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
 
 public class Qualificadores {
 

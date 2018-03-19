@@ -11,162 +11,184 @@ package test.net.douglashiura.picon;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.ArrayDeque;
 
-import net.douglashiura.picon.ProblemaDeCompilacao;
-import net.douglashiura.picon.Picon;
-import net.douglashiura.picon.PiconStore;
-import net.douglashiura.picon.Parte;
-import net.douglashiura.picon.Fragmentador;
-
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
+import net.douglashiura.picon.ProblemaDeCompilacao;
+import net.douglashiura.picon.linguagem.Fragmentador;
+import net.douglashiura.picon.linguagem.Parte;
+import net.douglashiura.picon.linguagem.Picon;
+import net.douglashiura.picon.linguagem.Qualificadores;
+import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
+import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
+
 public class TestPiconBuild {
+
+	private Qualificadores qualificadores;
+
+	@Before
+	public void setUp() {
+		qualificadores = new Qualificadores();
+	}
 
 	@Test
 	public void processarEntidadeVazia() throws ProblemaDeCompilacao {
 		String texto = "test.net.douglashiura.picon.Entidade{}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals(0, picon.getStore().size());
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		assertNull(qualificadores.get(""));
 	}
 
 	@Test
 	public void processarEntidadeBeanVazia() throws ProblemaDeCompilacao {
 		String texto = "test.net.douglashiura.picon.Entidade{UID[]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals(1, picon.getStore().size());
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		assertNotNull(qualificadores.get("UID"));
 	}
 
 	@Test
-	public void processarEntidadeNome() throws ProblemaDeCompilacao {
+	public void processarEntidadeNome() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{UID[nome=HIURA;]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals("HIURA", picon.get("UID", Entidade.class).getNome());
-
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ObjetoPreguicoso<Entidade> objeto = qualificadores.get("UID");
+		assertEquals("HIURA", objeto.instanciar(null).getNome());
 	}
 
 	@Test
-	public void processarEntidadeNomeIdade() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeIdade() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{UID[nome=HIURA;idade=11;]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals("HIURA", picon.get("UID", Entidade.class).getNome());
-		Assert.assertEquals(new Integer(11), picon.get("UID", Entidade.class).getIdade());
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ObjetoPreguicoso<Entidade> objeto = qualificadores.get("UID");
+		Entidade instancia = objeto.instanciar(null);
+		assertEquals("HIURA", instancia.getNome());
+		assertEquals(new Integer(11), instancia.getIdade());
 
 	}
 
 	@Test
-	public void processarEntidadeNomeIdadeNome() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeIdadeNome() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{UID[nome=HIURA;idade=11;nome=HIURA;]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals("HIURA", picon.get("UID", Entidade.class).getNome());
-		Assert.assertEquals(new Integer(11), picon.get("UID", Entidade.class).getIdade());
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ObjetoPreguicoso<Entidade> objeto = qualificadores.get("UID");
+		Entidade instancia = objeto.instanciar(null);
+		assertEquals("HIURA", instancia.getNome());
+		assertEquals(new Integer(11), instancia.getIdade());
 
 	}
 
 	@Test
-	public void processarEntidadeNomeIdadeDuas() throws ProblemaDeCompilacao {
-		String texto = "test.net.douglashiura.picon.Entidade{UID[nome=HIURA;idade=11;]UID2[nome=HIURA;idade=11;]}";
-
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals("HIURA", picon.get("UID", Entidade.class).getNome());
-		Assert.assertEquals(new Integer(11), picon.get("UID", Entidade.class).getIdade());
-
+	public void processarEntidadeNomeIdadeDuas() throws Exception {
+		String texto = "test.net.douglashiura.picon.Entidade{UID[nome=HIURA;idade=11;]UID2[nome=HIURA2;idade=12;]}";
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ObjetoPreguicoso<Entidade> objeto = qualificadores.get("UID");
+		Entidade instancia = objeto.instanciar(null);
+		ObjetoPreguicoso<Entidade> objeto2 = qualificadores.get("UID2");
+		Entidade instancia2 = objeto2.instanciar(null);
+		assertEquals("HIURA", instancia.getNome());
+		assertEquals(new Integer(11), instancia.getIdade());
+		assertEquals("HIURA2", instancia2.getNome());
+		assertEquals(new Integer(12), instancia2.getIdade());
 	}
 
 	@Test
-	public void processarEntidadeNomeEntidadeObjectReferenciado() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeEntidadeObjectReferenciado() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{UID[nome=HIURA;entidade #UID;]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals("HIURA", picon.get("UID", Entidade.class).getNome());
-		Assert.assertNotNull(picon.get("UID", Entidade.class).getEntidade());
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ObjetoPreguicoso<Entidade> objeto = qualificadores.get("UID");
+		Entidade instancia = objeto.instanciar(null);
+		assertEquals("HIURA", instancia.getNome());
+		assertNotNull(instancia.getEntidade());
 	}
 
 	@Test
-	public void processarEntidadeNomeEntidadeObjectVazia() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeEntidadeObjectVazia() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{UID[entidade UID3[]]}";
-
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals(1, picon.getStore().size());
-		Assert.assertNotNull(picon.get("UID", Entidade.class).getEntidade());
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ObjetoPreguicoso<Entidade> objeto = qualificadores.get("UID");
+		Entidade instancia = objeto.instanciar(null);
+		assertNotNull(instancia.getEntidade());
 	}
 
 	@Test
-	public void processarEntidadeNomeEntidadeObject() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeEntidadeObject() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{UID[entidade UID3[nome Douglas;]]}";
-
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals(1, picon.getStore().size());
-		Assert.assertNotNull(picon.get("UID", Entidade.class).getEntidade());
-		Assert.assertEquals("Douglas", picon.get("UID", Entidade.class).getEntidade().getNome());
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ObjetoPreguicoso<Entidade> objeto = qualificadores.get("UID");
+		Entidade instancia = objeto.instanciar(null);
+		assertEquals("Douglas", instancia.getEntidade().getNome());
 	}
 
 	@Test(expected = ProblemaDeCompilacao.class)
 	public void processarEntidadeNomeErro() throws ProblemaDeCompilacao {
 		String texto = "test.net.douglashiura.picon.Entidade\n{\nUID[entidade UID3[\nnome3 Douglas;]]}";
 		try {
-			Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+			Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
 		} catch (ProblemaDeCompilacao e) {
-			Assert.assertEquals(4, e.getToke().getLinha());
-			Assert.assertEquals("]", e.getToke().valor());
+			assertEquals(4, e.getToke().getLinha());
+			assertEquals("]", e.getToke().valor());
 			throw e;
 		}
 
 	}
 
 	@Test
-	public void processarEntidadeNomeStringComConstrutor() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeStringComConstrutor() throws Exception {
 		String texto = "test.net.douglashiura.picon.EntidadeComConstrutor{douglas<Doug>[]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals(1, picon.getStore().size());
-		EntidadeComConstrutor douglas = picon.get("douglas");
-		Assert.assertNotNull(douglas);
-		assertEquals("Doug", douglas.obterNome());
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ObjetoPreguicoso<EntidadeComConstrutor> objeto = qualificadores.get("douglas");
+		EntidadeComConstrutor instancia = objeto.instanciar(null);
+		assertNotNull(instancia);
+		assertEquals("Doug", instancia.obterNome());
 	}
 
 	@Test
-	public void processarEntidadeNomeStringComConstrutorNaoSeiMais() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeStringComConstrutorNaoSeiMais() throws Exception {
 		String texto = "test.net.douglashiura.picon.EntidadeComConstrutor{pedro[] douglas<Doug #pedro>[]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals(2, picon.getStore().size());
-		EntidadeComConstrutor douglas = picon.get("douglas");
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ContextoPreguisoso contexto = new ContextoPreguisoso(qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> objeto = qualificadores.get("douglas");
+		EntidadeComConstrutor douglas = objeto.instanciar(contexto);
 		assertNotNull(douglas);
 		assertEquals("Doug", douglas.obterNome());
-		assertEquals(picon.get("pedro"), douglas.obterPedro());
+		assertEquals(contexto.get("pedro"), douglas.obterPedro());
 	}
-	
+
 	@Test
-	public void processarEntidadeNomeStringComConstrutorNaoSeiMaisComMane() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeStringComConstrutorNaoSeiMaisComMane() throws Exception {
 		String texto = "test.net.douglashiura.picon.EntidadeComConstrutor{pedro[] douglas<Doug #pedro>[nome=Douglas] mane[pedro=#pedro]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals(3, picon.getStore().size());
-		EntidadeComConstrutor douglas = picon.get("douglas");
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ContextoPreguisoso contexto = new ContextoPreguisoso(qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> objeto = qualificadores.get("douglas");
+		EntidadeComConstrutor douglas = objeto.instanciar(contexto);
 		assertNotNull(douglas);
 		assertEquals("Douglas", douglas.obterNome());
-		assertEquals(picon.get("pedro"), douglas.obterPedro());
+		assertEquals(contexto.get("pedro"), douglas.obterPedro());
 	}
 
 	@Test
-	public void processarEntidadeNomeStringComConstrutorNaoSeiMaisInvertido() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeStringComConstrutorNaoSeiMaisInvertido() throws Exception {
 		String texto = "test.net.douglashiura.picon.EntidadeComConstrutor{pedro[] douglas<Doug #pedro>[]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		assertEquals(2, picon.getStore().size());
-		EntidadeComConstrutor douglas = picon.get("douglas");
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ContextoPreguisoso contexto = new ContextoPreguisoso(qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> objeto = qualificadores.get("douglas");
+		EntidadeComConstrutor douglas = objeto.instanciar(contexto);
 		assertNotNull(douglas);
 		assertEquals("Doug", douglas.obterNome());
-		assertEquals(picon.get("pedro"), douglas.obterPedro());
+		assertEquals(contexto.get("pedro"), douglas.obterPedro());
 	}
 
 	@Test
-	public void processarEntidadeNomeComConstrutor() throws ProblemaDeCompilacao {
+	public void processarEntidadeNomeComConstrutor() throws Exception {
 		String texto = "test.net.douglashiura.picon.EntidadeComConstrutor{ pedro[] \ndouglas<#pedro>[]}";
-		PiconStore picon = Picon.construir(new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
-		Assert.assertEquals(2, picon.getStore().size());
-		EntidadeComConstrutor douglas = picon.get("douglas");
-		Assert.assertNotNull(douglas);
-		Object pedro = picon.get("pedro");
-		Assert.assertEquals(pedro, douglas.obterPedro());
+		Picon.construir(qualificadores, new ArrayDeque<Parte>(new Fragmentador(texto).getTokens()));
+		ContextoPreguisoso contexto = new ContextoPreguisoso(qualificadores);
+		ObjetoPreguicoso<EntidadeComConstrutor> objeto = qualificadores.get("douglas");
+		EntidadeComConstrutor douglas = objeto.instanciar(contexto);
+		assertNotNull(douglas);
+		Object pedro = contexto.get("pedro");
+		assertEquals(pedro, douglas.obterPedro());
 	}
-
 }

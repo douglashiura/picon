@@ -16,12 +16,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Reflexao<T> {
+public class Reflexao {
 	private static HashMap<Class<?>, Map<String, Field>> CLASSES = new HashMap<Class<?>, Map<String, Field>>();
 	private Map<String, Field> mapaDeAtributos;
 	final private static CompiladorDeTempo compile = new CompiladorDeTempo();
 
-	public Reflexao(Class<T> classe) {
+	public Reflexao(Class classe) {
 		mapaDeAtributos = CLASSES.get(classe);
 		if (mapaDeAtributos == null) {
 			mapaDeAtributos = new HashMap<String, Field>();
@@ -38,7 +38,7 @@ public class Reflexao<T> {
 			escanearCampos(classe.getSuperclass());
 	}
 
-	public void criarPrimitivo(String atributo, Object valor, T umObjeto) throws Exception {
+	public void criarPrimitivo(String atributo, Object valor, Object umObjeto) throws Exception {
 		Field campo = mapaDeAtributos.get(atributo);
 		if (campo.getType().equals(Date.class)) {
 			try {
@@ -64,7 +64,7 @@ public class Reflexao<T> {
 
 	}
 
-	public void fixar(String label, Object value, T umObjeto) throws Exception {
+	public void fixar(String label, Object value, Object umObjeto) throws Exception {
 		Field field = mapaDeAtributos.get(label);
 		field.set(umObjeto, value);
 	}

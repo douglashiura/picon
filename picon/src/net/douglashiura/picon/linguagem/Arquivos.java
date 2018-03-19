@@ -1,4 +1,4 @@
-package net.douglashiura.picon.junit;
+package net.douglashiura.picon.linguagem;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,34 +10,33 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
-class FarejadorDeArquivos {
+public class Arquivos {
 
 	private static final String EXTENSAO = ".picon";
+	private static Arquivos unico;
+	private Qualificadores qualificadores;
 
-	private static final FarejadorDeArquivos UNICO = new FarejadorDeArquivos();
-
-	private String texto;
-
-	private FarejadorDeArquivos() {
-		texto = "";
+	private Arquivos() {
+		
 		try {
-			FarejadorDeArquivos.class.getClassLoader();
+			Arquivos.class.getClassLoader();
 			Enumeration<URL> resources = ClassLoader.getSystemResources("");
-			List<File> piconolosfilos = new ArrayList<File>();
+			List<File> arquivos = new ArrayList<File>();
 			while (resources.hasMoreElements()) {
 				URL url = (URL) resources.nextElement();
-				ler(new File(url.toURI()), piconolosfilos);
+				ler(new File(url.toURI()), arquivos);
 			}
 
-			StringBuffer all = new StringBuffer();
-			for (File filos : piconolosfilos) {
+			StringBuffer texto = new StringBuffer();
+			for (File filos : arquivos) {
 				InputStream input = new FileInputStream(filos);
 				byte[] arquivo = new byte[input.available()];
 				input.read(arquivo);
 				input.close();
-				all.append(new String(arquivo));
+				texto.append(new String(arquivo));
 			}
-			texto = all.toString();
+			texto.toString();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
@@ -53,13 +52,13 @@ class FarejadorDeArquivos {
 				ler(filho, picons);
 	}
 
-	public static FarejadorDeArquivos getInstance() {
-		return UNICO;
+	public static Arquivos getInstance() {
+		if (unico == null)
+			unico = new Arquivos();
+		return unico;
 	}
-
-	@Override
-	public String toString() {
-		return texto;
+	public Qualificadores toQualificadores() {
+		return qualificadores;
 	}
-
+	
 }

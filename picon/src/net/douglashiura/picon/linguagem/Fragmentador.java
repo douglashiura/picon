@@ -7,7 +7,7 @@
  * douglashiura.parprimo.com
  * douglashiura@gmail.com
  * */
-package net.douglashiura.picon;
+package net.douglashiura.picon.linguagem;
 
 import java.util.ArrayList;
 import java.util.List;

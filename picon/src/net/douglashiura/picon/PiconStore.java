@@ -10,48 +10,40 @@
 package net.douglashiura.picon;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import net.douglashiura.picon.linguagem.Fragmentador;
+import net.douglashiura.picon.linguagem.Parte;
+import net.douglashiura.picon.linguagem.Picon;
+import net.douglashiura.picon.linguagem.Qualificadores;
+
 //anglo/latino
 final public class PiconStore {
 
 	private Map<String, Object> estoque = new HashMap<String, Object>();
 	private List<Vinculo> vinculos = new ArrayList<Vinculo>();
 
-	PiconStore() {}
-
-	public static PiconStore build(Class<?> carregador, String... fragmentos) throws IOException, ProblemaDeCompilacao {
-		StringBuffer all = new StringBuffer();
-		for (String frag : fragmentos) {
-			InputStream input = carregador.getResourceAsStream(frag);
-			if (input == null)
-				throw new RuntimeException(frag + " inexistente");
-			byte[] arquivo = new byte[input.available()];
-			input.read(arquivo);
-			input.close();
-			all.append(new String(arquivo));
-		}
-
-		return Picon.construir(new ArrayDeque<Parte>(new Fragmentador(all.toString()).getTokens()));
+	PiconStore() {
 	}
 
-	public static PiconStore build(String piconolos) throws IOException, ProblemaDeCompilacao {
-		return Picon.construir(new ArrayDeque<Parte>(new Fragmentador(piconolos).getTokens()));
+	public static Qualificadores build(String piconolos) throws IOException, ProblemaDeCompilacao {
+		Qualificadores qualificadores = new Qualificadores();
+		ArrayDeque<Parte> tokens = new ArrayDeque<Parte>(new Fragmentador(piconolos).getTokens());
+		 Picon.construir(qualificadores, tokens);
+		 return qualificadores;
 	}
 
-	 void adicionar(String qualificador, Object objeto) {
+	void adicionar(String qualificador, Object objeto) {
 		estoque.put(qualificador, objeto);
 	};
 
 	void adicionarVinculo(Vinculo vinculo) {
 		vinculos.add(vinculo);
 	}
-
-
 
 	void soldar() throws ProblemaDeCompilacao {
 		for (Vinculo link : vinculos) {
@@ -63,10 +55,10 @@ final public class PiconStore {
 		}
 	}
 
-	
 	public <Y> Y get(String qualifier, Class<Y> klass) {
 		return get(qualifier);
 	}
+
 	@SuppressWarnings("unchecked")
 	public <Y> Y get(String qualifier) {
 		Object objeto = estoque.get(qualifier);

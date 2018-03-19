@@ -7,12 +7,12 @@ import static org.junit.Assert.assertNotSame;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.douglashiura.picon.linguagem.Qualificadores;
 import net.douglashiura.picon.preguicoso.CampoPreguisoso;
 import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
 import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
 import net.douglashiura.picon.preguicoso.ParametroPreguicoso;
 import net.douglashiura.picon.preguicoso.ParametroRefereciaPreguicoso;
-import net.douglashiura.picon.preguicoso.Qualificadores;
 import test.net.douglashiura.picon.Entidade;
 import test.net.douglashiura.picon.EntidadeComConstrutor;
 

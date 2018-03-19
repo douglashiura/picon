@@ -1,3 +1,6 @@
+/*Douglas Hiura Longo 
+ * 18 de Março de 2018.
+ * */
 package net.douglashiura.picon.preguicoso;
 
 import java.lang.reflect.InvocationTargetException;

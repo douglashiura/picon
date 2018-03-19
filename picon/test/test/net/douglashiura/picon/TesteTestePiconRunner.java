@@ -7,13 +7,10 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.IOException;
-
 import org.junit.Test;
 
-import net.douglashiura.picon.ProblemaDeCompilacao;
-import net.douglashiura.picon.PiconStore;
 import net.douglashiura.picon.junit.PiconRunner;
+import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
 
 public class TesteTestePiconRunner {
 
@@ -47,17 +44,17 @@ public class TesteTestePiconRunner {
 
 	@Test
 	public void bDeclaradoComModeloInstanciado() {
-		assertFalse(b.equals(get("b", ETipo.class)));
+		assertFalse(b.equals(get("b")));
 	}
 
 	@Test
-	public void montarOutroContexto() throws IOException, ProblemaDeCompilacao {
-		assertTrue(a.equals(get("a", ETipo.class)));
+	public void montarOutroContexto() throws Exception {
 		assertTrue(a.equals(get("a")));
-		PiconStore outro = PiconRunner.build();
-		assertFalse(a.equals(outro.get("a", ETipo.class)));
+		assertTrue(a.equals(get("a")));
+		ContextoPreguisoso outro = PiconRunner.build();
 		assertFalse(a.equals(outro.get("a")));
-		assertTrue(a.equals(get("a", ETipo.class)));
+		assertFalse(a.equals(outro.get("a")));
+		assertTrue(a.equals(get("a")));
 		assertTrue(a.equals(get("a")));
 	}
 

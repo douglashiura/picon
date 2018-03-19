@@ -10,9 +10,10 @@
 package test.net.douglashiura.picon;
 
 import static org.junit.Assert.assertEquals;
-import net.douglashiura.picon.Picon.Escolha;
 
 import org.junit.Test;
+
+import net.douglashiura.picon.linguagem.Picon.Escolha;
 
 public class TestePiconEscolha {
 

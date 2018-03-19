@@ -11,6 +11,8 @@ package net.douglashiura.picon;
 
 import java.util.Map;
 
+import net.douglashiura.picon.linguagem.Parte;
+
 public interface Vinculo {
 	void processar(Map<String, Object> referencias) throws Exception;
 

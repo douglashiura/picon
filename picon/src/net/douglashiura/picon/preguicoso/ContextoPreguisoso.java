@@ -1,8 +1,13 @@
+/*Douglas Hiura Longo 
+ * 18 de Março de 2018.
+ * */
 package net.douglashiura.picon.preguicoso;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+
+import net.douglashiura.picon.linguagem.Qualificadores;
 
 public class ContextoPreguisoso {
 

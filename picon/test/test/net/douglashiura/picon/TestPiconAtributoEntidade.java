@@ -19,28 +19,39 @@ import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import org.junit.Before;
 import org.junit.Test;
 
-import net.douglashiura.picon.Fragmentador;
-import net.douglashiura.picon.Parte;
-import net.douglashiura.picon.PiconAtributoEntidade;
 import net.douglashiura.picon.PiconStore;
+import net.douglashiura.picon.linguagem.Fragmentador;
+import net.douglashiura.picon.linguagem.Parte;
+import net.douglashiura.picon.linguagem.PiconAtributoEntidade;
+import net.douglashiura.picon.linguagem.Qualificadores;
+import net.douglashiura.picon.preguicoso.ClassePreguicosa;
 
 public class TestPiconAtributoEntidade {
+
+	private Qualificadores qualificadores;
+
+	@Before
+	public void setUp() {
+		qualificadores = new Qualificadores();
+	}
 
 	@Test
 	public void vazia() throws Exception {
 		String texto = "[]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator, null);
-		assertNotNull(picon.obterObjeto());
+		ClassePreguicosa<Entidade> classe= new ClassePreguicosa<>(Entidade.class,qualificadores);
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator,classe, qualificadores);
+		assertNotNull(qu);
 	}
 
 	@Test
 	public void nome() throws Exception {
 		String texto = "[nome=Douglas]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator, null);
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, null);
 		assertNotNull(picon.obterObjeto());
 		assertEquals("Douglas", picon.obterObjeto().getNome());
 	}
@@ -49,8 +60,7 @@ public class TestPiconAtributoEntidade {
 	public void nomeIdade() throws Exception {
 		String texto = "[nome=Douglas;idade=10]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, contexto());
 		assertNotNull(picon.obterObjeto());
 		assertEquals("Douglas", picon.obterObjeto().getNome());
 		assertEquals(new Integer(10), picon.obterObjeto().getIdade());
@@ -61,8 +71,7 @@ public class TestPiconAtributoEntidade {
 		String texto = "[entidade #mane]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore cont;
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				cont = contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, cont = contexto());
 		violaAcesso(cont, new Entidade());
 		soldar(cont);
 		assertNotNull(picon.obterObjeto());
@@ -77,7 +86,6 @@ public class TestPiconAtributoEntidade {
 	}
 
 	private PiconStore contexto() throws Exception {
-
 		Constructor<PiconStore> construtor = PiconStore.class.getDeclaredConstructor();
 		construtor.setAccessible(true);
 		return construtor.newInstance();
@@ -87,7 +95,7 @@ public class TestPiconAtributoEntidade {
 	public void entidadeDeclaradaVazia() throws Exception {
 		String texto = "[entidade uid3 []]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator, null);
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, null);
 		assertNotNull(picon.obterObjeto());
 		assertNotNull(picon.obterObjeto().getEntidade());
 	}
@@ -96,8 +104,7 @@ public class TestPiconAtributoEntidade {
 	public void entidadeDeclaradaComLabelNome() throws Exception {
 		String texto = "[entidade uid3 [nome=Douglas]]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, contexto());
 		assertNotNull(picon.obterObjeto());
 		assertNotNull(picon.obterObjeto().getEntidade());
 	}
@@ -106,7 +113,7 @@ public class TestPiconAtributoEntidade {
 	public void entidadeListaVazia() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator, null);
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, null);
 		assertNotNull(picon.obterObjeto());
 		assertNotNull(picon.obterObjeto().getEntidades());
 		assertTrue(picon.obterObjeto().getEntidades().isEmpty());
@@ -117,8 +124,7 @@ public class TestPiconAtributoEntidade {
 	public void entidadeListaEntidadeVazia() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{UID[]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, contexto());
 		assertNotNull(picon.obterObjeto());
 		assertEquals(1, picon.obterObjeto().getEntidades().size());
 	}
@@ -127,8 +133,7 @@ public class TestPiconAtributoEntidade {
 	public void entidadeListaEntidadeComNome() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{UID[nome Douglas]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, contexto());
 		assertNotNull(picon.obterObjeto());
 		assertEquals(1, picon.obterObjeto().getEntidades().size());
 		assertEquals("Douglas", picon.obterObjeto().getEntidades().get(0).getNome());
@@ -138,8 +143,7 @@ public class TestPiconAtributoEntidade {
 	public void umAtributoListaDeEnum() throws Exception {
 		String texto = "[enums test.net.douglashiura.picon.Enum{A}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, contexto());
 		assertNotNull(picon.obterObjeto());
 		assertEquals(1, picon.obterObjeto().getEnums().size());
 		assertEquals(Enum.A, picon.obterObjeto().getEnums().get(0));
@@ -149,8 +153,7 @@ public class TestPiconAtributoEntidade {
 	public void umAtributoListaDeStringsPrimitivas() throws Exception {
 		String texto = "[strings String{a b c}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, contexto());
 		assertNotNull(picon.obterObjeto());
 		assertEquals(3, picon.obterObjeto().getStrings().size());
 		assertEquals("a", picon.obterObjeto().getStrings().get(0));
@@ -162,8 +165,7 @@ public class TestPiconAtributoEntidade {
 	public void umAtributoListaDeStringsPrimitivasVazia() throws Exception {
 		String texto = "[strings String{}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, contexto());
 		assertNotNull(picon.obterObjeto());
 		assertTrue(picon.obterObjeto().getStrings().isEmpty());
 
@@ -173,8 +175,7 @@ public class TestPiconAtributoEntidade {
 	public void entidadeListaCom2EntidadeComNome() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{UID[nome Douglas]UID[nome Hiura]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, contexto());
 		assertNotNull(picon.obterObjeto());
 		assertEquals(2, picon.obterObjeto().getEntidades().size());
 		assertEquals("Douglas", picon.obterObjeto().getEntidades().get(0).getNome());
@@ -186,8 +187,7 @@ public class TestPiconAtributoEntidade {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{UID[nome Douglas; entidades test.net.douglashiura.picon.Entidade{}]UID[nome Hiura; entidades test.net.douglashiura.picon.Entidade{UID[];#UID;UID3[nome=douglas] } ]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		PiconStore cont;
-		PiconAtributoEntidade<Entidade> picon = new PiconAtributoEntidade<Entidade>(Entidade.class, iterator,
-				cont = contexto());
+		PiconAtributoEntidade picon = new PiconAtributoEntidade(Entidade.class, iterator, cont = contexto());
 		soldar(cont);
 		assertNotNull(picon.obterObjeto());
 		assertEquals(2, picon.obterObjeto().getEntidades().size());
@@ -197,8 +197,8 @@ public class TestPiconAtributoEntidade {
 		assertEquals(3, picon.obterObjeto().getEntidades().get(1).getEntidades().size());
 	}
 
-	private void violaAcesso(PiconStore store, Entidade entidade) throws NoSuchMethodException,
-			SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	private void violaAcesso(PiconStore store, Entidade entidade) throws NoSuchMethodException, SecurityException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Method metodo = store.getClass().getDeclaredMethod("adicionar", String.class, Object.class);
 		metodo.setAccessible(true);
 		metodo.invoke(store, "mane", entidade);

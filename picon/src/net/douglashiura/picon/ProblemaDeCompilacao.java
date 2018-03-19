@@ -1,5 +1,7 @@
 package net.douglashiura.picon;
 
+import net.douglashiura.picon.linguagem.Parte;
+
 public class ProblemaDeCompilacao extends Exception {
 	private static final long serialVersionUID = 4692322657987854120L;
 	private Parte toke;

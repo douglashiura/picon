@@ -1,3 +1,6 @@
+/*Douglas Hiura Longo 
+ * 18 de Março de 2018.
+ * */
 package net.douglashiura.picon.preguicoso;
 
 public class ParametroPreguicoso implements Parametro {

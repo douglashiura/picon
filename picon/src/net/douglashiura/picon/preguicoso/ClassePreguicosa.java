@@ -1,4 +1,9 @@
+/*Douglas Hiura Longo 
+ * 18 de Março de 2018.
+ * */
 package net.douglashiura.picon.preguicoso;
+
+import net.douglashiura.picon.linguagem.Qualificadores;
 
 public class ClassePreguicosa<T> {
 
