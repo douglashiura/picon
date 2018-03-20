@@ -1,4 +1,4 @@
-package test.net.douglashiura.picon;
+package test.net.douglashiura.picon.junit;
 
 import static net.douglashiura.picon.junit.PiconRunner.get;
 import static org.junit.Assert.assertEquals;
@@ -11,8 +11,9 @@ import org.junit.Test;
 
 import net.douglashiura.picon.junit.PiconRunner;
 import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
+import test.net.douglashiura.picon.ETipo;
 
-public class TesteTestePiconRunner {
+public class TestePiconRunner {
 
 	private ETipo semDeclaracaoNaON;
 	private ETipo a;

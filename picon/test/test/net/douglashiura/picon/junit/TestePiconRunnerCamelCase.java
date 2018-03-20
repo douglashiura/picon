@@ -1,4 +1,4 @@
-package test.net.douglashiura.picon;
+package test.net.douglashiura.picon.junit;
 
 import static net.douglashiura.picon.junit.PiconRunner.get;
 import static org.junit.Assert.assertEquals;
@@ -6,7 +6,9 @@ import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 
-public class TesteTestePiconRunnerCamelCase {
+import test.net.douglashiura.picon.ETipo;
+
+public class TestePiconRunnerCamelCase {
 
 	private ETipo a;
 	private ETipo aB;

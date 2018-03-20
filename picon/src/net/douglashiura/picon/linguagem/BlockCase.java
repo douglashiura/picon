@@ -1,7 +1,7 @@
-package net.douglashiura.picon.junit;
+package net.douglashiura.picon.linguagem;
 
 public class BlockCase {
-	static String camelCase(String name) {
+	public static String camelCase(String name) {
 		String camelCase = "";
 		boolean sinalNumerico = false;
 		boolean sinalUpper = false;

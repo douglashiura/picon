@@ -7,7 +7,7 @@
  * douglashiura.parprimo.com
  * douglashiura@gmail.com
  * */
-package test.net.douglashiura.picon.linguagem;
+package test.net.douglashiura.picon.linguagem.lexico;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ import org.junit.Test;
 import net.douglashiura.picon.linguagem.Fragmentador;
 import net.douglashiura.picon.linguagem.Parte;
 
-public class TesteTokenizador extends Assert {
+public class TesteFragmentador extends Assert {
 
 	@Test
 	public void vazio() {

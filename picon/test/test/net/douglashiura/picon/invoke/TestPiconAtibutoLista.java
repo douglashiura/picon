@@ -7,7 +7,7 @@
  * douglashiura.parprimo.com
  * douglashiura@gmail.com
  * */
-package test.net.douglashiura.picon;
+package test.net.douglashiura.picon.invoke;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -24,6 +24,8 @@ import net.douglashiura.picon.linguagem.PiconLista;
 import net.douglashiura.picon.linguagem.Qualificadores;
 import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
 import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
+import test.net.douglashiura.picon.Entidade;
+import test.net.douglashiura.picon.EntidadeComConstrutor;
 
 public class TestPiconAtibutoLista {
 

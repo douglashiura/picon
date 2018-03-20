@@ -13,34 +13,33 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.linguagem.Picon.Escolha;
+import net.douglashiura.picon.linguagem.Atribuicoes;
 
-public class TestePiconEscolha {
+public class TesteEscolha {
 
 	@Test
 	public void referencia() {
-		assertEquals(Escolha.REFERENCIA, Escolha.qual("#", "referencia"));
+		assertEquals(Atribuicoes.REFERENCIA, Atribuicoes.qual("#", "referencia"));
 	}
 
 	@Test
 	public void composto() {
-		assertEquals(Escolha.COMPOSTO, Escolha.qual("entidade", "["));
+		assertEquals(Atribuicoes.COMPOSTA, Atribuicoes.qual("entidade", "["));
 	}
-	
+
 	@Test
 	public void compostoComConstrutor() {
-		assertEquals(Escolha.COMPOSTO, Escolha.qual("entidade", "<"));
+		assertEquals(Atribuicoes.COMPOSTA_COM_CONSTRUTOR, Atribuicoes.qual("entidade", "<"));
 	}
 
 	@Test
 	public void lista() {
-		assertEquals(Escolha.LISTA, Escolha.qual("com.Entidade", "{"));
+		assertEquals(Atribuicoes.LISTA, Atribuicoes.qual("com.Entidade", "{"));
 	}
 
-	
 	@Test
 	public void valor() {
-		assertEquals(Escolha.VALUE, Escolha.qual("nome", "douglas"));
+		assertEquals(Atribuicoes.VALUE, Atribuicoes.qual("nome", "douglas"));
 	}
 
 }

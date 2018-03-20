@@ -58,4 +58,8 @@ public class ObjetoPreguicoso<T> {
 	public List<CampoPreguisoso> getCampos() {
 		return campos;
 	}
+
+	public Class<T> getKlasse() {
+		return klass;
+	}
 }
