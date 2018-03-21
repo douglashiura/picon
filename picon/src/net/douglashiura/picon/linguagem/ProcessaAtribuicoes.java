@@ -14,12 +14,14 @@ public class ProcessaAtribuicoes {
 		this.qualificadores = qualificadores;
 	}
 
-	public void processar(Deque<Parte> inicioDeColchetes, ObjetoPreguicoso<?> objetoPreguicoso) throws NoSuchFieldException, SecurityException {
+	public void processar(Deque<Parte> inicioDeColchetes, ObjetoPreguicoso<?> objetoPreguicoso) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 		inicioDeColchetes.pop();// queima [
 		while (!"]".equals(inicioDeColchetes.peek().valor())) {
 			Parte campo = inicioDeColchetes.pop();
 			Parte valor = inicioDeColchetes.pop();
 			Atribuicoes atribuicao = Atribuicoes.sincronizar(valor.valor(), inicioDeColchetes.peek().valor());
+			System.out.println(atribuicao);
+			atribuicao.sincronizeValor(inicioDeColchetes,valor);
 			CampoPreguisoso comando = atribuicao.processar(inicioDeColchetes, campo.valor(), objetoPreguicoso, qualificadores);
 			objetoPreguicoso.adicionar(comando);
 		}

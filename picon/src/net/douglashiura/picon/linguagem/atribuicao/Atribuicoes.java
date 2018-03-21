@@ -13,16 +13,16 @@ import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
 public enum Atribuicoes {
 	REFERENCIA {
 		@Override
-		public CampoPreguisoso processar(Deque<Parte> emQualificador, String campo, ObjetoPreguicoso<?> umObjeto, Qualificadores contexto) {
-			Parte qualificador = emQualificador.pop();
+		public CampoPreguisoso processar(Deque<Parte> emCadeia, String campo, ObjetoPreguicoso<?> umObjeto, Qualificadores contexto) {
+			emCadeia.pop();
+			Parte qualificador = emCadeia.pop();
 			return new CampoPreguisoso(campo, qualificador.valor());
 		}
 	},
 	VALOR {
 		@Override
 		public CampoPreguisoso processar(Deque<Parte> emValor, String campo, ObjetoPreguicoso<?> umObjeto, Qualificadores contexto) {
-			Parte valor = emValor.pop();
-			return new CampoPreguisoso(campo, valor.valor());
+			return new CampoPreguisoso(campo, emValor.pop().valor());
 		}
 	},
 	COMPOSTA {
@@ -51,7 +51,7 @@ public enum Atribuicoes {
 	},
 	LISTA {
 		@Override
-		public CampoPreguisoso processar(Deque<Parte> emClasse, String campo, ObjetoPreguicoso<?> umObjeto, Qualificadores contexto) {
+		public CampoPreguisoso processar(Deque<Parte> emClasse, String campo, ObjetoPreguicoso<?> umObjeto, Qualificadores contexto) throws ClassNotFoundException {
 			Parte classe = emClasse.pop();
 			ProcessadorDeLista processadorDeLista = new ProcessadorDeLista(classe.valor());
 			processadorDeLista.processar(emClasse);
@@ -72,5 +72,9 @@ public enum Atribuicoes {
 			return VALOR;
 	}
 
-	public abstract CampoPreguisoso processar(Deque<Parte> emCampo, String campo, ObjetoPreguicoso<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException;
+	public abstract CampoPreguisoso processar(Deque<Parte> emCampo, String campo, ObjetoPreguicoso<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException;
+
+	public void sincronizeValor(Deque<Parte> inicioDeColchetes, Parte valor) {
+		inicioDeColchetes.push(valor);
+	}
 }

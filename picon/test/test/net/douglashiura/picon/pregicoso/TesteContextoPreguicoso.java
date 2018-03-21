@@ -1,6 +1,7 @@
 package test.net.douglashiura.picon.pregicoso;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,7 @@ public class TesteContextoPreguicoso {
 	}
 
 	@Test
-	public void testName() throws Exception {
+	public void umContexto() throws Exception {
 		ContextoPreguisoso umContexto = new ContextoPreguisoso(qualificadores);
 		Entidade douglas = umContexto.get("douglas");
 		assertNotNull(douglas);
