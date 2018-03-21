@@ -21,29 +21,30 @@ import org.junit.Test;
 
 import net.douglashiura.picon.linguagem.Fragmentador;
 import net.douglashiura.picon.linguagem.Parte;
+import net.douglashiura.picon.linguagem.ProcessaAtribuicoes;
 import net.douglashiura.picon.linguagem.Qualificadores;
 import net.douglashiura.picon.preguicoso.CampoPreguisoso;
 import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
 import test.net.douglashiura.picon.Entidade;
 
-public class TestPiconAtricuicoes {
+public class TesteProcessaAtribuicoes {
 
 	private Qualificadores qualificadores;
 	private ObjetoPreguicoso<Entidade> objetoPreguicoso;
-	private Picon picon;
+	private ProcessaAtribuicoes atribuicoes;
 
 	@Before
 	public void setUp() {
 		qualificadores = new Qualificadores();
 		objetoPreguicoso = new ObjetoPreguicoso<>(Entidade.class);
-		picon = new Picon(qualificadores);
+		atribuicoes = new ProcessaAtribuicoes(qualificadores);
 	}
 
 	@Test
 	public void vazia() throws Exception {
 		String texto = "[]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(0, objetoPreguicoso.getCampos().size());
 	}
@@ -52,7 +53,7 @@ public class TestPiconAtricuicoes {
 	public void nome() throws Exception {
 		String texto = "[nome=Douglas]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoNome = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
@@ -65,7 +66,7 @@ public class TestPiconAtricuicoes {
 	public void nomeIdade() throws Exception {
 		String texto = "[nome=Douglas;idade=10]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoNome = campos.get(0);
 		CampoPreguisoso campoIdade = campos.get(1);
@@ -81,7 +82,7 @@ public class TestPiconAtricuicoes {
 	public void referencia() throws Exception {
 		String texto = "[entidade #mane]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEntidade = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
@@ -94,7 +95,7 @@ public class TestPiconAtricuicoes {
 	public void entidadeDeclaradaVazia() throws Exception {
 		String texto = "[entidade uid3 []]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEntidade = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
@@ -108,7 +109,7 @@ public class TestPiconAtricuicoes {
 	public void entidadeDeclaradaComLabelNome() throws Exception {
 		String texto = "[entidade uid3 [nome=Douglas]]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEntidade = campos.get(0);
 		ObjetoPreguicoso<Object> uid3 = qualificadores.get("uid3");
@@ -126,7 +127,7 @@ public class TestPiconAtricuicoes {
 	public void entidadeListaVazia() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEntidades = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
@@ -139,7 +140,7 @@ public class TestPiconAtricuicoes {
 	public void entidadeListaEntidadeVazia() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid3[]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEntidades = campos.get(0);
 		ObjetoPreguicoso<Object> uid3 = qualificadores.get("uid3");
@@ -155,7 +156,7 @@ public class TestPiconAtricuicoes {
 	public void entidadeListaEntidadeComNome() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid3[nome Douglas]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEntidades = campos.get(0);
 		ObjetoPreguicoso<Object> uid3 = qualificadores.get("uid3");
@@ -173,7 +174,7 @@ public class TestPiconAtricuicoes {
 	public void umAtributoListaDeEnum() throws Exception {
 		String texto = "[enums test.net.douglashiura.picon.Enum{A}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEnuns = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
@@ -187,7 +188,7 @@ public class TestPiconAtricuicoes {
 	public void umAtributoListaDeStringsPrimitivas() throws Exception {
 		String texto = "[strings String{a b c}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoString = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
@@ -200,7 +201,7 @@ public class TestPiconAtricuicoes {
 	public void umAtributoListaDeStringsPrimitivasVazia() throws Exception {
 		String texto = "[strings String{}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoString = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
@@ -213,7 +214,7 @@ public class TestPiconAtricuicoes {
 	public void entidadeListaCom2EntidadeComNome() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid1[nome Douglas]uid2[nome Hiura]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEntidades = campos.get(0);
 		ObjetoPreguicoso<Object> uid2 = qualificadores.get("uid2");
@@ -234,7 +235,7 @@ public class TestPiconAtricuicoes {
 	public void entidadeListaCom2Referencias() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{#uid1 #uid2]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEntidades = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
@@ -248,7 +249,7 @@ public class TestPiconAtricuicoes {
 	public void entidadeListaCom2EntidadeComNomeLista() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid1[nome Douglas; entidades test.net.douglashiura.picon.Entidade{}]uid2[nome Hiura;" + " entidades test.net.douglashiura.picon.Entidade{uid3[];#uid1;uid4[nome=Cabral]}]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
-		picon.processarAtribuicoes(iterator, objetoPreguicoso);
+		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
 		CampoPreguisoso campoEntidades = campos.get(0);
 		ObjetoPreguicoso<Entidade> uid1 = qualificadores.get("uid1");

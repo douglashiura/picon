@@ -1,4 +1,4 @@
-package test.net.douglashiura.picon.linguagem;
+package test.net.douglashiura.picon.linguagem.lexico;
 
 import static org.junit.Assert.assertEquals;
 

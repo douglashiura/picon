@@ -9,6 +9,12 @@
  * */
 package net.douglashiura.picon.linguagem;
 
+import java.lang.reflect.Field;
+
+import net.douglashiura.picon.preguicoso.ClassePreguicosa;
+import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
+
 public class Picon {
 
+	
 }
