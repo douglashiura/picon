@@ -23,8 +23,7 @@ public class ProcessadorDeLista {
 		}
 	}
 
-	public void processar(Deque<Parte> emInicioDeChaves)
-			throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+	public void processar(Deque<Parte> emInicioDeChaves) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 		emInicioDeChaves.pop();
 		while (!"}".equals(emInicioDeChaves.peek().valor())) {
 			estrategia.processar(emInicioDeChaves);
@@ -37,7 +36,6 @@ public class ProcessadorDeLista {
 	}
 
 	interface Estrategia {
-
 		void processar(Deque<Parte> pilha) throws NoSuchFieldException, SecurityException, ClassNotFoundException;
 
 		String getValores();
@@ -51,8 +49,7 @@ public class ProcessadorDeLista {
 		}
 
 		@Override
-		public void processar(Deque<Parte> emInicioReferenciaOuObjeto)
-				throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public void processar(Deque<Parte> emInicioReferenciaOuObjeto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 			Parte referenciaOuObjeto = emInicioReferenciaOuObjeto.pop();
 			String valor = referenciaOuObjeto.valor();
 			Atribuicoes atribuicao = Atribuicoes.deElementoDeLista(valor, emInicioReferenciaOuObjeto.peek().valor());

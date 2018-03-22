@@ -9,7 +9,9 @@
  * */
 package test.net.douglashiura.picon.linguagem;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -22,20 +24,25 @@ import net.douglashiura.picon.linguagem.Fragmentador;
 import net.douglashiura.picon.linguagem.Parte;
 import net.douglashiura.picon.linguagem.Qualificadores;
 import net.douglashiura.picon.linguagem.atribuicao.ProcessaAtribuicoes;
-import net.douglashiura.picon.preguicoso.CampoPreguisoso;
-import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
+import net.douglashiura.picon.preguicoso.Campo;
+import net.douglashiura.picon.preguicoso.CampoReferenciaLista;
+import net.douglashiura.picon.preguicoso.CampoReferencia;
+import net.douglashiura.picon.preguicoso.Objeto;
+import net.douglashiura.picon.preguicoso.ParametroValor;
+import net.douglashiura.picon.preguicoso.ParametroReferecia;
 import test.net.douglashiura.picon.Entidade;
+import test.net.douglashiura.picon.EntidadeComConstrutor;
 
 public class TesteProcessaAtribuicoes {
 
 	private Qualificadores qualificadores;
-	private ObjetoPreguicoso<Entidade> objetoPreguicoso;
+	private Objeto<?> objetoPreguicoso;
 	private ProcessaAtribuicoes atribuicoes;
 
 	@Before
 	public void setUp() {
 		qualificadores = new Qualificadores();
-		objetoPreguicoso = new ObjetoPreguicoso<>(Entidade.class);
+		objetoPreguicoso = new Objeto<>(Entidade.class);
 		atribuicoes = new ProcessaAtribuicoes(qualificadores);
 	}
 
@@ -54,10 +61,9 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[nome=Douglas]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoNome = campos.get(0);
+		Campo campoNome = objetoPreguicoso.getCampos().get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(1, campos.size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals("nome", campoNome.getCampo());
 		assertEquals("Douglas", campoNome.getValor());
 		assertTrue(iterator.isEmpty());
@@ -68,11 +74,10 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[nome=Douglas;idade=10]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoNome = campos.get(0);
-		CampoPreguisoso campoIdade = campos.get(1);
+		Campo campoNome = objetoPreguicoso.getCampos().get(0);
+		Campo campoIdade = objetoPreguicoso.getCampos().get(1);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(2, campos.size());
+		assertEquals(2, objetoPreguicoso.getCampos().size());
 		assertEquals("nome", campoNome.getCampo());
 		assertEquals("Douglas", campoNome.getValor());
 		assertEquals("idade", campoIdade.getCampo());
@@ -85,12 +90,12 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[entidade #mane]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEntidade = campos.get(0);
+		Campo campoEntidade = objetoPreguicoso.getCampos().get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(1, campos.size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals("entidade", campoEntidade.getCampo());
 		assertEquals("mane", campoEntidade.getValor());
+		assertEquals(CampoReferencia.class, campoEntidade.getClass());
 		assertTrue(iterator.isEmpty());
 	}
 
@@ -99,14 +104,106 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[entidade uid3 []]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEntidade = campos.get(0);
+		Campo campoEntidade = objetoPreguicoso.getCampos().get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(1, campos.size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals("entidade", campoEntidade.getCampo());
 		assertEquals("uid3", campoEntidade.getValor());
+		assertEquals(CampoReferencia.class, campoEntidade.getClass());
 		assertNotNull(qualificadores.get("uid3"));
 		assertTrue(iterator.isEmpty());
+	}
+
+	@Test
+	public void compostoComConstrutorProcessar() throws Exception {
+		objetoPreguicoso = new Objeto<>(EntidadeComConstrutor.class);
+		String texto = "[pedro=francisco <>[]]";
+		Deque<Parte> emQualificador = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
+		atribuicoes.processar(emQualificador, objetoPreguicoso);
+		Objeto<Object> francisco = qualificadores.get("francisco");
+		assertEquals(0, objetoPreguicoso.getParametros().size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
+		assertEquals("pedro", objetoPreguicoso.getCampos().get(0).getCampo());
+		assertEquals("francisco", objetoPreguicoso.getCampos().get(0).getValor());
+		assertEquals(CampoReferencia.class, objetoPreguicoso.getCampos().get(0).getClass());
+		assertEquals(0, francisco.getParametros().size());
+		assertEquals(0, francisco.getCampos().size());
+		assertTrue(emQualificador.isEmpty());
+	}
+
+	@Test
+	public void compostoComConstrutorProcessarComUmParametro() throws Exception {
+		objetoPreguicoso = new Objeto<>(EntidadeComConstrutor.class);
+		String texto = "[pedro=francisco <Douglas>[]]";
+		Deque<Parte> emQualificador = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
+		atribuicoes.processar(emQualificador, objetoPreguicoso);
+		Objeto<Object> francisco = qualificadores.get("francisco");
+		assertEquals(0, objetoPreguicoso.getParametros().size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
+		assertEquals("pedro", objetoPreguicoso.getCampos().get(0).getCampo());
+		assertEquals("francisco", objetoPreguicoso.getCampos().get(0).getValor());
+		assertEquals(1, francisco.getParametros().size());
+		assertEquals(0, francisco.getCampos().size());
+		assertEquals("Douglas", francisco.getParametros().get(0).getValorDeclarado());
+		assertTrue(emQualificador.isEmpty());
+	}
+
+	@Test
+	public void compostoComConstrutorProcessarComDoisParametro() throws Exception {
+		objetoPreguicoso = new Objeto<>(EntidadeComConstrutor.class);
+		String texto = "[pedro=francisco <10 Douglas>[]]";
+		Deque<Parte> emQualificador = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
+		atribuicoes.processar(emQualificador, objetoPreguicoso);
+		Objeto<Object> francisco = qualificadores.get("francisco");
+		assertEquals(0, objetoPreguicoso.getParametros().size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
+		assertEquals("pedro", objetoPreguicoso.getCampos().get(0).getCampo());
+		assertEquals("francisco", objetoPreguicoso.getCampos().get(0).getValor());
+		assertEquals(2, francisco.getParametros().size());
+		assertEquals(0, francisco.getCampos().size());
+		assertEquals("10", francisco.getParametros().get(0).getValorDeclarado());
+		assertEquals(ParametroValor.class, francisco.getParametros().get(0).getClass());
+		assertEquals("Douglas", francisco.getParametros().get(1).getValorDeclarado());
+		assertEquals(ParametroValor.class, francisco.getParametros().get(1).getClass());
+		assertTrue(emQualificador.isEmpty());
+	}
+
+	@Test
+	public void compostoComConstrutorProcessarComReferenciaParametro() throws Exception {
+		objetoPreguicoso = new Objeto<>(EntidadeComConstrutor.class);
+		String texto = "[pedro=francisco <#francisco>[]]";
+		Deque<Parte> emQualificador = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
+		atribuicoes.processar(emQualificador, objetoPreguicoso);
+		Objeto<Object> francisco = qualificadores.get("francisco");
+		assertEquals(0, objetoPreguicoso.getParametros().size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
+		assertEquals("pedro", objetoPreguicoso.getCampos().get(0).getCampo());
+		assertEquals("francisco", objetoPreguicoso.getCampos().get(0).getValor());
+		assertEquals(1, francisco.getParametros().size());
+		assertEquals(0, francisco.getCampos().size());
+		assertEquals("francisco", francisco.getParametros().get(0).getValorDeclarado());
+		assertEquals(ParametroReferecia.class, francisco.getParametros().get(0).getClass());
+		assertTrue(emQualificador.isEmpty());
+	}
+
+	@Test
+	public void compostoComConstrutorProcessarComReferenciaParametroString() throws Exception {
+		objetoPreguicoso = new Objeto<>(EntidadeComConstrutor.class);
+		String texto = "[pedro=francisco <Douglas #francisco>[]]";
+		Deque<Parte> emQualificador = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
+		atribuicoes.processar(emQualificador, objetoPreguicoso);
+		Objeto<Object> francisco = qualificadores.get("francisco");
+		assertEquals(0, objetoPreguicoso.getParametros().size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
+		assertEquals("pedro", objetoPreguicoso.getCampos().get(0).getCampo());
+		assertEquals("francisco", objetoPreguicoso.getCampos().get(0).getValor());
+		assertEquals(2, francisco.getParametros().size());
+		assertEquals(0, francisco.getCampos().size());
+		assertEquals("Douglas", francisco.getParametros().get(0).getValorDeclarado());
+		assertEquals(ParametroValor.class, francisco.getParametros().get(0).getClass());
+		assertEquals("francisco", francisco.getParametros().get(1).getValorDeclarado());
+		assertEquals(ParametroReferecia.class, francisco.getParametros().get(1).getClass());
+		assertTrue(emQualificador.isEmpty());
 	}
 
 	@Test
@@ -114,11 +211,10 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[entidade uid3 [nome=Douglas]]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEntidade = campos.get(0);
-		ObjetoPreguicoso<Object> uid3 = qualificadores.get("uid3");
+		Campo campoEntidade = objetoPreguicoso.getCampos().get(0);
+		Objeto<Object> uid3 = qualificadores.get("uid3");
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(1, campos.size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals("entidade", campoEntidade.getCampo());
 		assertEquals("uid3", campoEntidade.getValor());
 		assertNotNull(uid3);
@@ -133,10 +229,9 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEntidades = campos.get(0);
+		Campo campoEntidades = objetoPreguicoso.getCampos().get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(1, campos.size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals("entidades", campoEntidades.getCampo());
 		assertEquals("[]", campoEntidades.getValor());
 		assertTrue(iterator.isEmpty());
@@ -147,11 +242,10 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid3[]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEntidades = campos.get(0);
-		ObjetoPreguicoso<Object> uid3 = qualificadores.get("uid3");
+		Campo campoEntidades = objetoPreguicoso.getCampos().get(0);
+		Objeto<Object> uid3 = qualificadores.get("uid3");
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(1, campos.size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals("entidades", campoEntidades.getCampo());
 		assertEquals("[uid3]", campoEntidades.getValor());
 		assertNotNull(uid3);
@@ -164,11 +258,10 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid3[nome Douglas]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEntidades = campos.get(0);
-		ObjetoPreguicoso<Object> uid3 = qualificadores.get("uid3");
+		Campo campoEntidades = objetoPreguicoso.getCampos().get(0);
+		Objeto<Object> uid3 = qualificadores.get("uid3");
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(1, campos.size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals("entidades", campoEntidades.getCampo());
 		assertEquals("[uid3]", campoEntidades.getValor());
 		assertNotNull(uid3);
@@ -183,10 +276,9 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[enums test.net.douglashiura.picon.Enum{A}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEnuns = campos.get(0);
+		Campo campoEnuns = objetoPreguicoso.getCampos().get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(1, campos.size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals("enums", campoEnuns.getCampo());
 		assertEquals("[A]", campoEnuns.getValor());
 		assertTrue(iterator.isEmpty());
@@ -197,8 +289,8 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[strings java.lang.String{a b c}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoString = campos.get(0);
+		List<Campo> campos = objetoPreguicoso.getCampos();
+		Campo campoString = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("strings", campoString.getCampo());
@@ -211,8 +303,8 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[strings java.lang.String{}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoString = campos.get(0);
+		List<Campo> campos = objetoPreguicoso.getCampos();
+		Campo campoString = campos.get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("strings", campoString.getCampo());
@@ -225,10 +317,10 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid1[nome Douglas]uid2[nome Hiura]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEntidades = campos.get(0);
-		ObjetoPreguicoso<Object> uid2 = qualificadores.get("uid2");
-		ObjetoPreguicoso<Object> uid1 = qualificadores.get("uid1");
+		List<Campo> campos = objetoPreguicoso.getCampos();
+		Campo campoEntidades = campos.get(0);
+		Objeto<Object> uid2 = qualificadores.get("uid2");
+		Objeto<Object> uid1 = qualificadores.get("uid1");
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("entidades", campoEntidades.getCampo());
@@ -247,10 +339,9 @@ public class TesteProcessaAtribuicoes {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{#uid1 #uid2}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEntidades = campos.get(0);
+		Campo campoEntidades = objetoPreguicoso.getCampos().get(0);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals(1, campos.size());
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals("entidades", campoEntidades.getCampo());
 		assertEquals("[uid1, uid2]", campoEntidades.getValor());
 		assertTrue(iterator.isEmpty());
@@ -258,20 +349,18 @@ public class TesteProcessaAtribuicoes {
 
 	@Test
 	public void entidadeListaCom2EntidadeComNomeLista() throws Exception {
-		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid1[nome Douglas; entidades test.net.douglashiura.picon.Entidade{}]uid2[nome Hiura;" 
-	+ " entidades test.net.douglashiura.picon.Entidade{uid3[];#uid1;uid4[nome=Cabral]}]}]";
+		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid1[nome Douglas; entidades test.net.douglashiura.picon.Entidade{}]uid2[nome Hiura;" + " entidades test.net.douglashiura.picon.Entidade{uid3[];#uid1;uid4[nome=Cabral]}]}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
-		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
-		CampoPreguisoso campoEntidades = campos.get(0);
-		ObjetoPreguicoso<Entidade> uid1 = qualificadores.get("uid1");
-		ObjetoPreguicoso<Entidade> uid2 = qualificadores.get("uid2");
-		ObjetoPreguicoso<Entidade> uid3 = qualificadores.get("uid3");
-		ObjetoPreguicoso<Entidade> uid4 = qualificadores.get("uid4");
-		assertEquals(1, campos.size());
+		Objeto<Entidade> uid1 = qualificadores.get("uid1");
+		Objeto<Entidade> uid2 = qualificadores.get("uid2");
+		Objeto<Entidade> uid3 = qualificadores.get("uid3");
+		Objeto<Entidade> uid4 = qualificadores.get("uid4");
+		assertEquals(1, objetoPreguicoso.getCampos().size());
 		assertEquals(0, objetoPreguicoso.getParametros().size());
-		assertEquals("entidades", campoEntidades.getCampo());
-		assertEquals("[uid1, uid2]", campoEntidades.getValor());
+		assertEquals("entidades", objetoPreguicoso.getCampos().get(0).getCampo());
+		assertEquals("[uid1, uid2]", objetoPreguicoso.getCampos().get(0).getValor());
+		assertEquals(CampoReferenciaLista.class, objetoPreguicoso.getCampos().get(0).getClass());
 		assertEquals(0, uid1.getParametros().size());
 		assertEquals(2, uid1.getCampos().size());
 		assertEquals("nome", uid1.getCampos().get(0).getCampo());

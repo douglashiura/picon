@@ -4,33 +4,34 @@
 package net.douglashiura.picon.preguicoso;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ObjetoPreguicoso<T> {
+public class Objeto<T> {
 	private Class<T> klass;
-	private List<CampoPreguisoso> campos;
+	private List<Campo> campos;
 	private List<Parametro> parametros;
 
-	public ObjetoPreguicoso(Class<T> klass) {
+	public Objeto(Class<T> klass) {
 		this.klass = klass;
 		this.campos = new ArrayList<>();
 		this.parametros = new ArrayList<>();
 	}
 
-	public T instanciar(ContextoPreguisoso contexto) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException {
+	public T instanciar(Contexto contexto) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, ParseException {
 		T objeto;
 		if (parametros.isEmpty())
 			objeto = klass.newInstance();
 		else
 			objeto = instanciarComConstrutor(contexto);
-		for (CampoPreguisoso campo : campos) {
-			campo.configure(objeto);
+		for (Campo campo : campos) {
+			campo.configure(objeto,contexto);
 		}
 		return objeto;
 	}
 
-	private T instanciarComConstrutor(ContextoPreguisoso contexto) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException {
+	private T instanciarComConstrutor(Contexto contexto) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ParseException {
 		Class<?>[] barnabe = new Class<?>[parametros.size()];
 		Object[] barney = new Object[parametros.size()];
 		for (int i = 0; i < parametros.size(); i++) {
@@ -42,7 +43,7 @@ public class ObjetoPreguicoso<T> {
 		return klass.getDeclaredConstructor(barnabe).newInstance(barney);
 	}
 
-	public void adicionar(CampoPreguisoso campo) {
+	public void adicionar(Campo campo) {
 		campos.add(campo);
 
 	}
@@ -55,7 +56,7 @@ public class ObjetoPreguicoso<T> {
 		return parametros;
 	}
 
-	public List<CampoPreguisoso> getCampos() {
+	public List<Campo> getCampos() {
 		return campos;
 	}
 

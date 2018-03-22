@@ -9,85 +9,109 @@
  * */
 package test.net.douglashiura.picon.invoke;
 
+import static org.junit.Assert.assertEquals;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
-import net.douglashiura.picon.preguicoso.CampoPreguisoso;
+import net.douglashiura.picon.linguagem.Qualificadores;
+import net.douglashiura.picon.preguicoso.Campo;
+import net.douglashiura.picon.preguicoso.CampoReferencia;
+import net.douglashiura.picon.preguicoso.Contexto;
+import net.douglashiura.picon.preguicoso.Objeto;
 import test.net.douglashiura.picon.Entidade;
 import test.net.douglashiura.picon.Enum;
 
-public class TesteCampoPreguisoso extends Assert {
-	class T {
+public class TesteCampoPreguisoso {
+	class Klasse {
 		Date data;
-		Enum a;
+		Enum enumerado;
 		UUID uuid;
+	}
+
+	private Contexto contextoPreguisoso;
+	private Qualificadores qualificadores;
+
+	@Before
+	public void setUp() {
+		qualificadores = new Qualificadores();
+		contextoPreguisoso = new Contexto(qualificadores);
 	}
 
 	@Test
 	public void refletirLabelNomeValorString() throws Exception {
 		Entidade douglas = new Entidade();
-		CampoPreguisoso campo = new CampoPreguisoso("nome", "Douglas Hiura");
-		campo.configure(douglas);
+		Campo campo = new Campo("nome", "Douglas Hiura");
+		campo.configure(douglas, contextoPreguisoso);
 		assertEquals("Douglas Hiura", douglas.getNome());
+	}
+
+	@Test
+	public void campoReferencia() throws Exception {
+		Entidade alvo = new Entidade();
+		qualificadores.put("douglas", new Objeto<>(Entidade.class));
+		Campo objeto = new CampoReferencia("entidade", "douglas");
+		objeto.configure(alvo, contextoPreguisoso);
+		assertEquals(contextoPreguisoso.get("douglas"), alvo.getEntidade());
 	}
 
 	@Test
 	public void refletirLabelIdadeValorInteger() throws Exception {
 		Entidade douglas = new Entidade();
-		CampoPreguisoso campo = new CampoPreguisoso("idade", "10");
-		campo.configure(douglas);
+		Campo numero = new Campo("idade", "10");
+		numero.configure(douglas, contextoPreguisoso);
 		assertEquals(new Integer(10), douglas.getIdade());
 	}
 
 	@Test
 	public void refletirLabelDataValorData() throws Exception {
-		T t = new T();
-		CampoPreguisoso campo = new CampoPreguisoso("data", "2009/10/25 00:00");
-		campo.configure(t);
-		assertEquals("2009/10/25", new SimpleDateFormat("yyyy/MM/dd").format(t.data));
+		Klasse objeto = new Klasse();
+		Campo tempo = new Campo("data", "2009/10/25 00:00");
+		tempo.configure(objeto, contextoPreguisoso);
+		assertEquals("2009/10/25", new SimpleDateFormat("yyyy/MM/dd").format(objeto.data));
 	}
 
 	@Test
 	public void refletirLabelDataValorDataHora() throws Exception {
-		T t = new T();
-		CampoPreguisoso campo = new CampoPreguisoso("data", "2009/10/25 12:30");
-		campo.configure(t);
-		assertEquals("2009/10/25 12:30", new SimpleDateFormat("yyyy/MM/dd hh:mm").format(t.data));
+		Klasse objeto = new Klasse();
+		Campo campo = new Campo("data", "2009/10/25 12:30");
+		campo.configure(objeto, contextoPreguisoso);
+		assertEquals("2009/10/25 12:30", new SimpleDateFormat("yyyy/MM/dd hh:mm").format(objeto.data));
 	}
 
 	@Test
 	public void refletirLabelDataNow() throws Exception {
-		T t = new T();
-		CampoPreguisoso campo = new CampoPreguisoso("data", "now");
-		campo.configure(t);
-		assertEquals(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date()), new SimpleDateFormat("yyyy/MM/dd HH:mm").format(t.data));
+		Klasse objeto = new Klasse();
+		Campo tempo = new Campo("data", "now");
+		tempo.configure(objeto, contextoPreguisoso);
+		assertEquals(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date()), new SimpleDateFormat("yyyy/MM/dd HH:mm").format(objeto.data));
 	}
 
 	@Test
 	public void refletirEnum() throws Exception {
-		T t = new T();
-		CampoPreguisoso campo = new CampoPreguisoso("a", "A");
-		campo.configure(t);
-		assertEquals(Enum.A, t.a);
+		Klasse objeto = new Klasse();
+		Campo enumerado = new Campo("enumerado", "A");
+		enumerado.configure(objeto, contextoPreguisoso);
+		assertEquals(Enum.A, objeto.enumerado);
 	}
 
 	@Test(expected = NullPointerException.class)
 	public void enumInexistente() throws Exception {
-		T t = new T();
-		CampoPreguisoso campo = new CampoPreguisoso("a", "INEXISTENTE");
-		campo.configure(t);
+		Klasse objeto = new Klasse();
+		Campo campo = new Campo("enumerado", "INEXISTENTE");
+		campo.configure(objeto, contextoPreguisoso);
 	}
 
 	@Test
 	public void refletirUuid() throws Exception {
-		T t = new T();
+		Klasse objeto = new Klasse();
 		UUID uuid = new UUID(1l, 1l);
-		CampoPreguisoso campo = new CampoPreguisoso("uuid", uuid.toString());
-		campo.configure(t);
-		assertEquals(uuid, t.uuid);
+		Campo campo = new Campo("uuid", uuid.toString());
+		campo.configure(objeto, contextoPreguisoso);
+		assertEquals(uuid, objeto.uuid);
 	}
 }

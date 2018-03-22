@@ -8,22 +8,22 @@ import org.junit.Before;
 import org.junit.Test;
 
 import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.preguicoso.CampoPreguisoso;
-import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
-import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
-import net.douglashiura.picon.preguicoso.ParametroPreguicoso;
-import net.douglashiura.picon.preguicoso.ParametroRefereciaPreguicoso;
+import net.douglashiura.picon.preguicoso.Campo;
+import net.douglashiura.picon.preguicoso.Contexto;
+import net.douglashiura.picon.preguicoso.Objeto;
+import net.douglashiura.picon.preguicoso.ParametroValor;
+import net.douglashiura.picon.preguicoso.ParametroReferecia;
 import test.net.douglashiura.picon.Entidade;
 import test.net.douglashiura.picon.EntidadeComConstrutor;
 
-public class TesteObjetoPreguicoso {
+public class TesteObjeto {
 
-	private ObjetoPreguicoso<Entidade> objetoEntidade;
-	private ContextoPreguisoso contexto;
+	private Objeto<Entidade> objetoEntidade;
+	private Contexto contexto;
 
 	@Before
 	public void setUp() {
-		objetoEntidade = new ObjetoPreguicoso<>(Entidade.class);
+		objetoEntidade = new Objeto<>(Entidade.class);
 
 	}
 
@@ -35,9 +35,9 @@ public class TesteObjetoPreguicoso {
 
 	@Test
 	public void instanciarComConstrutor() throws Exception {
-		ObjetoPreguicoso<EntidadeComConstrutor> objetoEntidadeComConstrutor = new ObjetoPreguicoso<>(
+		Objeto<EntidadeComConstrutor> objetoEntidadeComConstrutor = new Objeto<>(
 				EntidadeComConstrutor.class);
-		objetoEntidadeComConstrutor.adicionarParametro(new ParametroPreguicoso("Douglas"));
+		objetoEntidadeComConstrutor.adicionarParametro(new ParametroValor("Douglas"));
 		EntidadeComConstrutor objeto = objetoEntidadeComConstrutor.instanciar(contexto);
 		assertEquals("Douglas", objeto.obterNome());
 	}
@@ -45,13 +45,13 @@ public class TesteObjetoPreguicoso {
 	@Test
 	public void instanciarComConstrutorComDoisParametros() throws Exception {
 		Qualificadores qualificadores = new Qualificadores();
-		ObjetoPreguicoso<EntidadeComConstrutor> objetoPedro = new ObjetoPreguicoso<>(EntidadeComConstrutor.class);
+		Objeto<EntidadeComConstrutor> objetoPedro = new Objeto<>(EntidadeComConstrutor.class);
 		qualificadores.put("pedro", objetoPedro);
-		contexto = new ContextoPreguisoso(qualificadores);
-		ObjetoPreguicoso<EntidadeComConstrutor> objetoEntidadeComConstrutor = new ObjetoPreguicoso<>(
+		contexto = new Contexto(qualificadores);
+		Objeto<EntidadeComConstrutor> objetoEntidadeComConstrutor = new Objeto<>(
 				EntidadeComConstrutor.class);
-		objetoEntidadeComConstrutor.adicionarParametro(new ParametroPreguicoso("Douglas"));
-		objetoEntidadeComConstrutor.adicionarParametro(new ParametroRefereciaPreguicoso("pedro"));
+		objetoEntidadeComConstrutor.adicionarParametro(new ParametroValor("Douglas"));
+		objetoEntidadeComConstrutor.adicionarParametro(new ParametroReferecia("pedro"));
 		EntidadeComConstrutor objeto = objetoEntidadeComConstrutor.instanciar(contexto);
 		assertEquals("Douglas", objeto.obterNome());
 		assertEquals(contexto.get("pedro"), objeto.obterPedro());
@@ -59,22 +59,22 @@ public class TesteObjetoPreguicoso {
 
 	@Test
 	public void campoNome() throws Exception {
-		objetoEntidade.adicionar(new CampoPreguisoso("nome", "Douglas"));
+		objetoEntidade.adicionar(new Campo("nome", "Douglas"));
 		Entidade objeto = objetoEntidade.instanciar(contexto);
 		assertEquals("Douglas", objeto.getNome());
 	}
 
 	@Test
 	public void campoIdade() throws Exception {
-		objetoEntidade.adicionar(new CampoPreguisoso("idade", "1"));
+		objetoEntidade.adicionar(new Campo("idade", "1"));
 		Entidade objeto = objetoEntidade.instanciar(contexto);
 		assertEquals(new Integer(1), objeto.getIdade());
 	}
 
 	@Test
 	public void camposNomeEIdade() throws Exception {
-		objetoEntidade.adicionar(new CampoPreguisoso("nome", "Douglas"));
-		objetoEntidade.adicionar(new CampoPreguisoso("idade", "1"));
+		objetoEntidade.adicionar(new Campo("nome", "Douglas"));
+		objetoEntidade.adicionar(new Campo("idade", "1"));
 		Entidade objeto = objetoEntidade.instanciar(contexto);
 		assertEquals("Douglas", objeto.getNome());
 		assertEquals(new Integer(1), objeto.getIdade());

@@ -1,26 +1,26 @@
 test.net.douglashiura.picon.Entidade{
-	UIDA[]
-	UID1[	
+	entidade:10[]
+	entidade:11[	
 			nome 'Douglas Hiura';
 			idade 10;
 			uuid=792e72a0-6add-11e2-81bd-0019d288d6b2
 			superUuid=792e72a0-6add-11e2-81bd-0019d288d6b2
 		]
-	UID2[
+	entidade:12[
 			nome Douglas2;
-			entidade #UID1;
+			entidade #entidade:11;
 		]
-	UID3[
+	entidade:13[
 			nome Douglas3;
-			entidade UID4[nome Douglas4;]
+			entidade entidade:14[nome Douglas4;]
 		]				
-	UID5[
-			nome Hiura5;
+	entidade:15[
+			nome=Hiura5;
 			entidades test.net.douglashiura.picon.Entidade{
-					UID6[nome Douglas6;idade=6;]
-					UID7[entidade UID3[nome Douglas33;]]
-					UID8[entidades test.net.douglashiura.picon.Entidade{};]
-					#UID9
+					entidade:16[nome Douglas6;idade=6;]
+					entidade:17[entidade UID3[nome Douglas33;]]
+					entidade:18[entidades test.net.douglashiura.picon.Entidade{};]
+					#entidade:13
 			}
 		]	
 }
@@ -45,39 +45,38 @@ test.net.douglashiura.picon.EntidadeComConstrutor{
 	dois:parametros<'Douglas' #construtor:douglas>[]
 }
 
-
 test.net.douglashiura.picon.Entidade{UID9[]}
 test.net.douglashiura.picon.ETipo{}
 test.net.douglashiura.picon.ETipo{UID10[]}
 test.net.douglashiura.picon.ETipo{
-	UID11[
-		entidade UID11[ nome = 'douglas hiura'; ]
+	entidade:1[
+		entidade entidade:2[ nome = 'douglas hiura'; ]
 	]
 }
 
 test.net.douglashiura.picon.ETipo{
-	UID12[
-		entidade #UID2
+	entidade:3[
+		entidade #entidade:2
 	]
 }
 
 test.net.douglashiura.picon.ETipo{
-	UID13[
+	entidade:4[
 		entidades test.net.douglashiura.picon.Entidade{}
-		entidade #UID2
+		entidade #entidade:2
 	]
 }
 
 test.net.douglashiura.picon.ETipo{
-	UID13[
+	entidade:5[
 		entidades test.net.douglashiura.picon.Entidade{
-			#UID2;#UID3;UID14[nome=douglas14]
+			#entidade:2;#entidade:3;entidade:6[nome=douglas14]
 		}
 	]
-	UID15[
+	entidade:7[
 		entidades 	test.net.douglashiura.picon.Entidade{
-						#UID2;#UID3;
-						UID17[entidades test.net.douglashiura.picon.Entidade{UID16[nome=Douglas]}]
+						#entidade:7;#entidade:3;
+						entidade:8[entidades test.net.douglashiura.picon.Entidade{entidade:9[nome=Douglas]}]
 					}
 	]
 }

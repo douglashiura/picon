@@ -10,15 +10,15 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import net.douglashiura.picon.junit.PiconRunner;
-import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
+import net.douglashiura.picon.preguicoso.Contexto;
 import test.net.douglashiura.picon.ETipo;
 
 public class TestePiconRunner {
 
 	private ETipo semDeclaracaoNaON;
-	private ETipo a;
-	private ETipo b = new ETipo();
-	private ETipo semDeclaracaoEqualb = b;
+	private ETipo injetadaPeloPicon;
+	private ETipo invodadaPelaClasse = new ETipo();
+	private ETipo semDeclaracaoEqualb = invodadaPelaClasse;
 	private ETipo semDeclaracaoEqualSemDeclaracaoEqualb = semDeclaracaoEqualb;
 
 	@Test
@@ -29,47 +29,47 @@ public class TestePiconRunner {
 
 	@Test
 	public void aDeclarado() {
-		assertNotNull(a);
+		assertNotNull(injetadaPeloPicon);
 	}
 
 	@Test
 	public void delegateShareObject() {
-		assertNotNull(get("a"));
+		assertNotNull(get("injetadaPeloPicon"));
 		assertNotNull(get("b"));
 	}
 
 	@Test
 	public void bDeclaradoInstanciado() {
-		assertFalse(b.equals(get("b")));
+		assertFalse(invodadaPelaClasse.equals(get("b")));
 	}
 
 	@Test
 	public void bDeclaradoComModeloInstanciado() {
-		assertFalse(b.equals(get("b")));
+		assertFalse(invodadaPelaClasse.equals(get("b")));
 	}
 
 	@Test
 	public void montarOutroContexto() throws Exception {
-		assertTrue(a.equals(get("a")));
-		assertTrue(a.equals(get("a")));
-		ContextoPreguisoso outro = PiconRunner.build();
-		assertFalse(a.equals(outro.get("a")));
-		assertFalse(a.equals(outro.get("a")));
-		assertTrue(a.equals(get("a")));
-		assertTrue(a.equals(get("a")));
+		assertTrue(injetadaPeloPicon.equals(get("injetadaPeloPicon")));
+		assertTrue(injetadaPeloPicon.equals(get("injetadaPeloPicon")));
+		Contexto outro = PiconRunner.build();
+		assertFalse(injetadaPeloPicon.equals(outro.get("injetadaPeloPicon")));
+		assertFalse(injetadaPeloPicon.equals(outro.get("injetadaPeloPicon")));
+		assertTrue(injetadaPeloPicon.equals(get("injetadaPeloPicon")));
+		assertTrue(injetadaPeloPicon.equals(get("injetadaPeloPicon")));
 	}
 
 	@Test
 	public void _estadosDeInvocacao() throws Exception {
-		ETipo a = get("a");
-		assertNotNull(a);
-		assertEquals(a, a);
+		ETipo injetadaPeloPicon = get("injetadaPeloPicon");
+		assertNotNull(injetadaPeloPicon);
+		assertEquals(injetadaPeloPicon, injetadaPeloPicon);
 		assertNull(semDeclaracaoNaON);
-		assertNotNull(a);
-		assertNotNull(b);
-		assertFalse(b.equals(get("b")));
-		assertEquals(semDeclaracaoEqualb, b);
-		assertEquals(semDeclaracaoEqualSemDeclaracaoEqualb, b);
+		assertNotNull(injetadaPeloPicon);
+		assertNotNull(invodadaPelaClasse);
+		assertFalse(invodadaPelaClasse.equals(get("b")));
+		assertEquals(semDeclaracaoEqualb, invodadaPelaClasse);
+		assertEquals(semDeclaracaoEqualSemDeclaracaoEqualb, invodadaPelaClasse);
 
 	}
 

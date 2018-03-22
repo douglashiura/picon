@@ -8,14 +8,13 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
-import net.douglashiura.picon.ProblemaDeCompilacao;
 import net.douglashiura.picon.linguagem.Bloco;
 import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
+import net.douglashiura.picon.preguicoso.Contexto;
 
 public class PiconRunner extends BlockJUnit4ClassRunner {
 
-	private static ContextoPreguisoso CONTEXTO;
+	private static Contexto CONTEXTO;
 
 	public PiconRunner(Class<?> klass) throws InitializationError {
 		super(klass);
@@ -33,7 +32,7 @@ public class PiconRunner extends BlockJUnit4ClassRunner {
 		return objectTesting;
 	}
 
-	private void monteOContexto(Object object) throws IOException, ProblemaDeCompilacao, IllegalArgumentException, IllegalAccessException {
+	private void monteOContexto(Object object) throws IOException, IllegalArgumentException, IllegalAccessException {
 		build();
 		Field[] declarado = object.getClass().getDeclaredFields();
 		for (Field field : declarado) {
@@ -52,7 +51,7 @@ public class PiconRunner extends BlockJUnit4ClassRunner {
 		}
 	}
 
-	public static ContextoPreguisoso build() throws IOException, ProblemaDeCompilacao {
-		return new ContextoPreguisoso(new Qualificadores());
+	public static Contexto build() throws IOException {
+		return new Contexto(new Qualificadores());
 	}
 }

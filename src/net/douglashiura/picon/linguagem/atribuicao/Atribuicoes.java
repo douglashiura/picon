@@ -6,25 +6,24 @@ import java.util.Deque;
 
 import net.douglashiura.picon.linguagem.Parte;
 import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.preguicoso.CampoPreguisoso;
-import net.douglashiura.picon.preguicoso.ClassePreguicosa;
-import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
+import net.douglashiura.picon.preguicoso.Campo;
+import net.douglashiura.picon.preguicoso.CampoReferenciaLista;
+import net.douglashiura.picon.preguicoso.CampoReferencia;
+import net.douglashiura.picon.preguicoso.Objeto;
 
 public enum Atribuicoes {
 	INVALIDA {
 
 		@Override
-		public CampoPreguisoso processar(Deque<Parte> emCampo, String campo, ObjetoPreguicoso<?> umObjeto,
-				Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public Campo processarDoObjeto(Deque<Parte> emCampo, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 			throw new RuntimeException();
 		}
 	},
 	REFERENCIA {
 		@Override
-		public CampoPreguisoso processar(Deque<Parte> emCadeia, String campo, ObjetoPreguicoso<?> umObjeto,
-				Qualificadores contexto) {
+		public Campo processarDoObjeto(Deque<Parte> emCadeia, String campo, Objeto<?> umObjeto, Qualificadores contexto) {
 			emCadeia.pop();
-			return new CampoPreguisoso(campo, emCadeia.pop().valor());
+			return new CampoReferencia(campo, emCadeia.pop().valor());
 		}
 
 		@Override
@@ -36,30 +35,27 @@ public enum Atribuicoes {
 	},
 	VALOR {
 		@Override
-		public CampoPreguisoso processar(Deque<Parte> emValor, String campo, ObjetoPreguicoso<?> umObjeto,
-				Qualificadores contexto) {
-			return new CampoPreguisoso(campo, emValor.pop().valor());
+		public Campo processarDoObjeto(Deque<Parte> emValor, String campo, Objeto<?> umObjeto, Qualificadores contexto) {
+			return new Campo(campo, emValor.pop().valor());
 		}
 	},
 	COMPOSTA {
 		@Override
-		public CampoPreguisoso processar(Deque<Parte> emQualificador, String campo, ObjetoPreguicoso<?> umObjeto,
-				Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public Campo processarDoObjeto(Deque<Parte> emQualificador, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 			Parte qualificador = emQualificador.pop();
 			Field tipo = umObjeto.getKlasse().getDeclaredField(campo);
-			ObjetoPreguicoso<?> objetoPreguicoso = new ClassePreguicosa<>(tipo.getType(), contexto)
-					.registre(qualificador.valor());
+			Objeto<?> objetoPreguicoso = new Objeto<>(tipo.getType());
+			contexto.put(qualificador.valor(), objetoPreguicoso);
 			ProcessaAtribuicoes processadorDeColchetes = new ProcessaAtribuicoes(contexto);
 			processadorDeColchetes.processar(emQualificador, objetoPreguicoso);
-			return new CampoPreguisoso(campo, qualificador.valor());
+			return new CampoReferencia(campo, qualificador.valor());
 		}
 
 		@Override
-		public String processarElementoDaLista(Deque<Parte> emQualificador, Qualificadores contexto, Class<?> klass)
-				throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public String processarElementoDaLista(Deque<Parte> emQualificador, Qualificadores contexto, Class<?> klass) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 			Parte qualificador = emQualificador.pop();
-			ObjetoPreguicoso<?> objetoPreguicoso = new ClassePreguicosa<>(klass, contexto)
-					.registre(qualificador.valor());
+			Objeto<?> objetoPreguicoso = new Objeto<>(klass);
+			contexto.put(qualificador.valor(), objetoPreguicoso);
 			ProcessaAtribuicoes processadorDeColchetes = new ProcessaAtribuicoes(contexto);
 			processadorDeColchetes.processar(emQualificador, objetoPreguicoso);
 			return qualificador.valor();
@@ -67,27 +63,25 @@ public enum Atribuicoes {
 	},
 	COMPOSTA_COM_CONSTRUTOR {
 		@Override
-		public CampoPreguisoso processar(Deque<Parte> emQualificador, String campo, ObjetoPreguicoso<?> umObjeto,
-				Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public Campo processarDoObjeto(Deque<Parte> emQualificador, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 			Parte qualificador = emQualificador.pop();
 			Field tipo = umObjeto.getKlasse().getDeclaredField(campo);
-			ObjetoPreguicoso<?> objetoPreguicoso = new ClassePreguicosa<>(tipo.getType(), contexto)
-					.registre(qualificador.valor());
+			Objeto<?> objetoPreguicoso = new Objeto<>(tipo.getType());
+			contexto.put(qualificador.valor(), objetoPreguicoso);
 			ProcessadorDeMaiorMenor processadorMaiorMenor = new ProcessadorDeMaiorMenor(objetoPreguicoso);
 			ProcessaAtribuicoes processadorDeColchetes = new ProcessaAtribuicoes(contexto);
 			processadorMaiorMenor.processar(emQualificador);
 			processadorDeColchetes.processar(emQualificador, objetoPreguicoso);
-			return new CampoPreguisoso(campo, qualificador.valor());
+			return new CampoReferencia(campo, qualificador.valor());
 		}
 	},
 	LISTA {
 		@Override
-		public CampoPreguisoso processar(Deque<Parte> emClasse, String campo, ObjetoPreguicoso<?> umObjeto,
-				Qualificadores contexto) throws ClassNotFoundException, NoSuchFieldException, SecurityException {
+		public Campo processarDoObjeto(Deque<Parte> emClasse, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws ClassNotFoundException, NoSuchFieldException, SecurityException {
 			Parte classe = emClasse.pop();
 			ProcessadorDeLista processadorDeLista = new ProcessadorDeLista(classe.valor(), contexto);
 			processadorDeLista.processar(emClasse);
-			return new CampoPreguisoso(campo, processadorDeLista.getValores());
+			return new CampoReferenciaLista(campo, processadorDeLista.getValores());
 		}
 	};
 
@@ -97,15 +91,14 @@ public enum Atribuicoes {
 		else if ("[".equals(proximo))
 			return COMPOSTA;
 		else if ("<".equals(proximo))
-			return Atribuicoes.COMPOSTA_COM_CONSTRUTOR;
+			return COMPOSTA_COM_CONSTRUTOR;
 		else if ("{".equals(proximo))
 			return LISTA;
 		else
 			return VALOR;
 	}
 
-	public abstract CampoPreguisoso processar(Deque<Parte> emCampo, String campo, ObjetoPreguicoso<?> umObjeto,
-			Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException;
+	public abstract Campo processarDoObjeto(Deque<Parte> emCampo, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException;
 
 	public static Atribuicoes deElementoDeLista(String value, String proximo) {
 		if ("#".equals(value))
@@ -113,12 +106,11 @@ public enum Atribuicoes {
 		else if ("[".equals(proximo))
 			return COMPOSTA;
 		else if ("<".equals(proximo))
-			return Atribuicoes.COMPOSTA_COM_CONSTRUTOR;
+			return COMPOSTA_COM_CONSTRUTOR;
 		return INVALIDA;
 	}
 
-	public String processarElementoDaLista(Deque<Parte> emInicioReferenciaOuObjeto, Qualificadores contexto,
-			Class<?> klass) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+	public String processarElementoDaLista(Deque<Parte> emInicioReferenciaOuObjeto, Qualificadores contexto, Class<?> klass) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 		throw new RuntimeException();
 	}
 }

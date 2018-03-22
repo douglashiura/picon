@@ -4,8 +4,8 @@ import java.util.Deque;
 
 import net.douglashiura.picon.linguagem.Parte;
 import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.preguicoso.CampoPreguisoso;
-import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
+import net.douglashiura.picon.preguicoso.Campo;
+import net.douglashiura.picon.preguicoso.Objeto;
 
 public class ProcessaAtribuicoes {
 
@@ -15,14 +15,14 @@ public class ProcessaAtribuicoes {
 		this.qualificadores = qualificadores;
 	}
 
-	public void processar(Deque<Parte> inicioDeColchetes, ObjetoPreguicoso<?> objetoPreguicoso) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
-		inicioDeColchetes.pop();// queima [
+	public void processar(Deque<Parte> inicioDeColchetes, Objeto<?> objetoPreguicoso) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		inicioDeColchetes.pop();
 		while (!"]".equals(inicioDeColchetes.peek().valor())) {
 			Parte campo = inicioDeColchetes.pop();
 			Parte valor = inicioDeColchetes.pop();
 			Atribuicoes atribuicao = Atribuicoes.deAtributo(valor.valor(), inicioDeColchetes.peek().valor());
 			inicioDeColchetes.push(valor);
-			CampoPreguisoso comando = atribuicao.processar(inicioDeColchetes, campo.valor(), objetoPreguicoso, qualificadores);
+			Campo comando = atribuicao.processarDoObjeto(inicioDeColchetes, campo.valor(), objetoPreguicoso, qualificadores);
 			objetoPreguicoso.adicionar(comando);
 		}
 		inicioDeColchetes.pop();

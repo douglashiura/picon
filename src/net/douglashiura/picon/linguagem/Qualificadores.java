@@ -3,22 +3,22 @@ package net.douglashiura.picon.linguagem;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
+import net.douglashiura.picon.preguicoso.Objeto;
 
 public class Qualificadores {
 
-	private Map<String, ObjetoPreguicoso<?>> qualificadores;
+	private Map<String, Objeto<?>> qualificadores;
 
 	public Qualificadores() {
 		qualificadores = new HashMap<>();
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> ObjetoPreguicoso<T> get(String qualificador) {
-		return (ObjetoPreguicoso<T>) qualificadores.get(qualificador);
+	public <T> Objeto<T> get(String qualificador) {
+		return (Objeto<T>) qualificadores.get(qualificador);
 	}
 
-	public void put(String qualificador, ObjetoPreguicoso<?> objeto) {
+	public void put(String qualificador, Objeto<?> objeto) {
 		qualificadores.put(qualificador, objeto);
 	}
 

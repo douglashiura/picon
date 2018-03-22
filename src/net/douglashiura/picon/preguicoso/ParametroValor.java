@@ -3,10 +3,10 @@
  * */
 package net.douglashiura.picon.preguicoso;
 
-public class ParametroPreguicoso implements Parametro {
+public class ParametroValor implements Parametro {
 	private String valor;
 
-	public ParametroPreguicoso(String valor) {
+	public ParametroValor(String valor) {
 		this.valor = valor;
 
 	}
@@ -21,8 +21,13 @@ public class ParametroPreguicoso implements Parametro {
 
 	@Override
 
-	public Object getValor(ContextoPreguisoso contextoPreguisoso) {
+	public Object getValor(Contexto contextoPreguisoso) {
 		return tentarConverter(valor);
+	}
+
+	@Override
+	public String getValorDeclarado() {
+		return valor;
 	}
 
 }

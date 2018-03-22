@@ -4,21 +4,27 @@
 package net.douglashiura.picon.preguicoso;
 
 import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 
-public class ParametroRefereciaPreguicoso implements Parametro {
+public class ParametroReferecia implements Parametro {
 
 	private String valor;
 
-	public ParametroRefereciaPreguicoso(String valor) {
+	public ParametroReferecia(String valor) {
 		this.valor = valor;
 
 	}
 
 	@Override
-	public Object getValor(ContextoPreguisoso contexto)
+	public Object getValor(Contexto contexto)
 			throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException,
-			IllegalArgumentException, NoSuchMethodException, InvocationTargetException {
+			IllegalArgumentException, NoSuchMethodException, InvocationTargetException, ParseException {
 		return contexto.get(valor);
+	}
+
+	@Override
+	public String getValorDeclarado() {
+		return valor;
 	}
 
 }

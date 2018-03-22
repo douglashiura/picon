@@ -7,18 +7,14 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class CompiladorDeTempo {
+public class Tempo {
 
-	private static final DateFormat FORMATO = new SimpleDateFormat(
-			"yyyy/MM/dd HH:mm");
-	private static final DateFormat FORMATO_SEM_HORAS = new SimpleDateFormat(
-			"yyyy/MM/dd");
+	private static final DateFormat FORMATO = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+	private static final DateFormat FORMATO_SEM_HORAS = new SimpleDateFormat("yyyy/MM/dd");
 
-	public Date compile(String tempo) throws ParseException {
-		if (!(tempo.contains("now") || tempo.contains("+") || tempo
-				.contains("-"))) {
-			DateFormat padrao = tempo.length() > 12 ? FORMATO
-					: FORMATO_SEM_HORAS;
+	public Date de(String tempo) throws ParseException {
+		if (!(tempo.contains("now") || tempo.contains("+") || tempo.contains("-"))) {
+			DateFormat padrao = tempo.length() > 12 ? FORMATO : FORMATO_SEM_HORAS;
 			return padrao.parse(tempo);
 		} else if (tempo.equals("now")) {
 			return new Date();
@@ -38,8 +34,8 @@ public class CompiladorDeTempo {
 		String horaMinuto[] = timer.split(":");
 		calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(horaMinuto[0]));
 		calendar.set(Calendar.MINUTE, Integer.parseInt(horaMinuto[1]));
-		calendar.set(Calendar.MILLISECOND,0);
-		calendar.set(Calendar.SECOND,0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		calendar.set(Calendar.SECOND, 0);
 	}
 
 	private void solverDay(Calendar calendar, String dayExpression) {
