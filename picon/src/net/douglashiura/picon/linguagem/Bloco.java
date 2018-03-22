@@ -1,37 +1,37 @@
 package net.douglashiura.picon.linguagem;
 
-public class BlockCase {
+public class Bloco {
 	public static String camelCase(String name) {
-		String camelCase = "";
+		String bloco = "";
 		boolean sinalNumerico = false;
 		boolean sinalUpper = false;
 
 		for (Character n : name.toCharArray()) {
 			if (n == '_') {
-				camelCase += n;
+				bloco += n;
 			} else if (Character.isUpperCase(n) && !sinalUpper) {
-				camelCase += ":" + n;
+				bloco += ":" + n;
 				sinalUpper = true;
 				sinalNumerico = false;
 			} else if (Character.isDigit(n) && !sinalNumerico) {
-				camelCase += ":" + n;
+				bloco += ":" + n;
 				sinalUpper = false;
 				sinalNumerico = true;
 			} else if (Character.isUpperCase(n) && sinalUpper) {
-				camelCase += n;
+				bloco += n;
 				sinalNumerico = false;
 			} else if (Character.isDigit(n) && sinalNumerico) {
-				camelCase += n;
+				bloco += n;
 				sinalUpper = false;
 			} else {
-				camelCase += n;
+				bloco += n;
 				if ((!Character.isUpperCase(n) || !Character.isDigit(n))) {
 					sinalNumerico = false;
 					sinalUpper = false;
 				}
 			}
 		}
-		return camelCase.toLowerCase();
-
+		return bloco.toLowerCase();
 	}
+
 }

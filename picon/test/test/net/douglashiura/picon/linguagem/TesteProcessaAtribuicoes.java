@@ -9,8 +9,7 @@
  * */
 package test.net.douglashiura.picon.linguagem;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -21,8 +20,8 @@ import org.junit.Test;
 
 import net.douglashiura.picon.linguagem.Fragmentador;
 import net.douglashiura.picon.linguagem.Parte;
-import net.douglashiura.picon.linguagem.ProcessaAtribuicoes;
 import net.douglashiura.picon.linguagem.Qualificadores;
+import net.douglashiura.picon.linguagem.atribuicao.ProcessaAtribuicoes;
 import net.douglashiura.picon.preguicoso.CampoPreguisoso;
 import net.douglashiura.picon.preguicoso.ObjetoPreguicoso;
 import test.net.douglashiura.picon.Entidade;
@@ -47,6 +46,7 @@ public class TesteProcessaAtribuicoes {
 		atribuicoes.processar(iterator, objetoPreguicoso);
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(0, objetoPreguicoso.getCampos().size());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -60,6 +60,7 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(1, campos.size());
 		assertEquals("nome", campoNome.getCampo());
 		assertEquals("Douglas", campoNome.getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -76,6 +77,7 @@ public class TesteProcessaAtribuicoes {
 		assertEquals("Douglas", campoNome.getValor());
 		assertEquals("idade", campoIdade.getCampo());
 		assertEquals("10", campoIdade.getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -89,6 +91,7 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(1, campos.size());
 		assertEquals("entidade", campoEntidade.getCampo());
 		assertEquals("mane", campoEntidade.getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -103,6 +106,7 @@ public class TesteProcessaAtribuicoes {
 		assertEquals("entidade", campoEntidade.getCampo());
 		assertEquals("uid3", campoEntidade.getValor());
 		assertNotNull(qualificadores.get("uid3"));
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -121,6 +125,7 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(1, uid3.getCampos().size());
 		assertEquals("nome", uid3.getCampos().get(0).getCampo());
 		assertEquals("Douglas", uid3.getCampos().get(0).getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -133,7 +138,8 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("entidades", campoEntidades.getCampo());
-		assertEquals("", campoEntidades.getValor());
+		assertEquals("[]", campoEntidades.getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -147,9 +153,10 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("entidades", campoEntidades.getCampo());
-		assertEquals("uid3", campoEntidades.getValor());
+		assertEquals("[uid3]", campoEntidades.getValor());
 		assertNotNull(uid3);
 		assertEquals(0, uid3.getCampos().size());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -163,11 +170,12 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("entidades", campoEntidades.getCampo());
-		assertEquals("uid3", campoEntidades.getValor());
+		assertEquals("[uid3]", campoEntidades.getValor());
 		assertNotNull(uid3);
 		assertEquals(1, uid3.getCampos().size());
 		assertEquals("nome", uid3.getCampos().get(0).getCampo());
 		assertEquals("Douglas", uid3.getCampos().get(0).getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -180,13 +188,13 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("enums", campoEnuns.getCampo());
-		assertEquals("A", campoEnuns.getValor());
-
+		assertEquals("[A]", campoEnuns.getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
 	public void umAtributoListaDeStringsPrimitivas() throws Exception {
-		String texto = "[strings String{a b c}]";
+		String texto = "[strings java.lang.String{a b c}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
@@ -194,12 +202,13 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("strings", campoString.getCampo());
-		assertEquals("a,b,c", campoString.getValor());
+		assertEquals("[a, b, c]", campoString.getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
 	public void umAtributoListaDeStringsPrimitivasVazia() throws Exception {
-		String texto = "[strings String{}]";
+		String texto = "[strings java.lang.String{}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
@@ -207,7 +216,8 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("strings", campoString.getCampo());
-		assertEquals("", campoString.getValor());
+		assertEquals("[]", campoString.getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -222,18 +232,19 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("entidades", campoEntidades.getCampo());
-		assertEquals("uid1, uid2", campoEntidades.getValor());
+		assertEquals("[uid1, uid2]", campoEntidades.getValor());
 		assertEquals(1, uid1.getCampos().size());
 		assertEquals("nome", uid1.getCampos().get(0).getCampo());
 		assertEquals("Douglas", uid1.getCampos().get(0).getValor());
 		assertEquals(1, uid2.getCampos().size());
 		assertEquals("nome", uid2.getCampos().get(0).getCampo());
 		assertEquals("Hiura", uid2.getCampos().get(0).getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
 	public void entidadeListaCom2Referencias() throws Exception {
-		String texto = "[entidades test.net.douglashiura.picon.Entidade{#uid1 #uid2]";
+		String texto = "[entidades test.net.douglashiura.picon.Entidade{#uid1 #uid2}]";
 		Deque<Parte> iterator = new ArrayDeque<Parte>(new Fragmentador(texto).getTokens());
 		atribuicoes.processar(iterator, objetoPreguicoso);
 		List<CampoPreguisoso> campos = objetoPreguicoso.getCampos();
@@ -241,8 +252,8 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals(1, campos.size());
 		assertEquals("entidades", campoEntidades.getCampo());
-		assertEquals("uid1, uid2", campoEntidades.getValor());
-
+		assertEquals("[uid1, uid2]", campoEntidades.getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 	@Test
@@ -260,25 +271,26 @@ public class TesteProcessaAtribuicoes {
 		assertEquals(1, campos.size());
 		assertEquals(0, objetoPreguicoso.getParametros().size());
 		assertEquals("entidades", campoEntidades.getCampo());
-		assertEquals("uid1, uid2", campoEntidades.getValor());
+		assertEquals("[uid1, uid2]", campoEntidades.getValor());
 		assertEquals(0, uid1.getParametros().size());
 		assertEquals(2, uid1.getCampos().size());
 		assertEquals("nome", uid1.getCampos().get(0).getCampo());
 		assertEquals("Douglas", uid1.getCampos().get(0).getValor());
 		assertEquals("entidades", uid1.getCampos().get(1).getCampo());
-		assertEquals("", uid1.getCampos().get(1).getValor());
+		assertEquals("[]", uid1.getCampos().get(1).getValor());
 		assertEquals(0, uid2.getParametros().size());
 		assertEquals(2, uid2.getCampos().size());
 		assertEquals("nome", uid2.getCampos().get(0).getCampo());
 		assertEquals("Hiura", uid2.getCampos().get(0).getValor());
 		assertEquals("entidades", uid2.getCampos().get(1).getCampo());
-		assertEquals("uid3, uid1, uid4", uid2.getCampos().get(1).getValor());
+		assertEquals("[uid3, uid1, uid4]", uid2.getCampos().get(1).getValor());
 		assertEquals(0, uid3.getParametros().size());
 		assertEquals(0, uid3.getCampos().size());
 		assertEquals(0, uid4.getParametros().size());
 		assertEquals(1, uid4.getCampos().size());
 		assertEquals("nome", uid4.getCampos().get(0).getCampo());
 		assertEquals("Cabral", uid4.getCampos().get(0).getValor());
+		assertTrue(iterator.isEmpty());
 	}
 
 }

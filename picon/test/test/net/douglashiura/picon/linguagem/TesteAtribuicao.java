@@ -32,27 +32,27 @@ public class TesteAtribuicao {
 
 	@Test
 	public void referencia() {
-		assertEquals(Atribuicoes.REFERENCIA, Atribuicoes.sincronizar("#", "referencia"));
+		assertEquals(Atribuicoes.REFERENCIA, Atribuicoes.deAtributo("#", "referencia"));
 	}
 
 	@Test
 	public void composto() {
-		assertEquals(Atribuicoes.COMPOSTA, Atribuicoes.sincronizar("entidade", "["));
+		assertEquals(Atribuicoes.COMPOSTA, Atribuicoes.deAtributo("entidade", "["));
 	}
 
 	@Test
 	public void compostoComConstrutor() {
-		assertEquals(Atribuicoes.COMPOSTA_COM_CONSTRUTOR, Atribuicoes.sincronizar("entidade", "<"));
+		assertEquals(Atribuicoes.COMPOSTA_COM_CONSTRUTOR, Atribuicoes.deAtributo("entidade", "<"));
 	}
 
 	@Test
 	public void lista() {
-		assertEquals(Atribuicoes.LISTA, Atribuicoes.sincronizar("com.Entidade", "{"));
+		assertEquals(Atribuicoes.LISTA, Atribuicoes.deAtributo("com.Entidade", "{"));
 	}
 
 	@Test
 	public void valor() {
-		assertEquals(Atribuicoes.VALOR, Atribuicoes.sincronizar("nome", "douglas"));
+		assertEquals(Atribuicoes.VALOR, Atribuicoes.deAtributo("nome", "douglas"));
 	}
 
 	@Test

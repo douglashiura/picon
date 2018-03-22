@@ -9,7 +9,7 @@ import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
 import net.douglashiura.picon.ProblemaDeCompilacao;
-import net.douglashiura.picon.linguagem.BlockCase;
+import net.douglashiura.picon.linguagem.Bloco;
 import net.douglashiura.picon.linguagem.Qualificadores;
 import net.douglashiura.picon.preguicoso.ContextoPreguisoso;
 
@@ -39,7 +39,7 @@ public class PiconRunner extends BlockJUnit4ClassRunner {
 		for (Field field : declarado) {
 			field.setAccessible(true);
 			if (field.get(object) == null) {
-				field.set(object, get(BlockCase.camelCase(field.getName())));
+				field.set(object, get(Bloco.camelCase(field.getName())));
 			}
 		}
 	}

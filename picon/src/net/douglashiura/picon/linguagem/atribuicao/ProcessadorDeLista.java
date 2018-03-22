@@ -1,24 +1,31 @@
 package net.douglashiura.picon.linguagem.atribuicao;
 
+import java.util.ArrayList;
 import java.util.Deque;
+import java.util.List;
 
 import net.douglashiura.picon.linguagem.Parte;
+import net.douglashiura.picon.linguagem.Qualificadores;
 
 public class ProcessadorDeLista {
 
 	private Class<?> klass;
 	private Estrategia estrategia;
+	public Qualificadores contexto;
 
-	public ProcessadorDeLista(String klassName) throws ClassNotFoundException {
+	public ProcessadorDeLista(String klassName, Qualificadores contexto) throws ClassNotFoundException {
+		this.contexto = contexto;
 		klass = Class.forName(klassName);
-		if (klass.isEnum()) {
-			estrategia = new EstrategiaEnumerado();
+		if (klass.isEnum() || String.class.equals(klass)) {
+			estrategia = new EstrategiaParametro();
 		} else {
-			estrategia = new EstrategiaLista();
+			estrategia = new EstrategiaObjeto();
 		}
 	}
 
-	public void processar(Deque<Parte> emInicioDeChaves) {
+	public void processar(Deque<Parte> emInicioDeChaves)
+			throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		emInicioDeChaves.pop();
 		while (!"}".equals(emInicioDeChaves.peek().valor())) {
 			estrategia.processar(emInicioDeChaves);
 		}
@@ -31,33 +38,49 @@ public class ProcessadorDeLista {
 
 	interface Estrategia {
 
-		void processar(Deque<Parte> pilha);
+		void processar(Deque<Parte> pilha) throws NoSuchFieldException, SecurityException, ClassNotFoundException;
 
 		String getValores();
 	}
 
-	class EstrategiaLista implements Estrategia {
+	class EstrategiaObjeto implements Estrategia {
+		private List<String> parametros;
+
+		public EstrategiaObjeto() {
+			parametros = new ArrayList<>();
+		}
 
 		@Override
-		public void processar(Deque<Parte> emInicioChaves) {
-			emInicioChaves.pop();
+		public void processar(Deque<Parte> emInicioReferenciaOuObjeto)
+				throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+			Parte referenciaOuObjeto = emInicioReferenciaOuObjeto.pop();
+			String valor = referenciaOuObjeto.valor();
+			Atribuicoes atribuicao = Atribuicoes.deElementoDeLista(valor, emInicioReferenciaOuObjeto.peek().valor());
+			emInicioReferenciaOuObjeto.push(referenciaOuObjeto);
+			String qualificador = atribuicao.processarElementoDaLista(emInicioReferenciaOuObjeto, contexto, klass);
+			parametros.add(qualificador);
 
 		}
 
 		@Override
 		public String getValores() {
-			return "";
+			return parametros.toString();
 		}
 	}
 
-	class EstrategiaEnumerado implements Estrategia {
+	class EstrategiaParametro implements Estrategia {
+		private List<String> parametros;
+
+		public EstrategiaParametro() {
+			parametros = new ArrayList<>();
+		}
+
 		public String getValores() {
-			return null;
+			return parametros.toString();
 		}
 
 		public void processar(Deque<Parte> emInicioDeChaves) {
-			emInicioDeChaves.pop();
-
+			parametros.add(emInicioDeChaves.pop().valor());
 		}
 	}
 
