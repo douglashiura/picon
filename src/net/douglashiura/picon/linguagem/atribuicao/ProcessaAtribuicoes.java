@@ -15,15 +15,15 @@ public class ProcessaAtribuicoes {
 		this.qualificadores = qualificadores;
 	}
 
-	public void processar(Deque<Parte> inicioDeColchetes, Objeto<?> objetoPreguicoso) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+	public void processar(Deque<Parte> inicioDeColchetes, Objeto<?> objeto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 		inicioDeColchetes.pop();
 		while (!"]".equals(inicioDeColchetes.peek().valor())) {
 			Parte campo = inicioDeColchetes.pop();
 			Parte valor = inicioDeColchetes.pop();
 			Atribuicoes atribuicao = Atribuicoes.deAtributo(valor.valor(), inicioDeColchetes.peek().valor());
 			inicioDeColchetes.push(valor);
-			Campo comando = atribuicao.processarDoObjeto(inicioDeColchetes, campo.valor(), objetoPreguicoso, qualificadores);
-			objetoPreguicoso.adicionar(comando);
+			Campo comando = atribuicao.processarDoObjeto(inicioDeColchetes, campo.valor(), objeto, qualificadores);
+			objeto.adicionar(comando);
 		}
 		inicioDeColchetes.pop();
 	}

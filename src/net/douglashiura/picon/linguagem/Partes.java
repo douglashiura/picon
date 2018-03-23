@@ -9,18 +9,17 @@
  * */
 package net.douglashiura.picon.linguagem;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-public class Fragmentador {
-	private char QUEBRA_LINHA = '\n';
-	private char[] QUEBRA = { ' ', QUEBRA_LINHA, '	', '=', ';' };
-	private char[] RESERVADO = { '{', '}', '*', '[', ']', '#','<','>' };
-	private char ESCAPAR = '\'';
-	private ArrayList<Parte> tokens;
+public class Partes {
+	private static char QUEBRA_LINHA = '\n';
+	private static char[] QUEBRA = { ' ', QUEBRA_LINHA, '	', '=', ';' };
+	private static char[] RESERVADO = { '{', '}', '*', '[', ']', '#', '<', '>' };
+	private static char ESCAPAR = '\'';
 
-	public Fragmentador(String texto) {
-		tokens = new ArrayList<Parte>();
+	public static Deque<Parte> explodir(String texto) {
+		Deque<Parte> tokens = new ArrayDeque<Parte>();
 		Parte anterior = null;
 		int linha = 1;
 		String esteToke = "";
@@ -29,11 +28,9 @@ public class Fragmentador {
 			if (ehNormal(e, escapando)) {
 				if (ehToke(e, RESERVADO)) {
 					if (!esteToke.isEmpty()) {
-						tokens.add(anterior = new Parte(esteToke, anterior,
-								linha));
+						tokens.add(anterior = new Parte(esteToke, anterior, linha));
 					}
-					tokens.add(anterior = new Parte(
-							new String(new char[] { e }), anterior, linha));
+					tokens.add(anterior = new Parte(new String(new char[] { e }), anterior, linha));
 					esteToke = "";
 				} else if (!ehToke(e, QUEBRA)) {
 					esteToke += e;
@@ -44,8 +41,7 @@ public class Fragmentador {
 			} else {
 				if (!escapando && e == ESCAPAR) {
 					if (!esteToke.isEmpty()) {
-						tokens.add(anterior = new Parte(esteToke, anterior,
-								linha));
+						tokens.add(anterior = new Parte(esteToke, anterior, linha));
 						esteToke = "";
 					}
 					escapando = true;
@@ -62,27 +58,24 @@ public class Fragmentador {
 		if (!esteToke.isEmpty()) {
 			tokens.add(anterior = new Parte(esteToke, anterior, linha));
 		}
+		return tokens;
 	}
 
-	private boolean ehQuebraLinha(char e) {
+	private static boolean ehQuebraLinha(char e) {
 		return e == QUEBRA_LINHA;
 	}
 
-	private boolean ehNormal(char e, boolean escapando) {
+	private static boolean ehNormal(char e, boolean escapando) {
 		return e != ESCAPAR && !escapando;
 	}
 
-	private boolean ehToke(char e, char[] chars) {
+	private static boolean ehToke(char e, char[] chars) {
 		for (char quebra : chars) {
 			if (quebra == e) {
 				return true;
 			}
 		}
 		return false;
-	}
-
-	public List<Parte> getTokens() {
-		return tokens;
 	}
 
 }

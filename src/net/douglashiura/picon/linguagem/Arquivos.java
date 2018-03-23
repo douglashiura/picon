@@ -17,26 +17,23 @@ public class Arquivos {
 	private Qualificadores qualificadores;
 
 	private Arquivos() {
-		
 		try {
 			Arquivos.class.getClassLoader();
-			Enumeration<URL> resources = ClassLoader.getSystemResources("");
+			Enumeration<URL> recursos = ClassLoader.getSystemResources("");
 			List<File> arquivos = new ArrayList<File>();
-			while (resources.hasMoreElements()) {
-				URL url = (URL) resources.nextElement();
+			while (recursos.hasMoreElements()) {
+				URL url = (URL) recursos.nextElement();
 				ler(new File(url.toURI()), arquivos);
 			}
-
 			StringBuffer texto = new StringBuffer();
 			for (File filos : arquivos) {
-				InputStream input = new FileInputStream(filos);
-				byte[] arquivo = new byte[input.available()];
-				input.read(arquivo);
-				input.close();
+				InputStream fluxo = new FileInputStream(filos);
+				byte[] arquivo = new byte[fluxo.available()];
+				fluxo.read(arquivo);
+				fluxo.close();
 				texto.append(new String(arquivo));
-			}
-			texto.toString();
-			
+			}			
+			qualificadores=Picon.explodir(Partes.explodir(texto.toString()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
@@ -44,12 +41,12 @@ public class Arquivos {
 		}
 	}
 
-	private void ler(File file, List<File> picons) {
-		if (file.isFile() && file.getName().endsWith(EXTENSAO))
-			picons.add(file);
-		if (file.isDirectory())
-			for (File filho : file.listFiles())
-				ler(filho, picons);
+	private void ler(File arquivo, List<File> arquivos) {
+		if (arquivo.isFile() && arquivo.getName().endsWith(EXTENSAO))
+			arquivos.add(arquivo);
+		if (arquivo.isDirectory())
+			for (File filho : arquivo.listFiles())
+				ler(filho, arquivos);
 	}
 
 	public static Arquivos getInstance() {
@@ -57,7 +54,7 @@ public class Arquivos {
 			unico = new Arquivos();
 		return unico;
 	}
-	public Qualificadores toQualificadores() {
+	public Qualificadores explodir() {
 		return qualificadores;
 	}
 	

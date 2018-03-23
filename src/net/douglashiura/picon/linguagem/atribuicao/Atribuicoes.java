@@ -15,13 +15,13 @@ public enum Atribuicoes {
 	INVALIDA {
 
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emCampo, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public Campo processarDoObjeto(Deque<Parte> emCampo, String campo, Objeto<?> objeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 			throw new RuntimeException();
 		}
 	},
 	REFERENCIA {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emCadeia, String campo, Objeto<?> umObjeto, Qualificadores contexto) {
+		public Campo processarDoObjeto(Deque<Parte> emCadeia, String campo, Objeto<?> objeto, Qualificadores contexto) {
 			emCadeia.pop();
 			return new CampoReferencia(campo, emCadeia.pop().valor());
 		}
@@ -35,15 +35,15 @@ public enum Atribuicoes {
 	},
 	VALOR {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emValor, String campo, Objeto<?> umObjeto, Qualificadores contexto) {
+		public Campo processarDoObjeto(Deque<Parte> emValor, String campo, Objeto<?> objeto, Qualificadores contexto) {
 			return new Campo(campo, emValor.pop().valor());
 		}
 	},
 	COMPOSTA {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emQualificador, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public Campo processarDoObjeto(Deque<Parte> emQualificador, String campo, Objeto<?> objeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 			Parte qualificador = emQualificador.pop();
-			Field tipo = umObjeto.getKlasse().getDeclaredField(campo);
+			Field tipo = objeto.getKlasse().getDeclaredField(campo);
 			Objeto<?> objetoPreguicoso = new Objeto<>(tipo.getType());
 			contexto.put(qualificador.valor(), objetoPreguicoso);
 			ProcessaAtribuicoes processadorDeColchetes = new ProcessaAtribuicoes(contexto);
@@ -63,9 +63,9 @@ public enum Atribuicoes {
 	},
 	COMPOSTA_COM_CONSTRUTOR {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emQualificador, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public Campo processarDoObjeto(Deque<Parte> emQualificador, String campo, Objeto<?> objeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
 			Parte qualificador = emQualificador.pop();
-			Field tipo = umObjeto.getKlasse().getDeclaredField(campo);
+			Field tipo = objeto.getKlasse().getDeclaredField(campo);
 			Objeto<?> objetoPreguicoso = new Objeto<>(tipo.getType());
 			contexto.put(qualificador.valor(), objetoPreguicoso);
 			ProcessadorDeMaiorMenor processadorMaiorMenor = new ProcessadorDeMaiorMenor(objetoPreguicoso);
@@ -77,7 +77,7 @@ public enum Atribuicoes {
 	},
 	LISTA {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emClasse, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws ClassNotFoundException, NoSuchFieldException, SecurityException {
+		public Campo processarDoObjeto(Deque<Parte> emClasse, String campo, Objeto<?> objeto, Qualificadores contexto) throws ClassNotFoundException, NoSuchFieldException, SecurityException {
 			Parte classe = emClasse.pop();
 			ProcessadorDeLista processadorDeLista = new ProcessadorDeLista(classe.valor(), contexto);
 			processadorDeLista.processar(emClasse);
@@ -98,7 +98,7 @@ public enum Atribuicoes {
 			return VALOR;
 	}
 
-	public abstract Campo processarDoObjeto(Deque<Parte> emCampo, String campo, Objeto<?> umObjeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException;
+	public abstract Campo processarDoObjeto(Deque<Parte> emCampo, String campo, Objeto<?> objeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException;
 
 	public static Atribuicoes deElementoDeLista(String value, String proximo) {
 		if ("#".equals(value))

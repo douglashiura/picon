@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import net.douglashiura.picon.linguagem.Bloco;
 
-public class TesteCamelCase {
+public class TesteBloco {
 
 	@Test
 	public void camelCasses() throws Exception {

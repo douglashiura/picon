@@ -8,10 +8,10 @@ import net.douglashiura.picon.preguicoso.ParametroValor;
 import net.douglashiura.picon.preguicoso.ParametroReferecia;
 
 public class ProcessadorDeMaiorMenor {
-	private Objeto<?> objetoPreguicoso;
+	private Objeto<?> objeto;
 
-	public ProcessadorDeMaiorMenor(Objeto<?> objetoPreguicoso) {
-		this.objetoPreguicoso = objetoPreguicoso;
+	public ProcessadorDeMaiorMenor(Objeto<?> objeto) {
+		this.objeto = objeto;
 	}
 
 	public void processar(Deque<Parte> emMenor) {
@@ -19,9 +19,9 @@ public class ProcessadorDeMaiorMenor {
 		while (!">".equals(emMenor.peek().valor())) {
 			String valor = emMenor.pop().valor();
 			if ("#".equals(valor)) {
-				objetoPreguicoso.adicionarParametro(new ParametroReferecia(emMenor.pop().valor()));
+				objeto.adicionarParametro(new ParametroReferecia(emMenor.pop().valor()));
 			} else {
-				objetoPreguicoso.adicionarParametro(new ParametroValor(valor));
+				objeto.adicionarParametro(new ParametroValor(valor));
 			}
 		}
 		emMenor.pop();
