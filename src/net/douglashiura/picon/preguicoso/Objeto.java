@@ -8,30 +8,44 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.douglashiura.picon.ProblemaDeCompilacaoException;
+import net.douglashiura.picon.linguagem.Parte;
+
 public class Objeto<T> {
 	private Class<T> klass;
 	private List<Campo> campos;
 	private List<Parametro> parametros;
+	private Parte parte;
 
-	public Objeto(Class<T> klass) {
+	public Objeto(Class<T> klass, Parte parte) {
 		this.klass = klass;
+		this.parte = parte;
 		this.campos = new ArrayList<>();
 		this.parametros = new ArrayList<>();
 	}
 
-	public T instanciar(Contexto contexto) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, ParseException {
+	public T instanciar(Contexto contexto) throws ProblemaDeCompilacaoException {
 		T objeto;
 		if (parametros.isEmpty())
-			objeto = klass.newInstance();
+			try {
+				objeto = klass.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				throw new ProblemaDeCompilacaoException(e, parte);
+			}
 		else
 			objeto = instanciarComConstrutor(contexto);
 		for (Campo campo : campos) {
-			campo.configure(objeto,contexto);
+			try {
+				campo.configure(objeto, contexto);
+			} catch (SecurityException | IllegalArgumentException | IllegalAccessException | NoSuchMethodException
+					| InstantiationException | InvocationTargetException | ParseException e) {
+				throw new ProblemaDeCompilacaoException(e, parte);
+			}
 		}
 		return objeto;
 	}
 
-	private T instanciarComConstrutor(Contexto contexto) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, NoSuchFieldException, ParseException {
+	private T instanciarComConstrutor(Contexto contexto) throws ProblemaDeCompilacaoException {
 		Class<?>[] barnabe = new Class<?>[parametros.size()];
 		Object[] barney = new Object[parametros.size()];
 		for (int i = 0; i < parametros.size(); i++) {
@@ -40,7 +54,12 @@ public class Objeto<T> {
 			barney[i] = valor;
 			barnabe[i] = valor.getClass();
 		}
-		return klass.getDeclaredConstructor(barnabe).newInstance(barney);
+		try {
+			return klass.getDeclaredConstructor(barnabe).newInstance(barney);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
+				| NoSuchMethodException | SecurityException e) {
+			throw new ProblemaDeCompilacaoException(e, parte);
+		}
 	}
 
 	public void adicionar(Campo campo) {

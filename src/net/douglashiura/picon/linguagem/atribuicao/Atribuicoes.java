@@ -1,33 +1,35 @@
 // Douglas Hiura Longo, 12 de Setembro de 2010.
 package net.douglashiura.picon.linguagem.atribuicao;
 
-import java.lang.reflect.Field;
 import java.util.Deque;
 
+import net.douglashiura.picon.ProblemaDeCompilacaoException;
 import net.douglashiura.picon.linguagem.Parte;
 import net.douglashiura.picon.linguagem.Qualificadores;
 import net.douglashiura.picon.preguicoso.Campo;
-import net.douglashiura.picon.preguicoso.CampoReferenciaLista;
 import net.douglashiura.picon.preguicoso.CampoReferencia;
+import net.douglashiura.picon.preguicoso.CampoReferenciaLista;
+import net.douglashiura.picon.preguicoso.CampoValor;
 import net.douglashiura.picon.preguicoso.Objeto;
 
 public enum Atribuicoes {
 	INVALIDA {
 
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emCampo, String campo, Objeto<?> objeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public Campo objeto(Deque<Parte> emCampo, String campo, Objeto<?> objeto, Qualificadores contexto) {
 			throw new RuntimeException();
 		}
 	},
 	REFERENCIA {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emCadeia, String campo, Objeto<?> objeto, Qualificadores contexto) {
+		public Campo objeto(Deque<Parte> emCadeia, String campo, Objeto<?> objeto, Qualificadores contexto) {
 			emCadeia.pop();
-			return new CampoReferencia(campo, emCadeia.pop().valor());
+			Parte parte = emCadeia.pop();
+			return new CampoReferencia(campo, parte.valor(), parte);
 		}
 
 		@Override
-		public String processarElementoDaLista(Deque<Parte> emCadeia, Qualificadores contexto, Class<?> klass) {
+		public String lista(Deque<Parte> emCadeia, Qualificadores contexto, Class<?> klass) {
 			emCadeia.pop();
 			return emCadeia.pop().valor();
 
@@ -35,53 +37,57 @@ public enum Atribuicoes {
 	},
 	VALOR {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emValor, String campo, Objeto<?> objeto, Qualificadores contexto) {
-			return new Campo(campo, emValor.pop().valor());
+		public Campo objeto(Deque<Parte> emValor, String campo, Objeto<?> objeto, Qualificadores contexto) {
+			Parte parte = emValor.pop();
+			return new CampoValor(campo, parte.valor(), parte);
 		}
 	},
 	COMPOSTA {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emQualificador, String campo, Objeto<?> objeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public Campo objeto(Deque<Parte> emQualificador, String campo, Objeto<?> objeto, Qualificadores contexto)
+				throws ProblemaDeCompilacaoException {
 			Parte qualificador = emQualificador.pop();
-			Field tipo = objeto.getKlasse().getDeclaredField(campo);
-			Objeto<?> objetoPreguicoso = new Objeto<>(tipo.getType());
-			contexto.put(qualificador.valor(), objetoPreguicoso);
-			ProcessaAtribuicoes processadorDeColchetes = new ProcessaAtribuicoes(contexto);
-			processadorDeColchetes.processar(emQualificador, objetoPreguicoso);
-			return new CampoReferencia(campo, qualificador.valor());
+			;
+			Objeto<?> objetoPreguicoso = classeDoCampo(campo, objeto.getKlasse(), emQualificador, contexto,
+					qualificador);
+			ProcessadorDeCampos processador = new ProcessadorDeCampos(contexto);
+			processador.processar(emQualificador, objetoPreguicoso);
+			return new CampoReferencia(campo, qualificador.valor(), qualificador);
 		}
 
 		@Override
-		public String processarElementoDaLista(Deque<Parte> emQualificador, Qualificadores contexto, Class<?> klass) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public String lista(Deque<Parte> emQualificador, Qualificadores contexto, Class<?> klass)
+				throws ProblemaDeCompilacaoException {
 			Parte qualificador = emQualificador.pop();
-			Objeto<?> objetoPreguicoso = new Objeto<>(klass);
+			Objeto<?> objetoPreguicoso = new Objeto<>(klass,qualificador);
 			contexto.put(qualificador.valor(), objetoPreguicoso);
-			ProcessaAtribuicoes processadorDeColchetes = new ProcessaAtribuicoes(contexto);
-			processadorDeColchetes.processar(emQualificador, objetoPreguicoso);
+			ProcessadorDeCampos processador = new ProcessadorDeCampos(contexto);
+			processador.processar(emQualificador, objetoPreguicoso);
 			return qualificador.valor();
 		}
 	},
 	COMPOSTA_COM_CONSTRUTOR {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emQualificador, String campo, Objeto<?> objeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
+		public Campo objeto(Deque<Parte> emQualificador, String campo, Objeto<?> objeto, Qualificadores contexto)
+				throws ProblemaDeCompilacaoException {
 			Parte qualificador = emQualificador.pop();
-			Field tipo = objeto.getKlasse().getDeclaredField(campo);
-			Objeto<?> objetoPreguicoso = new Objeto<>(tipo.getType());
-			contexto.put(qualificador.valor(), objetoPreguicoso);
-			ProcessadorDeMaiorMenor processadorMaiorMenor = new ProcessadorDeMaiorMenor(objetoPreguicoso);
-			ProcessaAtribuicoes processadorDeColchetes = new ProcessaAtribuicoes(contexto);
+			Objeto<?> objetoPreguicoso = classeDoCampo(campo, objeto.getKlasse(), emQualificador, contexto,
+					qualificador);
+			ProcessadorDeConstrutor processadorMaiorMenor = new ProcessadorDeConstrutor(objetoPreguicoso);
+			ProcessadorDeCampos processadorDeColchetes = new ProcessadorDeCampos(contexto);
 			processadorMaiorMenor.processar(emQualificador);
 			processadorDeColchetes.processar(emQualificador, objetoPreguicoso);
-			return new CampoReferencia(campo, qualificador.valor());
+			return new CampoReferencia(campo, qualificador.valor(), qualificador);
 		}
 	},
 	LISTA {
 		@Override
-		public Campo processarDoObjeto(Deque<Parte> emClasse, String campo, Objeto<?> objeto, Qualificadores contexto) throws ClassNotFoundException, NoSuchFieldException, SecurityException {
+		public Campo objeto(Deque<Parte> emClasse, String campo, Objeto<?> objeto, Qualificadores contexto)
+				throws ProblemaDeCompilacaoException {
 			Parte classe = emClasse.pop();
-			ProcessadorDeLista processadorDeLista = new ProcessadorDeLista(classe.valor(), contexto);
-			processadorDeLista.processar(emClasse);
-			return new CampoReferenciaLista(campo, processadorDeLista.getValores());
+			ProcessadorDeLista processador = new ProcessadorDeLista(classe.valor(), contexto, classe);
+			processador.processar(emClasse);
+			return new CampoReferenciaLista(campo, processador.getEstrategia(), classe);
 		}
 	};
 
@@ -98,9 +104,10 @@ public enum Atribuicoes {
 			return VALOR;
 	}
 
-	public abstract Campo processarDoObjeto(Deque<Parte> emCampo, String campo, Objeto<?> objeto, Qualificadores contexto) throws NoSuchFieldException, SecurityException, ClassNotFoundException;
+	public abstract Campo objeto(Deque<Parte> emCampo, String campo, Objeto<?> objeto, Qualificadores contexto)
+			throws ProblemaDeCompilacaoException;
 
-	public static Atribuicoes deElementoDeLista(String value, String proximo) {
+	public static Atribuicoes deLista(String value, String proximo) {
 		if ("#".equals(value))
 			return REFERENCIA;
 		else if ("[".equals(proximo))
@@ -110,7 +117,19 @@ public enum Atribuicoes {
 		return INVALIDA;
 	}
 
-	public String processarElementoDaLista(Deque<Parte> emInicioReferenciaOuObjeto, Qualificadores contexto, Class<?> klass) throws NoSuchFieldException, SecurityException, ClassNotFoundException {
-		throw new RuntimeException();
+	public String lista(Deque<Parte> emInicioReferenciaOuObjeto, Qualificadores contexto, Class<?> klass)
+			throws ProblemaDeCompilacaoException {
+		throw new ProblemaDeCompilacaoException(null, emInicioReferenciaOuObjeto.peek());
+	}
+
+	Objeto<?> classeDoCampo(String campo, Class<?> klass, Deque<Parte> depoisQualificador, Qualificadores contexto,
+			Parte qualificador) throws ProblemaDeCompilacaoException {
+		try {
+			Objeto<?> objeto = new Objeto<>(Classes.getCampo(campo, klass).getType(), qualificador);
+			contexto.put(qualificador.valor(), objeto);
+			return objeto;
+		} catch (NullPointerException semCampo) {
+			throw new ProblemaDeCompilacaoException(semCampo, qualificador);
+		}
 	}
 }

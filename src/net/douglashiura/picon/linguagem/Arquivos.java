@@ -10,13 +10,16 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
+import net.douglashiura.picon.Picon;
+import net.douglashiura.picon.ProblemaDeCompilacaoException;
+
 public class Arquivos {
 
 	private static final String EXTENSAO = ".picon";
 	private static Arquivos unico;
 	private Qualificadores qualificadores;
 
-	private Arquivos() {
+	private Arquivos() throws ProblemaDeCompilacaoException {
 		try {
 			Arquivos.class.getClassLoader();
 			Enumeration<URL> recursos = ClassLoader.getSystemResources("");
@@ -49,13 +52,14 @@ public class Arquivos {
 				ler(filho, arquivos);
 	}
 
-	public static Arquivos getInstance() {
+	public static Arquivos getInstance() throws ProblemaDeCompilacaoException {
 		if (unico == null)
 			unico = new Arquivos();
 		return unico;
 	}
+
 	public Qualificadores explodir() {
 		return qualificadores;
 	}
-	
+
 }

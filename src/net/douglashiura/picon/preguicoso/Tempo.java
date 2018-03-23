@@ -1,5 +1,5 @@
 
-package net.douglashiura.picon;
+package net.douglashiura.picon.preguicoso;
 
 import java.text.DateFormat;
 import java.text.ParseException;

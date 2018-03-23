@@ -4,8 +4,9 @@ import static net.douglashiura.picon.junit.PiconRunner.get;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
@@ -34,7 +35,7 @@ public class TestePiconRunner {
 
 	@Test
 	public void delegateShareObject() {
-		assertNotNull(get("injetadaPeloPicon"));
+		assertNotNull(get("injetada:pelo:picon"));
 		assertNotNull(get("b"));
 	}
 
@@ -50,24 +51,22 @@ public class TestePiconRunner {
 
 	@Test
 	public void montarOutroContexto() throws Exception {
-		assertTrue(injetadaPeloPicon.equals(get("injetadaPeloPicon")));
-		assertTrue(injetadaPeloPicon.equals(get("injetadaPeloPicon")));
+		assertSame(injetadaPeloPicon, get("injetada:pelo:picon"));
 		Contexto outro = PiconRunner.build();
-		assertFalse(injetadaPeloPicon.equals(outro.get("injetadaPeloPicon")));
-		assertFalse(injetadaPeloPicon.equals(outro.get("injetadaPeloPicon")));
-		assertTrue(injetadaPeloPicon.equals(get("injetadaPeloPicon")));
-		assertTrue(injetadaPeloPicon.equals(get("injetadaPeloPicon")));
+		assertNotSame(injetadaPeloPicon, outro.get("injetada:pelo:picon"));
+		assertSame(injetadaPeloPicon, get("injetada:pelo:picon"));
+
 	}
 
 	@Test
 	public void _estadosDeInvocacao() throws Exception {
-		ETipo injetadaPeloPicon = get("injetadaPeloPicon");
+		ETipo injetadaPeloPicon = get("injetada:pelo:picon");
 		assertNotNull(injetadaPeloPicon);
 		assertEquals(injetadaPeloPicon, injetadaPeloPicon);
 		assertNull(semDeclaracaoNaON);
 		assertNotNull(injetadaPeloPicon);
 		assertNotNull(invodadaPelaClasse);
-		assertFalse(invodadaPelaClasse.equals(get("b")));
+		assertNotSame(invodadaPelaClasse,get("b"));
 		assertEquals(semDeclaracaoEqualb, invodadaPelaClasse);
 		assertEquals(semDeclaracaoEqualSemDeclaracaoEqualb, invodadaPelaClasse);
 

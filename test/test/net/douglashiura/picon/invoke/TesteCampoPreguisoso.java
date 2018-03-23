@@ -18,9 +18,12 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
+import net.douglashiura.picon.ProblemaDeCompilacaoException;
+import net.douglashiura.picon.linguagem.Parte;
 import net.douglashiura.picon.linguagem.Qualificadores;
 import net.douglashiura.picon.preguicoso.Campo;
 import net.douglashiura.picon.preguicoso.CampoReferencia;
+import net.douglashiura.picon.preguicoso.CampoValor;
 import net.douglashiura.picon.preguicoso.Contexto;
 import net.douglashiura.picon.preguicoso.Objeto;
 import test.net.douglashiura.picon.Entidade;
@@ -45,7 +48,7 @@ public class TesteCampoPreguisoso {
 	@Test
 	public void refletirLabelNomeValorString() throws Exception {
 		Entidade douglas = new Entidade();
-		Campo campo = new Campo("nome", "Douglas Hiura");
+		CampoValor campo = new CampoValor("nome", "Douglas Hiura", null);
 		campo.configure(douglas, preguisoso);
 		assertEquals("Douglas Hiura", douglas.getNome());
 	}
@@ -53,8 +56,8 @@ public class TesteCampoPreguisoso {
 	@Test
 	public void campoReferencia() throws Exception {
 		Entidade alvo = new Entidade();
-		qualificadores.put("douglas", new Objeto<>(Entidade.class));
-		Campo objeto = new CampoReferencia("entidade", "douglas");
+		qualificadores.put("douglas", new Objeto<>(Entidade.class, null));
+		Campo objeto = new CampoReferencia("entidade", "douglas", null);
 		objeto.configure(alvo, preguisoso);
 		assertEquals(preguisoso.get("douglas"), alvo.getEntidade());
 	}
@@ -62,7 +65,7 @@ public class TesteCampoPreguisoso {
 	@Test
 	public void refletirLabelIdadeValorInteger() throws Exception {
 		Entidade douglas = new Entidade();
-		Campo numero = new Campo("idade", "10");
+		CampoValor numero = new CampoValor("idade", "10", null);
 		numero.configure(douglas, preguisoso);
 		assertEquals(new Integer(10), douglas.getIdade());
 	}
@@ -70,7 +73,7 @@ public class TesteCampoPreguisoso {
 	@Test
 	public void refletirLabelDataValorData() throws Exception {
 		Klasse objeto = new Klasse();
-		Campo tempo = new Campo("data", "2009/10/25 00:00");
+		CampoValor tempo = new CampoValor("data", "2009/10/25 00:00", null);
 		tempo.configure(objeto, preguisoso);
 		assertEquals("2009/10/25", new SimpleDateFormat("yyyy/MM/dd").format(objeto.data));
 	}
@@ -78,7 +81,7 @@ public class TesteCampoPreguisoso {
 	@Test
 	public void refletirLabelDataValorDataHora() throws Exception {
 		Klasse objeto = new Klasse();
-		Campo campo = new Campo("data", "2009/10/25 12:30");
+		CampoValor campo = new CampoValor("data", "2009/10/25 12:30", null);
 		campo.configure(objeto, preguisoso);
 		assertEquals("2009/10/25 12:30", new SimpleDateFormat("yyyy/MM/dd hh:mm").format(objeto.data));
 	}
@@ -86,23 +89,24 @@ public class TesteCampoPreguisoso {
 	@Test
 	public void refletirLabelDataNow() throws Exception {
 		Klasse objeto = new Klasse();
-		Campo tempo = new Campo("data", "now");
+		CampoValor tempo = new CampoValor("data", "now", null);
 		tempo.configure(objeto, preguisoso);
-		assertEquals(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date()), new SimpleDateFormat("yyyy/MM/dd HH:mm").format(objeto.data));
+		assertEquals(new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date()),
+				new SimpleDateFormat("yyyy/MM/dd HH:mm").format(objeto.data));
 	}
 
 	@Test
 	public void refletirEnum() throws Exception {
 		Klasse objeto = new Klasse();
-		Campo enumerado = new Campo("enumerado", "A");
+		CampoValor enumerado = new CampoValor("enumerado", "A", null);
 		enumerado.configure(objeto, preguisoso);
 		assertEquals(Enum.A, objeto.enumerado);
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = ProblemaDeCompilacaoException.class)
 	public void enumInexistente() throws Exception {
 		Klasse objeto = new Klasse();
-		Campo campo = new Campo("enumerado", "INEXISTENTE");
+		CampoValor campo = new CampoValor("enumerado", "INEXISTENTE", new Parte("INEXISTENTE", null, 0));
 		campo.configure(objeto, preguisoso);
 	}
 
@@ -110,7 +114,7 @@ public class TesteCampoPreguisoso {
 	public void refletirUuid() throws Exception {
 		Klasse objeto = new Klasse();
 		UUID uuid = new UUID(1l, 1l);
-		Campo campo = new Campo("uuid", uuid.toString());
+		CampoValor campo = new CampoValor("uuid", uuid.toString(), null);
 		campo.configure(objeto, preguisoso);
 		assertEquals(uuid, objeto.uuid);
 	}

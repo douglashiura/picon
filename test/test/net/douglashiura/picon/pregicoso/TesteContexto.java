@@ -17,7 +17,7 @@ public class TesteContexto {
 	@Before
 	public void setUp() {
 		qualificadores = new Qualificadores();
-		qualificadores.put("douglas", new Objeto<>(Entidade.class));
+		qualificadores.put("douglas", new Objeto<>(Entidade.class,null));
 
 	}
 

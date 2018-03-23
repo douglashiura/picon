@@ -1,24 +1,25 @@
 package net.douglashiura.picon.preguicoso;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 
+import net.douglashiura.picon.ProblemaDeCompilacaoException;
+import net.douglashiura.picon.linguagem.Parte;
+
 public class CampoReferencia extends Campo {
 
-	private String campo;
 	private String qualificador;
 
-	public CampoReferencia(String campo, String qualificador) {
-		super(campo, qualificador);
-		this.campo = campo;
+	public CampoReferencia(String campo, String qualificador, Parte parte) {
+		super(campo, qualificador, parte);
 		this.qualificador = qualificador;
 	}
 
 	@Override
-	public void configure(Object objeto, Contexto contextoPreguisoso) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, NoSuchMethodException, InstantiationException, InvocationTargetException, ParseException {
-		Field campoDeclarado = objeto.getClass().getDeclaredField(campo);
-		campoDeclarado.setAccessible(Boolean.TRUE);
-		campoDeclarado.set(objeto, contextoPreguisoso.get(qualificador));
+	Object valor(Class<?> type, Contexto contexto)
+			throws InstantiationException, IllegalAccessException,  SecurityException,
+			IllegalArgumentException, NoSuchMethodException, InvocationTargetException, ParseException, ProblemaDeCompilacaoException {
+		return contexto.get(qualificador);
 	}
+
 }

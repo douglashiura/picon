@@ -1,6 +1,5 @@
 package net.douglashiura.picon.junit;
 
-import java.io.IOException;
 import java.lang.reflect.Field;
 
 import org.junit.runner.notification.RunNotifier;
@@ -8,8 +7,9 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.InitializationError;
 
+import net.douglashiura.picon.ProblemaDeCompilacaoException;
+import net.douglashiura.picon.linguagem.Arquivos;
 import net.douglashiura.picon.linguagem.Bloco;
-import net.douglashiura.picon.linguagem.Qualificadores;
 import net.douglashiura.picon.preguicoso.Contexto;
 
 public class PiconRunner extends BlockJUnit4ClassRunner {
@@ -32,8 +32,9 @@ public class PiconRunner extends BlockJUnit4ClassRunner {
 		return objectTesting;
 	}
 
-	private void monteOContexto(Object object) throws IOException, IllegalArgumentException, IllegalAccessException {
-		build();
+	private void monteOContexto(Object object)
+			throws ProblemaDeCompilacaoException, IllegalArgumentException, IllegalAccessException {
+		CONTEXTO = build();
 		Field[] declarado = object.getClass().getDeclaredFields();
 		for (Field field : declarado) {
 			field.setAccessible(true);
@@ -43,15 +44,15 @@ public class PiconRunner extends BlockJUnit4ClassRunner {
 		}
 	}
 
-	public static <T> T get(String qualificador) {
+	public static <T> T get(String field) {
 		try {
-			return CONTEXTO.get(qualificador);
+			return CONTEXTO.get(field);
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
-	public static Contexto build() throws IOException {
-		return new Contexto(new Qualificadores());
+	public static Contexto build() throws ProblemaDeCompilacaoException {
+		return new Contexto(Arquivos.getInstance().explodir());
 	}
 }

@@ -3,8 +3,7 @@
  * */
 package net.douglashiura.picon.preguicoso;
 
-import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
+import net.douglashiura.picon.ProblemaDeCompilacaoException;
 
 public class ParametroReferecia implements Parametro {
 
@@ -16,9 +15,7 @@ public class ParametroReferecia implements Parametro {
 	}
 
 	@Override
-	public Object getValor(Contexto contexto)
-			throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException,
-			IllegalArgumentException, NoSuchMethodException, InvocationTargetException, ParseException {
+	public Object getValor(Contexto contexto) throws ProblemaDeCompilacaoException {
 		return contexto.get(valor);
 	}
 

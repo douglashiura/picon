@@ -1,8 +1,8 @@
 package test.net.douglashiura.picon.junit;
 
 import static net.douglashiura.picon.junit.PiconRunner.get;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
@@ -50,22 +50,24 @@ public class TestePiconRunnerCamelCase {
 
 	@Test
 	public void camelCassesDelegateObject() throws Exception {
-		assertEquals(a, get("a"));
-		assertEquals(aB, get("a:b"));
-		assertEquals(abA, get("ab:a"));
-		assertEquals(abAa, get("ab:aa"));
-		assertEquals(abAaa, get("ab:aaa"));
-		assertEquals(ab1, get("ab:1"));
-		assertEquals(ab12, get("ab:12"));
-		assertEquals(ab12A, get("ab:12:a"));
-		assertEquals(ab12Aaa, get("ab:12:aaa"));
-		assertEquals(ab12A1, get("ab:12:a:1"));
-		assertEquals(ab12AaAa, get("ab:12:aa:aa"));
-		assertEquals(ab12AaAa1a, get("ab:12:aa:aa:1a"));
-		assertEquals(poloJaraguaAno2012Periodo2DisciplinaP111, get("polo:jaragua:ano:2012:periodo:2:disciplina:p:111"));
-		assertEquals(poloJaraguaAno2012Periodo2DisciplinaPortugues111, get("polo:jaragua:ano:2012:periodo:2:disciplina:portugues:111"));
-		assertEquals(poloJaraguaAno2012Periodo2DisciplinaPORT111, get("polo:jaragua:ano:2012:periodo:2:disciplina:port:111"));
-		assertEquals(agronomia2012_2, get("agronomia:2012_2"));
+		assertSame(a, get("a"));
+		assertSame(aB, get("a:b"));
+		assertSame(abA, get("ab:a"));
+		assertSame(abAa, get("ab:aa"));
+		assertSame(abAaa, get("ab:aaa"));
+		assertSame(ab1, get("ab:1"));
+		assertSame(ab12, get("ab:12"));
+		assertSame(ab12A, get("ab:12:a"));
+		assertSame(ab12Aaa, get("ab:12:aaa"));
+		assertSame(ab12A1, get("ab:12:a:1"));
+		assertSame(ab12AaAa, get("ab:12:aa:aa"));
+		assertSame(ab12AaAa1a, get("ab:12:aa:aa:1a"));
+		assertSame(poloJaraguaAno2012Periodo2DisciplinaP111, get("polo:jaragua:ano:2012:periodo:2:disciplina:p:111"));
+		assertSame(poloJaraguaAno2012Periodo2DisciplinaPortugues111,
+				get("polo:jaragua:ano:2012:periodo:2:disciplina:portugues:111"));
+		assertSame(poloJaraguaAno2012Periodo2DisciplinaPORT111,
+				get("polo:jaragua:ano:2012:periodo:2:disciplina:port:111"));
+		assertSame(agronomia2012_2, get("agronomia:2012_2"));
 
 	}
 

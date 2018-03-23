@@ -3,11 +3,10 @@
  * */
 package net.douglashiura.picon.preguicoso;
 
-import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.douglashiura.picon.ProblemaDeCompilacaoException;
 import net.douglashiura.picon.linguagem.Qualificadores;
 
 public class Contexto {
@@ -21,7 +20,7 @@ public class Contexto {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T get(String qualificador) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, ParseException {
+	public <T> T get(String qualificador) throws ProblemaDeCompilacaoException {
 		T objeto = (T) instancias.get(qualificador);
 		if (objeto == null) {
 			objeto = (T) qualificadores.get(qualificador).instanciar(this);

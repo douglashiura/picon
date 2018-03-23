@@ -26,27 +26,27 @@ public class TesteAtribuicao {
 	@Before
 	public void setUp() {
 		indentificacoes = new Qualificadores();
-		umObjeto = new Objeto<>(Entidade.class);
+		umObjeto = new Objeto<>(Entidade.class, null);
 	}
 
 	@Test
 	public void referenciaDeElementoDeLista() {
-		assertEquals(Atribuicoes.REFERENCIA, Atribuicoes.deElementoDeLista("#", "referencia"));
+		assertEquals(Atribuicoes.REFERENCIA, Atribuicoes.deLista("#", "referencia"));
 	}
 
 	@Test
 	public void compostoDeElementoDeLista() {
-		assertEquals(Atribuicoes.COMPOSTA, Atribuicoes.deElementoDeLista("entidade", "["));
+		assertEquals(Atribuicoes.COMPOSTA, Atribuicoes.deLista("entidade", "["));
 	}
 
 	@Test
 	public void compostoComConstrutorDeElementoDeLista() {
-		assertEquals(Atribuicoes.COMPOSTA_COM_CONSTRUTOR, Atribuicoes.deElementoDeLista("entidade", "<"));
+		assertEquals(Atribuicoes.COMPOSTA_COM_CONSTRUTOR, Atribuicoes.deLista("entidade", "<"));
 	}
 
 	@Test
 	public void invalidaComConstrutorDeElementoDeLista() {
-		assertEquals(Atribuicoes.INVALIDA, Atribuicoes.deElementoDeLista("entidade", "Douglas"));
+		assertEquals(Atribuicoes.INVALIDA, Atribuicoes.deLista("entidade", "Douglas"));
 	}
 
 	@Test
@@ -78,7 +78,7 @@ public class TesteAtribuicao {
 	public void listaProcessar() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{}]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
-		Campo campo = Atribuicoes.LISTA.processarDoObjeto(emQualificador, "entidades", umObjeto, indentificacoes);
+		Campo campo = Atribuicoes.LISTA.objeto(emQualificador, "entidades", umObjeto, indentificacoes);
 		assertEquals("]", emQualificador.pop().valor());
 		assertEquals("entidades", campo.getCampo());
 		assertEquals("[]", campo.getValor());
@@ -88,7 +88,7 @@ public class TesteAtribuicao {
 	public void valorProcessar() throws Exception {
 		String texto = "=10]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
-		Campo campo = Atribuicoes.VALOR.processarDoObjeto(emQualificador, "idade", umObjeto, indentificacoes);
+		Campo campo = Atribuicoes.VALOR.objeto(emQualificador, "idade", umObjeto, indentificacoes);
 		assertEquals("]", emQualificador.pop().valor());
 		assertEquals("idade", campo.getCampo());
 		assertEquals("10", campo.getValor());
@@ -96,10 +96,10 @@ public class TesteAtribuicao {
 
 	@Test
 	public void compostoComConstrutorProcessar() throws Exception {
-		umObjeto = new Objeto<>(EntidadeComConstrutor.class);
+		umObjeto = new Objeto<>(EntidadeComConstrutor.class,null);
 		String texto = "francisco<>[]]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
-		Campo campo = Atribuicoes.COMPOSTA_COM_CONSTRUTOR.processarDoObjeto(emQualificador, "pedro", umObjeto, indentificacoes);
+		Campo campo = Atribuicoes.COMPOSTA_COM_CONSTRUTOR.objeto(emQualificador, "pedro", umObjeto, indentificacoes);
 		Objeto<?> francisco = indentificacoes.get("francisco");
 		assertEquals("]", emQualificador.pop().valor());
 		assertEquals("pedro", campo.getCampo());
@@ -112,7 +112,7 @@ public class TesteAtribuicao {
 	public void referenciaProcessar() throws Exception {
 		String texto = "#pedro]";
 		Deque<Parte> emCadeia = Partes.explodir(texto);
-		Campo campo = Atribuicoes.REFERENCIA.processarDoObjeto(emCadeia, "entidade", umObjeto, indentificacoes);
+		Campo campo = Atribuicoes.REFERENCIA.objeto(emCadeia, "entidade", umObjeto, indentificacoes);
 		assertEquals("]", emCadeia.pop().valor());
 		assertEquals("entidade", campo.getCampo());
 		assertEquals("pedro", campo.getValor());
@@ -122,7 +122,7 @@ public class TesteAtribuicao {
 	public void compostoProcessar() throws Exception {
 		String texto = "pedro[]]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
-		Campo campo = Atribuicoes.COMPOSTA.processarDoObjeto(emQualificador, "entidade", umObjeto, indentificacoes);
+		Campo campo = Atribuicoes.COMPOSTA.objeto(emQualificador, "entidade", umObjeto, indentificacoes);
 		assertEquals("]", emQualificador.pop().valor());
 		assertEquals("entidade", campo.getCampo());
 		assertEquals("pedro", campo.getValor());

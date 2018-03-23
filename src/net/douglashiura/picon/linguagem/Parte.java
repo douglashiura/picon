@@ -14,7 +14,7 @@ public class Parte {
 	private Parte anterior;
 	private int linha;
 
-	Parte(String valor, Parte anterior, int linha) {
+	public Parte(String valor, Parte anterior, int linha) {
 		this.valor = valor;
 		this.anterior = anterior;
 		this.linha = linha;

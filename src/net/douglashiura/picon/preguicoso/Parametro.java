@@ -1,14 +1,10 @@
 package net.douglashiura.picon.preguicoso;
 
-import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
+import net.douglashiura.picon.ProblemaDeCompilacaoException;
 
 public interface Parametro {
 
-
-
-
-	Object getValor(Contexto contexto) throws InstantiationException, IllegalAccessException, NoSuchFieldException, SecurityException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, ParseException;
+	Object getValor(Contexto contexto) throws ProblemaDeCompilacaoException;
 
 	String getValorDeclarado();
 
