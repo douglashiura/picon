@@ -16,17 +16,21 @@ public class ProcessadorDeCampos {
 		this.qualificadores = qualificadores;
 	}
 
-	public void processar(Deque<Parte> inicioDeColchetes, Objeto<?> objeto)
-			throws  ProblemaDeCompilacaoException {
-		inicioDeColchetes.pop();
-		while (!"]".equals(inicioDeColchetes.peek().valor())) {
-			Parte campo = inicioDeColchetes.pop();
-			Parte valor = inicioDeColchetes.pop();
-			Atribuicoes atribuicao = Atribuicoes.deAtributo(valor.valor(), inicioDeColchetes.peek().valor());
-			inicioDeColchetes.push(valor);
-			Campo comando = atribuicao.objeto(inicioDeColchetes, campo.valor(), objeto, qualificadores);
+	public void processar(Deque<Parte> inicioDeColchetesOuMenor, Objeto<?> objeto)
+			throws ProblemaDeCompilacaoException {
+		String valorDecisao = inicioDeColchetesOuMenor.peek().valor();
+		if ("<".equals(valorDecisao)) {
+			new ProcessadorDeConstrutor(objeto).processar(inicioDeColchetesOuMenor);
+		}
+		inicioDeColchetesOuMenor.pop();
+		while (!"]".equals(inicioDeColchetesOuMenor.peek().valor())) {
+			Parte campo = inicioDeColchetesOuMenor.pop();
+			Parte valor = inicioDeColchetesOuMenor.pop();
+			Atribuicoes atribuicao = Atribuicoes.deAtributo(valor.valor(), inicioDeColchetesOuMenor.peek().valor());
+			inicioDeColchetesOuMenor.push(valor);
+			Campo comando = atribuicao.objeto(inicioDeColchetesOuMenor, campo.valor(), objeto, qualificadores);
 			objeto.adicionar(comando);
 		}
-		inicioDeColchetes.pop();
+		inicioDeColchetesOuMenor.pop();
 	}
 }

@@ -217,6 +217,22 @@ public class TesteProcessadorDeCampos {
 		assertEquals(ParametroValor.class, francisco.getParametros().get(1).getClass());
 		assertTrue(emQualificador.isEmpty());
 	}
+	
+	@Test
+	public void compostoComConstrutorProcessarComDoisParametroInicio() throws Exception {
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class,null);
+		String texto = "<10 'Douglas'>[]";
+		Deque<Parte> emQualificador = Partes.explodir(texto);
+		atribuicoes.processar(emQualificador, preguicoso);
+		assertEquals(2, preguicoso.getParametros().size());
+		assertEquals(0, preguicoso.getCampos().size());
+		assertEquals("10", preguicoso.getParametros().get(0).getValorDeclarado());
+		assertEquals(ParametroValor.class, preguicoso.getParametros().get(0).getClass());
+		assertEquals("Douglas", preguicoso.getParametros().get(1).getValorDeclarado());
+		assertEquals(ParametroValor.class, preguicoso.getParametros().get(1).getClass());
+		assertTrue(emQualificador.isEmpty());
+	}
+	
 
 	@Test
 	public void compostoComConstrutorProcessarComReferenciaParametro() throws Exception {
@@ -253,6 +269,26 @@ public class TesteProcessadorDeCampos {
 		assertEquals(ParametroValor.class, francisco.getParametros().get(0).getClass());
 		assertEquals("francisco", francisco.getParametros().get(1).getValorDeclarado());
 		assertEquals(ParametroReferecia.class, francisco.getParametros().get(1).getClass());
+		assertTrue(emQualificador.isEmpty());
+	}
+	
+	@Test
+	public void compostoComConstrutorProcessarComReferenciaParametroStringInvert() throws Exception {
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class,null);
+		String texto = "[pedro=francisco <#francisco 'Douglas'>[]]";
+		Deque<Parte> emQualificador = Partes.explodir(texto);
+		atribuicoes.processar(emQualificador, preguicoso);
+		Objeto<Object> francisco = qualificadores.get("francisco");
+		assertEquals(0, preguicoso.getParametros().size());
+		assertEquals(1, preguicoso.getCampos().size());
+		assertEquals("pedro", preguicoso.getCampos().get(0).getCampo());
+		assertEquals("francisco", preguicoso.getCampos().get(0).getValor());
+		assertEquals(2, francisco.getParametros().size());
+		assertEquals(0, francisco.getCampos().size());
+		assertEquals("Douglas", francisco.getParametros().get(1).getValorDeclarado());
+		assertEquals(ParametroValor.class, francisco.getParametros().get(1).getClass());
+		assertEquals("francisco", francisco.getParametros().get(0).getValorDeclarado());
+		assertEquals(ParametroReferecia.class, francisco.getParametros().get(0).getClass());
 		assertTrue(emQualificador.isEmpty());
 	}
 

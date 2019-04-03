@@ -39,6 +39,23 @@ public class TesteProcessadorDeConjunto {
 		assertEquals(0, uid2.getCampos().size());
 		assertTrue(iterator.isEmpty());
 	}
+	
+
+	@Test
+	public void umObjetosComParrametro() throws Exception {
+		String texto = "test.net.douglashiura.picon.EntidadeComConstrutor{uid2[] uid1<'Douglas' #uid2>[]}";
+		Deque<Parte> iterator = Partes.explodir(texto);
+		atribuicoes.processar(iterator);
+		Objeto<Entidade> uid1 = qualificadores.get("uid1");
+		Objeto<Entidade> uid2 = qualificadores.get("uid2");
+		assertEquals(2, uid1.getParametros().size());
+		assertEquals(0, uid1.getCampos().size());
+		assertEquals(0, uid2.getParametros().size());
+		assertEquals(0, uid2.getCampos().size());
+		assertTrue(iterator.isEmpty());
+	}
+	
+	
 	@Test
 	public void vazio() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{}";
