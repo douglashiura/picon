@@ -4,6 +4,7 @@ import net.douglashiura.picon.linguagem.Parte;
 
 public class ProblemaDeCompilacaoException extends Exception {
 	private static final long serialVersionUID = 1L;
+	private static final Integer RASTRO_MAXIMO = 3;
 	private Parte toke;
 
 	public ProblemaDeCompilacaoException(Throwable throwable, Parte t) {
@@ -13,19 +14,18 @@ public class ProblemaDeCompilacaoException extends Exception {
 
 	@Override
 	public String getMessage() {
-		return "Em linha " + toke.getLinha() + " com \"" + tokes() + "\"";
+		return "Em linha " + (null == toke ? "null" : toke.getLinha()) + " com \"" + tokes() + "\"";
 	}
 
 	public String tokes() {
 		String linha = "";
 		Parte inicio = toke;
-		int maximoDeTokes = 3;
-		while (inicio != null && 0 < maximoDeTokes--) {
+		Integer atual = RASTRO_MAXIMO;
+		while (inicio != null && 0 < atual--) {
 			linha = inicio.valor() + " " + linha;
 			inicio = inicio.getAnterior();
 		}
 		return linha;
 	}
 
-	
 }

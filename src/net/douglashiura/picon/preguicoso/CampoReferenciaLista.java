@@ -20,7 +20,7 @@ public class CampoReferenciaLista extends Campo {
 	@Override
 	Object valor(Class<?> type, Contexto contexto)
 			throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException,
-			ParseException, NoSuchMethodException, SecurityException,ProblemaDeCompilacaoException {
+			ParseException, NoSuchMethodException, SecurityException, ProblemaDeCompilacaoException {
 		return estrategia.valor(type, contexto);
 	}
 }

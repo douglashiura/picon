@@ -103,6 +103,18 @@ public class TesteObjeto {
 		assertEquals(1, objeto.getEntidades().size());
 		assertEquals(contexto.get("douglas"), objeto.getEntidades().get(0));
 	}
+	
+	@Test
+	public void campoConjuntoReferencia() throws Exception {
+		qualificadores.put("douglas", new Objeto<>(Entidade.class, null));
+		contexto = new Contexto(qualificadores);
+		Estrategia estrategia = new EstrategiaReferencia(qualificadores, Entidade.class);
+		estrategia.adicionar("douglas");
+		objetoEntidade.adicionar(new CampoReferenciaLista("conjunto", estrategia, null));
+		Entidade objeto = objetoEntidade.instanciar(contexto);
+		assertEquals(1, objeto.getConjunto().size());
+		assertEquals(contexto.get("douglas"), objeto.getConjunto().iterator().next());
+	}
 
 	@Test
 	public void campoListaValorString() throws Exception {

@@ -1,7 +1,5 @@
 package net.douglashiura.picon.junit;
 
-import net.douglashiura.picon.junit.PiconRunner;
-
 import org.junit.runner.Runner;
 import org.junit.runners.model.RunnerBuilder;
 

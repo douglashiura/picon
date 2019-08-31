@@ -24,36 +24,36 @@ public class Partes {
 		int linha = 1;
 		String esteToke = "";
 		boolean escapando = false;
-		for (char e : texto.toCharArray()) {
-			if (ehNormal(e, escapando)) {
-				if (ehToke(e, RESERVADO)) {
+		for (char entrada : texto.toCharArray()) {
+			if (ehNormal(entrada, escapando)) {
+				if (ehToke(entrada, RESERVADO)) {
 					if (!esteToke.isEmpty()) {
 						tokens.add(anterior = new Parte(esteToke, anterior, linha));
 					}
-					tokens.add(anterior = new Parte(new String(new char[] { e }), anterior, linha));
+					tokens.add(anterior = new Parte(new String(new char[] { entrada }), anterior, linha));
 					esteToke = "";
-				} else if (!ehToke(e, QUEBRA)) {
-					esteToke += e;
+				} else if (!ehToke(entrada, QUEBRA)) {
+					esteToke += entrada;
 				} else if (!esteToke.isEmpty()) {
 					tokens.add(anterior = new Parte(esteToke, anterior, linha));
 					esteToke = "";
 				}
 			} else {
-				if (!escapando && e == ESCAPAR) {
+				if (!escapando && entrada == ESCAPAR) {
 					if (!esteToke.isEmpty()) {
 						tokens.add(anterior = new Parte(esteToke, anterior, linha));
 						esteToke = "";
 					}
 					escapando = true;
-				} else if (escapando && e != ESCAPAR) {
-					esteToke += e;
-				} else if (escapando && e == ESCAPAR) {
+				} else if (escapando && entrada != ESCAPAR) {
+					esteToke += entrada;
+				} else if (escapando && entrada == ESCAPAR) {
 					tokens.add(anterior = new Parte(esteToke, anterior, linha));
 					esteToke = "";
 					escapando = false;
 				}
 			}
-			linha = ehQuebraLinha(e) ? linha + 1 : linha;
+			linha = ehQuebraLinha(entrada) ? linha + 1 : linha;
 		}
 		if (!esteToke.isEmpty()) {
 			tokens.add(anterior = new Parte(esteToke, anterior, linha));
@@ -61,17 +61,17 @@ public class Partes {
 		return tokens;
 	}
 
-	private static boolean ehQuebraLinha(char e) {
-		return e == QUEBRA_LINHA;
+	private static boolean ehQuebraLinha(char entrada) {
+		return entrada == QUEBRA_LINHA;
 	}
 
-	private static boolean ehNormal(char e, boolean escapando) {
-		return e != ESCAPAR && !escapando;
+	private static boolean ehNormal(char entrada, boolean escapando) {
+		return entrada != ESCAPAR && !escapando;
 	}
 
-	private static boolean ehToke(char e, char[] chars) {
+	private static boolean ehToke(char entrada, char[] chars) {
 		for (char quebra : chars) {
-			if (quebra == e) {
+			if (quebra == entrada) {
 				return true;
 			}
 		}

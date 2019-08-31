@@ -16,10 +16,15 @@ import net.douglashiura.picon.ProblemaDeCompilacaoException;
 public class Arquivos {
 
 	private static final String EXTENSAO = ".picon";
-	private static Arquivos unico;
+	private static Arquivos UNICO;
 	private Qualificadores qualificadores;
 
 	private Arquivos() throws ProblemaDeCompilacaoException {
+		System.out.println(
+				"Licença do Picon - está versão é grátis para desenvolvimento de software livre ou não comercial.\n"
+						+ "Para uso durante o desenvolvimento de software comercial contate\no Laboratório de Engenharia de Software e Banco de Dados situado na \n"
+						+ "Universidade Federal de Santa Catarina\n" + "Campus Universitário\n" + "INE – Sala 308\n"
+						+ "Florianópolis, Santa Catarina, Brasil\n" + "Telefone: +55 (48) 3721-4712");
 		try {
 			Arquivos.class.getClassLoader();
 			Enumeration<URL> recursos = ClassLoader.getSystemResources("");
@@ -35,8 +40,8 @@ public class Arquivos {
 				fluxo.read(arquivo);
 				fluxo.close();
 				texto.append(new String(arquivo));
-			}			
-			qualificadores=Picon.explodir(Partes.explodir(texto.toString()));
+			}
+			qualificadores = Picon.explodir(Partes.explodir(texto.toString()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
@@ -53,9 +58,7 @@ public class Arquivos {
 	}
 
 	public static Arquivos getInstance() throws ProblemaDeCompilacaoException {
-		if (unico == null)
-			unico = new Arquivos();
-		return unico;
+		return UNICO = UNICO == null ? new Arquivos() : UNICO;
 	}
 
 	public Qualificadores explodir() {

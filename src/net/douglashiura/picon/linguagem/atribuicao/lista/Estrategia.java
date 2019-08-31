@@ -1,7 +1,7 @@
 package net.douglashiura.picon.linguagem.atribuicao.lista;
 
-import java.util.ArrayList;
 import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.douglashiura.picon.ProblemaDeCompilacaoException;
@@ -12,7 +12,7 @@ public abstract class Estrategia {
 	private List<String> parametros;
 
 	public Estrategia() {
-		parametros = new ArrayList<>();
+		parametros = new LinkedList<String>();
 	}
 
 	public abstract void processar(Deque<Parte> pilha) throws ProblemaDeCompilacaoException;

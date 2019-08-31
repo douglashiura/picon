@@ -3,6 +3,7 @@ package net.douglashiura.picon.linguagem.atribuicao;
 import java.util.Deque;
 
 import net.douglashiura.picon.ProblemaDeCompilacaoException;
+import net.douglashiura.picon.linguagem.Carregadores;
 import net.douglashiura.picon.linguagem.Parte;
 import net.douglashiura.picon.linguagem.Qualificadores;
 import net.douglashiura.picon.linguagem.atribuicao.lista.Estrategia;
@@ -19,7 +20,7 @@ public class ProcessadorDeLista {
 			throws ProblemaDeCompilacaoException {
 		this.contexto = contexto;
 		try {
-			klass = Class.forName(klassName);
+			klass = Carregadores.buscarClasse(klassName);
 		} catch (ClassNotFoundException e) {
 			throw new ProblemaDeCompilacaoException(e, parte);
 		}

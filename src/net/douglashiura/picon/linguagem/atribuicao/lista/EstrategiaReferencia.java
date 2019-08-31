@@ -1,8 +1,11 @@
 package net.douglashiura.picon.linguagem.atribuicao.lista;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Deque;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.douglashiura.picon.ProblemaDeCompilacaoException;
 import net.douglashiura.picon.linguagem.Parte;
@@ -33,11 +36,15 @@ public class EstrategiaReferencia extends Estrategia {
 	@Override
 	public Object valor(Class<?> type, Contexto contexto) throws ProblemaDeCompilacaoException {
 		List<String> parametros = getParametros();
-		List<Object> objetos = new ArrayList<>(parametros.size());
+		Collection<Object> objetos = tipoDeColecao(type, parametros.size());
 		for (String qualificador : parametros) {
 			Object objeto = contexto.get(qualificador);
 			objetos.add(objeto);
 		}
 		return objetos;
+	}
+
+	private Collection<Object> tipoDeColecao(Class<?> type, Integer quantos) {
+		return Set.class.equals(type) ? new HashSet<>(quantos) : new ArrayList<>(quantos);
 	}
 }

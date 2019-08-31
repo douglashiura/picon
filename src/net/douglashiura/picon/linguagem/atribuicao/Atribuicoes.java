@@ -47,7 +47,6 @@ public enum Atribuicoes {
 		public Campo objeto(Deque<Parte> emQualificador, String campo, Objeto<?> objeto, Qualificadores contexto)
 				throws ProblemaDeCompilacaoException {
 			Parte qualificador = emQualificador.pop();
-			;
 			Objeto<?> objetoPreguicoso = classeDoCampo(campo, objeto.getKlasse(), emQualificador, contexto,
 					qualificador);
 			ProcessadorDeCampos processador = new ProcessadorDeCampos(contexto);

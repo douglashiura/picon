@@ -18,7 +18,6 @@ public class TesteContexto {
 	public void setUp() {
 		qualificadores = new Qualificadores();
 		qualificadores.put("douglas", new Objeto<>(Entidade.class,null));
-
 	}
 
 	@Test
