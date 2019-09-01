@@ -5,7 +5,6 @@ import java.net.URLClassLoader;
 public class Carregadores {
 
 	public static Class<?> buscarClasse(String nomeDaKlasse) throws ClassNotFoundException {
-
 		for (ClassLoader carregador : getCarregadores()) {
 			try {
 				return carregar(nomeDaKlasse, carregador);

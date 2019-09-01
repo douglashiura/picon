@@ -14,7 +14,7 @@ import java.util.Deque;
 
 public class Partes {
 	private static char QUEBRA_LINHA = '\n';
-	private static char[] QUEBRA = { ' ', QUEBRA_LINHA, '	', '=', ';' };
+	private static char[] QUEBRA = { ' ','	', QUEBRA_LINHA, ',','\r', '=', ';' };
 	private static char[] RESERVADO = { '{', '}', '*', '[', ']', '#', '<', '>' };
 	private static char ESCAPAR = '\'';
 

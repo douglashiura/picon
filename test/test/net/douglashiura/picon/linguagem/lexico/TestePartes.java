@@ -29,7 +29,7 @@ public class TestePartes {
 
 	@Test
 	public void essesTokesEstranhos() {
-		Deque<Parte> tokens = Partes.explodir("pedro[]\ndouglas<#pedro>[]");
+		Deque<Parte> tokens = Partes.explodir("pedro[]\n\rdouglas<#pedro>[]");
 		assertEquals(10, tokens.size());
 	}
 
