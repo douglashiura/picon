@@ -30,7 +30,6 @@ public class Arquivos {
 			List<File> arquivos = new ArrayList<File>();
 			while (recursos.hasMoreElements()) {
 				URL url = (URL) recursos.nextElement();
-				System.out.println(url.getFile());
 				ler(new File(url.getFile()), arquivos);
 			}
 			StringBuffer texto = new StringBuffer();
