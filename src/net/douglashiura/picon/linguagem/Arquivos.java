@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -31,7 +30,8 @@ public class Arquivos {
 			List<File> arquivos = new ArrayList<File>();
 			while (recursos.hasMoreElements()) {
 				URL url = (URL) recursos.nextElement();
-				ler(new File(url.toURI()), arquivos);
+				System.out.println(url.getFile());
+				ler(new File(url.getFile()), arquivos);
 			}
 			StringBuffer texto = new StringBuffer();
 			for (File filos : arquivos) {
@@ -43,8 +43,6 @@ public class Arquivos {
 			}
 			qualificadores = Picon.explodir(Partes.explodir(texto.toString()));
 		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 	}
