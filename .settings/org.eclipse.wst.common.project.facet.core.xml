@@ -3,5 +3,9 @@
   <fixed facet="jst.utility"/>
   <fixed facet="java"/>
   <installed facet="jst.utility" version="1.0"/>
+<<<<<<< HEAD
   <installed facet="java" version="1.7"/>
+=======
+  <installed facet="java" version="1.8"/>
+>>>>>>> branch 'version-lazy' of https://github.com/douglashiura/picon.git
 </faceted-project>
