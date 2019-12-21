@@ -1,0 +1,90 @@
+test.net.douglashiura.picon.Entidade{
+	UIDA[]
+	UID1[	
+			nome 'Douglas Hiura';
+			idade 10;
+			uuid=792e72a0-6add-11e2-81bd-0019d288d6b2
+			superUuid=792e72a0-6add-11e2-81bd-0019d288d6b2
+		]
+	UID2[
+			nome Douglas2;
+			entidade #UID1;
+		]
+	UID3[
+			nome Douglas3;
+			entidade UID4[nome Douglas4;]
+		]				
+	UID5[
+			nome Hiura5;
+			entidades test.net.douglashiura.picon.Entidade{
+					UID6[nome Douglas6;idade=6;]
+					UID7[entidade UID3[nome Douglas33;]]
+					UID8[entidades test.net.douglashiura.picon.Entidade{};]
+					#UID9
+			}
+		]	
+}
+
+test.net.douglashiura.picon.Entidade{}
+test.net.douglashiura.picon.Entidade{tt[enums test.net.douglashiura.picon.Enum{A}]}
+test.net.douglashiura.picon.Entidade{agua[strings String{a b c}]}
+test.net.douglashiura.picon.Entidade{t[strings String {douglas}]}
+test.net.douglashiura.picon.Entidade{f[strings String {douglas pedro}]}
+test.net.douglashiura.picon.Entidade{as[strings String {}]}
+
+test.net.douglashiura.picon.Entidade{
+	exemplo:de:data[natal='2017/12/25 00:00']
+	agora[natal=now]
+	proximo:ano[natal='+1/12/25']
+	mes:anterior[natal='2017/-1/25']
+}
+
+test.net.douglashiura.picon.EntidadeComConstrutor{
+	construtor:douglas<'Douglas'>[]
+	referencia<#construtor:douglas>[]
+	dois:parametros<'Douglas' #construtor:douglas>[]
+}
+
+
+test.net.douglashiura.picon.Entidade{UID9[]}
+test.net.douglashiura.picon.ETipo{}
+test.net.douglashiura.picon.ETipo{UID10[]}
+test.net.douglashiura.picon.ETipo{
+	UID11[
+		entidade UID11[ nome = 'douglas hiura'; ]
+	]
+}
+
+test.net.douglashiura.picon.ETipo{
+	UID12[
+		entidade #UID2
+	]
+}
+
+test.net.douglashiura.picon.ETipo{
+	UID13[
+		entidades test.net.douglashiura.picon.Entidade{}
+		entidade #UID2
+	]
+}
+
+test.net.douglashiura.picon.ETipo{
+	UID13[
+		entidades test.net.douglashiura.picon.Entidade{
+			#UID2;#UID3;UID14[nome=douglas14]
+		}
+	]
+	UID15[
+		entidades 	test.net.douglashiura.picon.Entidade{
+						#UID2;#UID3;
+						UID17[entidades test.net.douglashiura.picon.Entidade{UID16[nome=Douglas]}]
+					}
+	]
+}
+
+
+
+
+
+
+

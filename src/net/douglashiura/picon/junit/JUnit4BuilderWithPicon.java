@@ -1,5 +1,10 @@
 package net.douglashiura.picon.junit;
 
+<<<<<<< HEAD
+=======
+import net.douglashiura.picon.junit.PiconRunner;
+
+>>>>>>> branch 'master' of https://github.com/douglashiura/picon.git
 import org.junit.runner.Runner;
 import org.junit.runners.model.RunnerBuilder;
 
