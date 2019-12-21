@@ -67,7 +67,7 @@ public class TesteCampoPreguisoso {
 		Entidade douglas = new Entidade();
 		CampoValor numero = new CampoValor("idade", "10", null);
 		numero.configure(douglas, preguisoso);
-		assertEquals(new Integer(10), douglas.getIdade());
+		assertEquals(Integer.valueOf(10), douglas.getIdade());
 	}
 
 	@Test

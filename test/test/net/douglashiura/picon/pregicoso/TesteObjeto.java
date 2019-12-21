@@ -70,7 +70,7 @@ public class TesteObjeto {
 	public void campoIdade() throws Exception {
 		objetoEntidade.adicionar(new CampoValor("idade", "1", null));
 		Entidade objeto = objetoEntidade.instanciar(contexto);
-		assertEquals(new Integer(1), objeto.getIdade());
+		assertEquals(Integer.valueOf(1), objeto.getIdade());
 	}
 
 	@Test
@@ -103,7 +103,7 @@ public class TesteObjeto {
 		assertEquals(1, objeto.getEntidades().size());
 		assertEquals(contexto.get("douglas"), objeto.getEntidades().get(0));
 	}
-	
+
 	@Test
 	public void campoConjuntoReferencia() throws Exception {
 		qualificadores.put("douglas", new Objeto<>(Entidade.class, null));
@@ -146,6 +146,6 @@ public class TesteObjeto {
 		objetoEntidade.adicionar(new CampoValor("idade", "1", null));
 		Entidade objeto = objetoEntidade.instanciar(contexto);
 		assertEquals("Douglas", objeto.getNome());
-		assertEquals(new Integer(1), objeto.getIdade());
+		assertEquals(Integer.valueOf(1), objeto.getIdade());
 	}
 }

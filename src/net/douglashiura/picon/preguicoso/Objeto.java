@@ -28,8 +28,8 @@ public class Objeto<T> {
 		T objeto;
 		if (parametros.isEmpty())
 			try {
-				objeto = klass.newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
+				objeto = klass.getDeclaredConstructor().newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				throw new ProblemaDeCompilacaoException(e, parte);
 			}
 		else
