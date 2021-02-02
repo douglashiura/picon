@@ -24,7 +24,7 @@
 			<testResource>
 				<directory>test</directory>
 				<excludes>
-					<exclude>**/*.java</exclude>
+					<exclude>**/*.*</exclude>
 				</excludes>
 			</testResource>
 		</testResources>
