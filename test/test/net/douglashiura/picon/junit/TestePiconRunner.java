@@ -1,6 +1,6 @@
 package test.net.douglashiura.picon.junit;
 
-import static net.douglashiura.picon.junit.PiconRunner.get;
+import static com.github.douglashiura.picon.junit.PiconRunner.get;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -10,8 +10,9 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.junit.PiconRunner;
-import net.douglashiura.picon.preguicoso.Contexto;
+import com.github.douglashiura.picon.junit.PiconRunner;
+import com.github.douglashiura.picon.preguicoso.Contexto;
+
 import test.net.douglashiura.picon.ETipo;
 
 public class TestePiconRunner {

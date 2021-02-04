@@ -9,7 +9,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.preguicoso.Tempo;
+import com.github.douglashiura.picon.preguicoso.Tempo;
 
 public class TesteCompiladorDeTempo {
 	private SimpleDateFormat formato = new SimpleDateFormat("yyyy/MM/dd hh:mm");

@@ -8,12 +8,13 @@ import java.util.Deque;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.douglashiura.picon.linguagem.Parte;
-import net.douglashiura.picon.linguagem.Partes;
-import net.douglashiura.picon.linguagem.atribuicao.ProcessadorDeConstrutor;
-import net.douglashiura.picon.preguicoso.Objeto;
-import net.douglashiura.picon.preguicoso.ParametroReferecia;
-import net.douglashiura.picon.preguicoso.ParametroValor;
+import com.github.douglashiura.picon.linguagem.Parte;
+import com.github.douglashiura.picon.linguagem.Partes;
+import com.github.douglashiura.picon.linguagem.atribuicao.ProcessadorDeConstrutor;
+import com.github.douglashiura.picon.preguicoso.Objeto;
+import com.github.douglashiura.picon.preguicoso.ParametroReferecia;
+import com.github.douglashiura.picon.preguicoso.ParametroValor;
+
 import test.net.douglashiura.picon.EntidadeComConstrutor;
 
 public class TesteProcessadorDeConstrutor {

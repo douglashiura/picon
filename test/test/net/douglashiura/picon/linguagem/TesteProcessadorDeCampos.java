@@ -19,17 +19,18 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.douglashiura.picon.ProblemaDeCompilacaoException;
-import net.douglashiura.picon.linguagem.Parte;
-import net.douglashiura.picon.linguagem.Partes;
-import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.linguagem.atribuicao.ProcessadorDeCampos;
-import net.douglashiura.picon.preguicoso.Campo;
-import net.douglashiura.picon.preguicoso.CampoReferencia;
-import net.douglashiura.picon.preguicoso.CampoReferenciaLista;
-import net.douglashiura.picon.preguicoso.Objeto;
-import net.douglashiura.picon.preguicoso.ParametroReferecia;
-import net.douglashiura.picon.preguicoso.ParametroValor;
+import com.github.douglashiura.picon.ProblemaDeCompilacaoException;
+import com.github.douglashiura.picon.linguagem.Parte;
+import com.github.douglashiura.picon.linguagem.Partes;
+import com.github.douglashiura.picon.linguagem.Qualificadores;
+import com.github.douglashiura.picon.linguagem.atribuicao.ProcessadorDeCampos;
+import com.github.douglashiura.picon.preguicoso.Campo;
+import com.github.douglashiura.picon.preguicoso.CampoReferencia;
+import com.github.douglashiura.picon.preguicoso.CampoReferenciaLista;
+import com.github.douglashiura.picon.preguicoso.Objeto;
+import com.github.douglashiura.picon.preguicoso.ParametroReferecia;
+import com.github.douglashiura.picon.preguicoso.ParametroValor;
+
 import test.net.douglashiura.picon.Entidade;
 import test.net.douglashiura.picon.EntidadeComConstrutor;
 

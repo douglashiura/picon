@@ -7,13 +7,13 @@ import java.util.Deque;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.Picon;
-import net.douglashiura.picon.ProblemaDeCompilacaoException;
-import net.douglashiura.picon.linguagem.Parte;
-import net.douglashiura.picon.linguagem.Partes;
-import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.preguicoso.Contexto;
-import net.douglashiura.picon.preguicoso.Objeto;
+import com.github.douglashiura.picon.Picon;
+import com.github.douglashiura.picon.ProblemaDeCompilacaoException;
+import com.github.douglashiura.picon.linguagem.Parte;
+import com.github.douglashiura.picon.linguagem.Partes;
+import com.github.douglashiura.picon.linguagem.Qualificadores;
+import com.github.douglashiura.picon.preguicoso.Contexto;
+import com.github.douglashiura.picon.preguicoso.Objeto;
 
 public class TestePicon {
 

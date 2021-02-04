@@ -18,14 +18,15 @@ import java.util.UUID;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.douglashiura.picon.ProblemaDeCompilacaoException;
-import net.douglashiura.picon.linguagem.Parte;
-import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.preguicoso.Campo;
-import net.douglashiura.picon.preguicoso.CampoReferencia;
-import net.douglashiura.picon.preguicoso.CampoValor;
-import net.douglashiura.picon.preguicoso.Contexto;
-import net.douglashiura.picon.preguicoso.Objeto;
+import com.github.douglashiura.picon.ProblemaDeCompilacaoException;
+import com.github.douglashiura.picon.linguagem.Parte;
+import com.github.douglashiura.picon.linguagem.Qualificadores;
+import com.github.douglashiura.picon.preguicoso.Campo;
+import com.github.douglashiura.picon.preguicoso.CampoReferencia;
+import com.github.douglashiura.picon.preguicoso.CampoValor;
+import com.github.douglashiura.picon.preguicoso.Contexto;
+import com.github.douglashiura.picon.preguicoso.Objeto;
+
 import test.net.douglashiura.picon.Entidade;
 import test.net.douglashiura.picon.Enum;
 

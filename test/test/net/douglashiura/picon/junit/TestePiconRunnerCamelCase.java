@@ -1,6 +1,6 @@
 package test.net.douglashiura.picon.junit;
 
-import static net.douglashiura.picon.junit.PiconRunner.get;
+import static com.github.douglashiura.picon.junit.PiconRunner.get;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 

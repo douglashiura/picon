@@ -10,12 +10,13 @@ import java.util.Deque;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.douglashiura.picon.linguagem.Parte;
-import net.douglashiura.picon.linguagem.Partes;
-import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.linguagem.atribuicao.Atribuicoes;
-import net.douglashiura.picon.preguicoso.Campo;
-import net.douglashiura.picon.preguicoso.Objeto;
+import com.github.douglashiura.picon.linguagem.Parte;
+import com.github.douglashiura.picon.linguagem.Partes;
+import com.github.douglashiura.picon.linguagem.Qualificadores;
+import com.github.douglashiura.picon.linguagem.atribuicao.Atribuicoes;
+import com.github.douglashiura.picon.preguicoso.Campo;
+import com.github.douglashiura.picon.preguicoso.Objeto;
+
 import test.net.douglashiura.picon.Entidade;
 import test.net.douglashiura.picon.EntidadeComConstrutor;
 

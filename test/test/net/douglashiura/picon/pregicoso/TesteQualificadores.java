@@ -4,8 +4,9 @@ import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.preguicoso.Objeto;
+import com.github.douglashiura.picon.linguagem.Qualificadores;
+import com.github.douglashiura.picon.preguicoso.Objeto;
+
 import test.net.douglashiura.picon.Entidade;
 
 public class TesteQualificadores {

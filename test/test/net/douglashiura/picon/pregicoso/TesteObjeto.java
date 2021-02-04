@@ -7,17 +7,18 @@ import static org.junit.Assert.assertNotSame;
 import org.junit.Before;
 import org.junit.Test;
 
-import net.douglashiura.picon.linguagem.Qualificadores;
-import net.douglashiura.picon.linguagem.atribuicao.lista.Estrategia;
-import net.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaReferencia;
-import net.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaValor;
-import net.douglashiura.picon.preguicoso.CampoReferencia;
-import net.douglashiura.picon.preguicoso.CampoReferenciaLista;
-import net.douglashiura.picon.preguicoso.CampoValor;
-import net.douglashiura.picon.preguicoso.Contexto;
-import net.douglashiura.picon.preguicoso.Objeto;
-import net.douglashiura.picon.preguicoso.ParametroReferecia;
-import net.douglashiura.picon.preguicoso.ParametroValor;
+import com.github.douglashiura.picon.linguagem.Qualificadores;
+import com.github.douglashiura.picon.linguagem.atribuicao.lista.Estrategia;
+import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaReferencia;
+import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaValor;
+import com.github.douglashiura.picon.preguicoso.CampoReferencia;
+import com.github.douglashiura.picon.preguicoso.CampoReferenciaLista;
+import com.github.douglashiura.picon.preguicoso.CampoValor;
+import com.github.douglashiura.picon.preguicoso.Contexto;
+import com.github.douglashiura.picon.preguicoso.Objeto;
+import com.github.douglashiura.picon.preguicoso.ParametroReferecia;
+import com.github.douglashiura.picon.preguicoso.ParametroValor;
+
 import test.net.douglashiura.picon.Entidade;
 import test.net.douglashiura.picon.EntidadeComConstrutor;
 

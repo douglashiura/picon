@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.linguagem.Arquivos;
+import com.github.douglashiura.picon.linguagem.Arquivos;
 
 public class TesteArquivos {
 

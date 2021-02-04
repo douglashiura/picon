@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.runner.Runner;
 import org.junit.runners.model.RunnerBuilder;
 
-import net.douglashiura.picon.junit.JUnit4BuilderWithPicon;
+import com.github.douglashiura.picon.junit.JUnit4BuilderWithPicon;
 
 public class AllDefaultPossibilitiesBuilder extends RunnerBuilder {
 	private final boolean fCanUseSuiteMethod;

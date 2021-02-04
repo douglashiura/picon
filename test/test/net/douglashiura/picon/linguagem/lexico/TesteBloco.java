@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.linguagem.Bloco;
+import com.github.douglashiura.picon.linguagem.Bloco;
 
 public class TesteBloco {
 

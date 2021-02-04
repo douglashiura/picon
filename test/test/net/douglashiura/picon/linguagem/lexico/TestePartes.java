@@ -17,8 +17,8 @@ import java.util.Deque;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.linguagem.Parte;
-import net.douglashiura.picon.linguagem.Partes;
+import com.github.douglashiura.picon.linguagem.Parte;
+import com.github.douglashiura.picon.linguagem.Partes;
 
 public class TestePartes {
 

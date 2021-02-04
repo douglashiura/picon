@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import net.douglashiura.picon.linguagem.Carregadores;
+import com.github.douglashiura.picon.linguagem.Carregadores;
 
 public class TesteCarregadores {
 
