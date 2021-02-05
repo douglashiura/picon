@@ -1,12 +1,10 @@
-<?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.douglashiura</groupId>
 	<artifactId>picon</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<version>1.0.6</version>
 	<name>Picon</name>
 	<description>
         Picon extension for Junit 4.12
@@ -19,29 +17,33 @@
 			<email>douglashiura@gmail.com</email>
 		</developer>
 	</developers>
+	<licenses>
+		<license>
+			<name>GNU Lesser General Public License</name>
+			<url>http://www.gnu.org/licenses/lgpl-2.1.txt</url>
+		</license>
+	</licenses>
+
+
 	<scm>
-		<url>git@github.com:douglashiura/picon.git</url>
+		<url>git@github.com/douglashiura/picon.git</url>
 		<connection>scm:git:git@github.com:douglashiura/picon.git</connection>
 		<developerConnection>scm:git:git@github.com:douglashiura/picon.git</developerConnection>
-		<tag>HEAD</tag>
+		<tag>maven</tag>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/douglashiura/picon/issues</url>
 	</issueManagement>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus snapshot repository</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>sonatype-nexus-staging</id>
-			<name>Sonatype Nexus release repository</name>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+		</dependency>
+	</dependencies>
 	<properties>
 		<java.version>11</java.version>
 		<maven-gpg-plugin.version />
@@ -51,12 +53,27 @@
 		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
 		<maven-release-plugin.version>2.5.3</maven-release-plugin.version>
 		<nexus-staging-maven-plugin.version>1.6.7</nexus-staging-maven-plugin.version>
-		<maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
+		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 	</properties>
-	<dependencies>
 
-	</dependencies>
 	<build>
+		<sourceDirectory>src</sourceDirectory>
+		<testSourceDirectory>test</testSourceDirectory>
+		<resources>
+			<resource>
+				<directory>src</directory>
+				<excludes>
+					<exclude>**/*.java</exclude>
+				</excludes>
+			</resource>
+		</resources>
+		<testResources>
+			<testResource>
+				<directory>test</directory>
+
+			</testResource>
+		</testResources>
+
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -80,10 +97,12 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>${maven-javadoc-plugin.version}</version>
+
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -93,6 +112,7 @@
 					</execution>
 				</executions>
 			</plugin>
+
 			<plugin>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>${maven-resources-plugin.version}</version>
@@ -150,8 +170,18 @@
 			</build>
 		</profile>
 	</profiles>
+
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus snapshot repository</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Sonatype Nexus release repository</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
 </project>
-
-
-    
-
