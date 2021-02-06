@@ -11,6 +11,10 @@ import com.github.douglashiura.picon.junit.JUnit4BuilderWithPicon;
 public class AllDefaultPossibilitiesBuilder extends RunnerBuilder {
 	private final boolean fCanUseSuiteMethod;
 
+	public AllDefaultPossibilitiesBuilder() {
+		fCanUseSuiteMethod = true;
+	}
+
 	public AllDefaultPossibilitiesBuilder(boolean canUseSuiteMethod) {
 		fCanUseSuiteMethod = canUseSuiteMethod;
 	}

@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.douglashiura</groupId>
 	<artifactId>picon</artifactId>
-	<version>1.0.6</version>
+	<version>4.13.1</version>
 	<name>Picon</name>
 	<description>
-        Picon extension for Junit 4.12
+        Picon extension for Junit 4.13.1 and Java 11
     </description>
 	<url>https://github.com/douglashiura</url>
 	<developers>
@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>4.13.1</version>
 		</dependency>
 	</dependencies>
 	<properties>
