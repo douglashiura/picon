@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.douglashiura</groupId>
 	<artifactId>picon</artifactId>
-	<version>5.0</version>
+	<version>5.0.0</version>
 	<name>Picon</name>
 	<description>
         Picon extension for Junit 5 and Java 1.8
@@ -26,7 +26,7 @@
 		<url>git@github.com/douglashiura/picon.git</url>
 		<connection>scm:git:git@github.com:douglashiura/picon.git</connection>
 		<developerConnection>scm:git:git@github.com:douglashiura/picon.git</developerConnection>
-		<tag>picon-5.0</tag>
+		<tag>picon-5.0.0</tag>
 	</scm>
 
 	<issueManagement>
