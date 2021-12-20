@@ -2,34 +2,21 @@ package com.github.douglashiura.picon.junit;
 
 import java.lang.reflect.Field;
 
-import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.BlockJUnit4ClassRunner;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.InitializationError;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestInstancePostProcessor;
 
 import com.github.douglashiura.picon.ProblemaDeCompilacaoException;
 import com.github.douglashiura.picon.linguagem.Arquivos;
 import com.github.douglashiura.picon.linguagem.Bloco;
 import com.github.douglashiura.picon.preguicoso.Contexto;
 
-public class PiconRunner extends BlockJUnit4ClassRunner {
+public class PiconRunner implements TestInstancePostProcessor {
 
 	private static Contexto CONTEXTO;
 
-	public PiconRunner(Class<?> klass) throws InitializationError {
-		super(klass);
-	}
-
 	@Override
-	protected void runChild(FrameworkMethod method, RunNotifier notifier) {
-		super.runChild(method, notifier);
-	}
-
-	@Override
-	protected Object createTest() throws Exception {
-		Object objectTesting = super.createTest();
-		monteOContexto(objectTesting);
-		return objectTesting;
+	public void postProcessTestInstance(Object testInstance, ExtensionContext context) throws Exception {
+		monteOContexto(testInstance);
 	}
 
 	private void monteOContexto(Object object)
@@ -55,4 +42,5 @@ public class PiconRunner extends BlockJUnit4ClassRunner {
 	public static Contexto build() throws ProblemaDeCompilacaoException {
 		return new Contexto(Arquivos.getInstance().explodir());
 	}
+
 }

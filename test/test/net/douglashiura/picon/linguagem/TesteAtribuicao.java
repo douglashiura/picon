@@ -2,13 +2,13 @@
 
 package test.net.douglashiura.picon.linguagem;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.Deque;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.linguagem.Parte;
 import com.github.douglashiura.picon.linguagem.Partes;
@@ -24,7 +24,7 @@ public class TesteAtribuicao {
 	private Qualificadores indentificacoes;
 	private Objeto<?> umObjeto;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		indentificacoes = new Qualificadores();
 		umObjeto = new Objeto<>(Entidade.class, null);
@@ -97,7 +97,7 @@ public class TesteAtribuicao {
 
 	@Test
 	public void compostoComConstrutorProcessar() throws Exception {
-		umObjeto = new Objeto<>(EntidadeComConstrutor.class,null);
+		umObjeto = new Objeto<>(EntidadeComConstrutor.class, null);
 		String texto = "francisco<>[]]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
 		Campo campo = Atribuicoes.COMPOSTA_COM_CONSTRUTOR.objeto(emQualificador, "pedro", umObjeto, indentificacoes);

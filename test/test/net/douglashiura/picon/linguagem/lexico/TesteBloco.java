@@ -1,8 +1,8 @@
 package test.net.douglashiura.picon.linguagem.lexico;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.linguagem.Bloco;
 
@@ -22,9 +22,12 @@ public class TesteBloco {
 		assertEquals("ab:12:a:1", Bloco.camelCase("ab12A1"));
 		assertEquals("ab:12:aa:aa", Bloco.camelCase("ab12AaAa"));
 		assertEquals("ab:12:aa:aa:1a", Bloco.camelCase("ab12AaAa1a"));
-		assertEquals("polo:jaragua:ano:2012:periodo:2:disciplina:p:111",Bloco.camelCase("poloJaraguaAno2012Periodo2DisciplinaP111"));
-		assertEquals("polo:jaragua:ano:2012:periodo:2:disciplina:portugues:111",Bloco.camelCase("poloJaraguaAno2012Periodo2DisciplinaPortugues111"));
-		assertEquals("polo:jaragua:ano:2012:periodo:2:disciplina:port:111",Bloco.camelCase("poloJaraguaAno2012Periodo2DisciplinaPORT111"));
+		assertEquals("polo:jaragua:ano:2012:periodo:2:disciplina:p:111",
+				Bloco.camelCase("poloJaraguaAno2012Periodo2DisciplinaP111"));
+		assertEquals("polo:jaragua:ano:2012:periodo:2:disciplina:portugues:111",
+				Bloco.camelCase("poloJaraguaAno2012Periodo2DisciplinaPortugues111"));
+		assertEquals("polo:jaragua:ano:2012:periodo:2:disciplina:port:111",
+				Bloco.camelCase("poloJaraguaAno2012Periodo2DisciplinaPORT111"));
 		assertEquals("agronomia:2012_2", Bloco.camelCase("agronomia2012_2"));
 	}
 

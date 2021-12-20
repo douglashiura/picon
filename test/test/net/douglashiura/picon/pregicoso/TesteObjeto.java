@@ -1,11 +1,11 @@
 package test.net.douglashiura.picon.pregicoso;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.linguagem.Qualificadores;
 import com.github.douglashiura.picon.linguagem.atribuicao.lista.Estrategia;
@@ -28,7 +28,7 @@ public class TesteObjeto {
 	private Contexto contexto;
 	private Qualificadores qualificadores;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		objetoEntidade = new Objeto<>(Entidade.class, null);
 		qualificadores = new Qualificadores();

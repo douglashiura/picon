@@ -1,12 +1,13 @@
 package test.net.douglashiura.picon.linguagem;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Deque;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.linguagem.Parte;
 import com.github.douglashiura.picon.linguagem.Partes;
@@ -21,7 +22,7 @@ public class TesteProcessadorDeConjunto {
 	private Qualificadores qualificadores;
 	private ProcessadorDeConjunto atribuicoes;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		qualificadores = new Qualificadores();
 		atribuicoes = new ProcessadorDeConjunto(qualificadores);

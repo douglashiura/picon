@@ -1,13 +1,13 @@
 package test.net.douglashiura.picon.invoke;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.preguicoso.Tempo;
 
