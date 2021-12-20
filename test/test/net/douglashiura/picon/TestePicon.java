@@ -1,11 +1,12 @@
 package test.net.douglashiura.picon;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Deque;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.Picon;
 import com.github.douglashiura.picon.ProblemaDeCompilacaoException;
@@ -53,32 +54,34 @@ public class TestePicon {
 		assertTrue(iterator.isEmpty());
 	}
 
-	@Test(expected=ProblemaDeCompilacaoException.class)
+	@Test
 	public void semClasse() throws Exception {
 		String texto = "test.net.douglashiura.picon.NAO_EXISTE{}";
 		Deque<Parte> iterator = Partes.explodir(texto);
-		Picon.explodir(iterator);
+		assertThrows(ProblemaDeCompilacaoException.class, () -> Picon.explodir(iterator));
 	}
-	@Test(expected=ProblemaDeCompilacaoException.class)
+
+	@Test()
 	public void semCampo() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{uid[NAO_EXISTE=10]}";
 		Deque<Parte> iterator = Partes.explodir(texto);
 		Qualificadores qualificadores = Picon.explodir(iterator);
-		new Contexto(qualificadores).get("uid");
-		
+		assertThrows(ProblemaDeCompilacaoException.class, () -> new Contexto(qualificadores).get("uid"));
+
 	}
-	
-	@Test(expected=ProblemaDeCompilacaoException.class)
+
+	@Test()
 	public void intrucaoInvalida() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{a[entidades test.net.douglashiura.picon.Entidade{1=1}]}";
 		Deque<Parte> iterator = Partes.explodir(texto);
-		Picon.explodir(iterator);
+		assertThrows(ProblemaDeCompilacaoException.class, () -> Picon.explodir(iterator));
 	}
-	@Test(expected=ProblemaDeCompilacaoException.class)
+
+	@Test
 	public void incompleta() throws Exception {
 		String texto = "test.net.douglashiura.picon.Entidade{";
 		Deque<Parte> iterator = Partes.explodir(texto);
-		Picon.explodir(iterator);
+		assertThrows(ProblemaDeCompilacaoException.class, () -> Picon.explodir(iterator));
 	}
 
 }

@@ -1,12 +1,12 @@
 package test.net.douglashiura.picon.linguagem;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Deque;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.linguagem.Parte;
 import com.github.douglashiura.picon.linguagem.Partes;
@@ -23,7 +23,7 @@ public class TesteProcessadorDeLista {
 	private Qualificadores qualificadores;
 	private ProcessadorDeLista atribuicoes;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws ClassNotFoundException {
 		qualificadores = new Qualificadores();
 	}
@@ -31,7 +31,7 @@ public class TesteProcessadorDeLista {
 	@Test
 	public void criandoEntidades() throws Exception {
 		String klass = Entidade.class.getName();
-		atribuicoes = new ProcessadorDeLista(klass, qualificadores,null);
+		atribuicoes = new ProcessadorDeLista(klass, qualificadores, null);
 		String texto = "{uid1[] uid2[]}";
 		Deque<Parte> iterator = Partes.explodir(texto);
 		atribuicoes.processar(iterator);
@@ -52,7 +52,7 @@ public class TesteProcessadorDeLista {
 	@Test
 	public void criandoEnuns() throws Exception {
 		String klass = Enum.class.getName();
-		atribuicoes = new ProcessadorDeLista(klass, qualificadores,null);
+		atribuicoes = new ProcessadorDeLista(klass, qualificadores, null);
 		String texto = "{A}";
 		Deque<Parte> iterator = Partes.explodir(texto);
 		atribuicoes.processar(iterator);
@@ -66,7 +66,7 @@ public class TesteProcessadorDeLista {
 	@Test
 	public void criandoStrings() throws Exception {
 		String klass = String.class.getName();
-		atribuicoes = new ProcessadorDeLista(klass, qualificadores,null);
+		atribuicoes = new ProcessadorDeLista(klass, qualificadores, null);
 		String texto = "{Douglas}";
 		Deque<Parte> iterator = Partes.explodir(texto);
 		atribuicoes.processar(iterator);

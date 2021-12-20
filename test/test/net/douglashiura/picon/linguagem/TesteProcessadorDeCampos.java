@@ -9,15 +9,16 @@
  * */
 package test.net.douglashiura.picon.linguagem;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Deque;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.ProblemaDeCompilacaoException;
 import com.github.douglashiura.picon.linguagem.Parte;
@@ -40,10 +41,10 @@ public class TesteProcessadorDeCampos {
 	private Objeto<?> preguicoso;
 	private ProcessadorDeCampos atribuicoes;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		qualificadores = new Qualificadores();
-		preguicoso = new Objeto<>(Entidade.class,null);
+		preguicoso = new Objeto<>(Entidade.class, null);
 		atribuicoes = new ProcessadorDeCampos(qualificadores);
 	}
 
@@ -142,11 +143,11 @@ public class TesteProcessadorDeCampos {
 		assertTrue(iterator.isEmpty());
 	}
 
-	@Test(expected = ProblemaDeCompilacaoException.class)
+	@Test
 	public void entidadeDeclaradaNaoExisteOCampo() throws Exception {
 		String texto = "[naoExiste uid3 []]";
 		Deque<Parte> iterator = Partes.explodir(texto);
-		atribuicoes.processar(iterator, preguicoso);
+		assertThrows(ProblemaDeCompilacaoException.class, () -> atribuicoes.processar(iterator, preguicoso));
 
 	}
 
@@ -167,7 +168,7 @@ public class TesteProcessadorDeCampos {
 
 	@Test
 	public void compostoComConstrutorProcessar() throws Exception {
-		preguicoso = new Objeto<>(EntidadeComConstrutor.class,null);
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
 		String texto = "[pedro=francisco <>[]]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
 		atribuicoes.processar(emQualificador, preguicoso);
@@ -184,7 +185,7 @@ public class TesteProcessadorDeCampos {
 
 	@Test
 	public void compostoComConstrutorProcessarComUmParametro() throws Exception {
-		preguicoso = new Objeto<>(EntidadeComConstrutor.class,null);
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
 		String texto = "[pedro=francisco <Douglas>[]]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
 		atribuicoes.processar(emQualificador, preguicoso);
@@ -201,7 +202,7 @@ public class TesteProcessadorDeCampos {
 
 	@Test
 	public void compostoComConstrutorProcessarComDoisParametro() throws Exception {
-		preguicoso = new Objeto<>(EntidadeComConstrutor.class,null);
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
 		String texto = "[pedro=francisco <10 Douglas>[]]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
 		atribuicoes.processar(emQualificador, preguicoso);
@@ -218,10 +219,10 @@ public class TesteProcessadorDeCampos {
 		assertEquals(ParametroValor.class, francisco.getParametros().get(1).getClass());
 		assertTrue(emQualificador.isEmpty());
 	}
-	
+
 	@Test
 	public void compostoComConstrutorProcessarComDoisParametroInicio() throws Exception {
-		preguicoso = new Objeto<>(EntidadeComConstrutor.class,null);
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
 		String texto = "<10 'Douglas'>[]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
 		atribuicoes.processar(emQualificador, preguicoso);
@@ -233,11 +234,10 @@ public class TesteProcessadorDeCampos {
 		assertEquals(ParametroValor.class, preguicoso.getParametros().get(1).getClass());
 		assertTrue(emQualificador.isEmpty());
 	}
-	
 
 	@Test
 	public void compostoComConstrutorProcessarComReferenciaParametro() throws Exception {
-		preguicoso = new Objeto<>(EntidadeComConstrutor.class,null);
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
 		String texto = "[pedro=francisco <#francisco>[]]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
 		atribuicoes.processar(emQualificador, preguicoso);
@@ -255,7 +255,7 @@ public class TesteProcessadorDeCampos {
 
 	@Test
 	public void compostoComConstrutorProcessarComReferenciaParametroString() throws Exception {
-		preguicoso = new Objeto<>(EntidadeComConstrutor.class,null);
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
 		String texto = "[pedro=francisco <Douglas #francisco>[]]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
 		atribuicoes.processar(emQualificador, preguicoso);
@@ -272,10 +272,10 @@ public class TesteProcessadorDeCampos {
 		assertEquals(ParametroReferecia.class, francisco.getParametros().get(1).getClass());
 		assertTrue(emQualificador.isEmpty());
 	}
-	
+
 	@Test
 	public void compostoComConstrutorProcessarComReferenciaParametroStringInvert() throws Exception {
-		preguicoso = new Objeto<>(EntidadeComConstrutor.class,null);
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
 		String texto = "[pedro=francisco <#francisco 'Douglas'>[]]";
 		Deque<Parte> emQualificador = Partes.explodir(texto);
 		atribuicoes.processar(emQualificador, preguicoso);

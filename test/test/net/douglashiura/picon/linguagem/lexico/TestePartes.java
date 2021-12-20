@@ -9,13 +9,13 @@
  * */
 package test.net.douglashiura.picon.linguagem.lexico;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Deque;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.linguagem.Parte;
 import com.github.douglashiura.picon.linguagem.Partes;

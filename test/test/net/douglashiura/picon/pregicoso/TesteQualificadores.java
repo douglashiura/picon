@@ -1,8 +1,8 @@
 package test.net.douglashiura.picon.pregicoso;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.linguagem.Qualificadores;
 import com.github.douglashiura.picon.preguicoso.Objeto;

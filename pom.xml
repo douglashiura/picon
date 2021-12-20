@@ -4,10 +4,10 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.douglashiura</groupId>
 	<artifactId>picon</artifactId>
-	<version>4.13.1</version>
+	<version>5</version>
 	<name>Picon</name>
 	<description>
-        Picon extension for Junit 4.13.1 and Java 11
+        Picon extension for Junit 5 and Java 1.8
     </description>
 	<url>https://github.com/douglashiura</url>
 	<developers>
@@ -39,13 +39,13 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.13.1</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.8.2</version>
 		</dependency>
 	</dependencies>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 		<maven-gpg-plugin.version />
 		<maven-compiler-plugin.version>3.5.1</maven-compiler-plugin.version>
 		<maven-source-plugin.version>2.2.1</maven-source-plugin.version>

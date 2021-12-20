@@ -1,20 +1,22 @@
 package test.net.douglashiura.picon.junit;
 
 import static com.github.douglashiura.picon.junit.PiconRunner.get;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import com.github.douglashiura.picon.junit.PiconRunner;
 import com.github.douglashiura.picon.preguicoso.Contexto;
 
 import test.net.douglashiura.picon.ETipo;
 
+@ExtendWith(PiconRunner.class)
 public class TestePiconRunner {
 
 	private ETipo semDeclaracaoNaON;
@@ -67,7 +69,7 @@ public class TestePiconRunner {
 		assertNull(semDeclaracaoNaON);
 		assertNotNull(injetadaPeloPicon);
 		assertNotNull(invodadaPelaClasse);
-		assertNotSame(invodadaPelaClasse,get("b"));
+		assertNotSame(invodadaPelaClasse, get("b"));
 		assertEquals(semDeclaracaoEqualb, invodadaPelaClasse);
 		assertEquals(semDeclaracaoEqualSemDeclaracaoEqualb, invodadaPelaClasse);
 

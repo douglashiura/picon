@@ -1,13 +1,17 @@
 package test.net.douglashiura.picon.junit;
 
 import static com.github.douglashiura.picon.junit.PiconRunner.get;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import com.github.douglashiura.picon.junit.PiconRunner;
 
 import test.net.douglashiura.picon.ETipo;
 
+@ExtendWith(PiconRunner.class)
 public class TestePiconRunnerCamelCase {
 
 	private ETipo a;

@@ -9,14 +9,15 @@
  * */
 package test.net.douglashiura.picon.invoke;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import com.github.douglashiura.picon.ProblemaDeCompilacaoException;
 import com.github.douglashiura.picon.linguagem.Parte;
@@ -40,7 +41,7 @@ public class TesteCampoPreguisoso {
 	private Contexto preguisoso;
 	private Qualificadores qualificadores;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		qualificadores = new Qualificadores();
 		preguisoso = new Contexto(qualificadores);
@@ -104,11 +105,11 @@ public class TesteCampoPreguisoso {
 		assertEquals(Enum.A, objeto.enumerado);
 	}
 
-	@Test(expected = ProblemaDeCompilacaoException.class)
+	@Test
 	public void enumInexistente() throws Exception {
 		Klasse objeto = new Klasse();
 		CampoValor campo = new CampoValor("enumerado", "INEXISTENTE", new Parte("INEXISTENTE", null, 0));
-		campo.configure(objeto, preguisoso);
+		assertThrows(ProblemaDeCompilacaoException.class, () -> campo.configure(objeto, preguisoso));
 	}
 
 	@Test
