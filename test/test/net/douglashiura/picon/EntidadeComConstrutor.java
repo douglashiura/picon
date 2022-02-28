@@ -41,7 +41,6 @@ public class EntidadeComConstrutor {
 	}
 
 	public Object obterNumero() {
-		// TODO Auto-generated method stub
 		return numero;
 	}
 }

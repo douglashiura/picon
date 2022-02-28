@@ -28,6 +28,7 @@ import com.github.douglashiura.picon.linguagem.atribuicao.ProcessadorDeCampos;
 import com.github.douglashiura.picon.preguicoso.Campo;
 import com.github.douglashiura.picon.preguicoso.CampoReferencia;
 import com.github.douglashiura.picon.preguicoso.CampoReferenciaLista;
+import com.github.douglashiura.picon.preguicoso.Contexto;
 import com.github.douglashiura.picon.preguicoso.Objeto;
 import com.github.douglashiura.picon.preguicoso.ParametroReferecia;
 import com.github.douglashiura.picon.preguicoso.ParametroValor;
@@ -219,7 +220,18 @@ public class TesteProcessadorDeCampos {
 		assertEquals(ParametroValor.class, francisco.getParametros().get(1).getClass());
 		assertTrue(emQualificador.isEmpty());
 	}
-
+	@Test
+	public void compostoComConstrutorProcessarComUmParametroInicio() throws Exception {
+		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
+		String texto = "<'Douglas'>[]";
+		Deque<Parte> emQualificador = Partes.explodir(texto);
+		atribuicoes.processar(emQualificador, preguicoso);
+		assertEquals(1, preguicoso.getParametros().size());
+		assertEquals(0, preguicoso.getCampos().size());
+		assertEquals("Douglas", preguicoso.getParametros().get(0).getValorDeclarado());
+		assertEquals(ParametroValor.class, preguicoso.getParametros().get(0).getClass());
+		assertTrue(emQualificador.isEmpty());
+	}
 	@Test
 	public void compostoComConstrutorProcessarComDoisParametroInicio() throws Exception {
 		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
@@ -433,6 +445,17 @@ public class TesteProcessadorDeCampos {
 		assertEquals("[uid1, uid2]", campoEntidades.getValor());
 		assertTrue(iterator.isEmpty());
 	}
+	
+	@Test
+	public void entidadeComConstrutorString() throws Exception {
+		String texto = "test.net.douglashiura.picon.EntidadeComConstrutor{ douglas<Douglas>[] }";
+		Deque<Parte> iterator = Partes.explodir(texto);
+		atribuicoes.processar(iterator, preguicoso);
+		Objeto<EntidadeComConstrutor> entidade = qualificadores.get("douglas");
+		Contexto contexto = new Contexto(qualificadores);
+		assertEquals("Douglas", entidade.instanciar(contexto));
+	}
+
 
 	@Test
 	public void entidadeListaCom2EntidadeComNomeLista() throws Exception {
