@@ -155,10 +155,6 @@
 								<goals>
 									<goal>sign</goal>
 								</goals>
-								<configuration>
-									<homedir>${gpg.homedir}</homedir>
-									<passphrase>${gpg.passphrase}</passphrase>
-								</configuration>
 							</execution>
 						</executions>
 					</plugin>
