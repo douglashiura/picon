@@ -1,7 +1,7 @@
 # Picon
 Fixture Setup through Object Notation for Implicit Test  Fixtures
 
-# Dependencie Install
+# Dependency Install
 
 ```
 <dependency>
@@ -24,7 +24,7 @@ Fixture Setup through Object Notation for Implicit Test  Fixtures
 ```
 @ExtendWith(PiconRunner.class)
 class Class {
-  User mary;
+  private User mary;
   @Test
   void userNotNull(){
     assertNotNull(mary);
