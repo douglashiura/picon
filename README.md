@@ -23,7 +23,7 @@ Fixture Setup through Object Notation for Implicit Test  Fixtures
 
 ```
 @ExtendWith(PiconRunner.class)
-class Class {
+class ClassTest {
   private User mary;
   @Test
   void userNotNull(){
