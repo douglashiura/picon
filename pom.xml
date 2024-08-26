@@ -1,12 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.github.douglashiura</groupId>
 	<artifactId>picon</artifactId>
 	<version>5.0.2-SNAPSHOT</version>
 	<name>Picon</name>
 	<description>
-        Picon extension for Junit 5 and Java 1.8
-    </description>
+		Picon extension for Junit 5 and Java 1.8
+	</description>
 	<url>https://github.com/douglashiura</url>
 	<developers>
 		<developer>
@@ -37,8 +39,14 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.11.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
-			<version>5.8.2</version>
+			<version>5.11.0</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<properties>

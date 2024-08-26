@@ -13,7 +13,7 @@ import com.github.douglashiura.picon.linguagem.Partes;
 import com.github.douglashiura.picon.linguagem.Qualificadores;
 import com.github.douglashiura.picon.linguagem.atribuicao.ProcessadorDeLista;
 import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaReferencia;
-import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaValor;
+import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaDeValor;
 import com.github.douglashiura.picon.preguicoso.Objeto;
 
 import test.net.douglashiura.picon.Entidade;
@@ -57,7 +57,7 @@ public class TesteProcessadorDeLista {
 		Deque<Parte> iterator = Partes.explodir(texto);
 		atribuicoes.processar(iterator);
 		assertEquals("[A]", atribuicoes.getEstrategia().getParametros().toString());
-		assertEquals(EstrategiaValor.class, atribuicoes.getEstrategia().getClass());
+		assertEquals(EstrategiaDeValor.class, atribuicoes.getEstrategia().getClass());
 		assertEquals(1, atribuicoes.getEstrategia().getParametros().size());
 		assertEquals("A", atribuicoes.getEstrategia().getParametros().get(0));
 		assertTrue(iterator.isEmpty());
@@ -71,7 +71,7 @@ public class TesteProcessadorDeLista {
 		Deque<Parte> iterator = Partes.explodir(texto);
 		atribuicoes.processar(iterator);
 		assertEquals("[Douglas]", atribuicoes.getEstrategia().getParametros().toString());
-		assertEquals(EstrategiaValor.class, atribuicoes.getEstrategia().getClass());
+		assertEquals(EstrategiaDeValor.class, atribuicoes.getEstrategia().getClass());
 		assertEquals(1, atribuicoes.getEstrategia().getParametros().size());
 		assertEquals("Douglas", atribuicoes.getEstrategia().getParametros().get(0));
 		assertTrue(iterator.isEmpty());

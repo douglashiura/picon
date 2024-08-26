@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import com.github.douglashiura.picon.linguagem.Qualificadores;
 import com.github.douglashiura.picon.linguagem.atribuicao.lista.Estrategia;
 import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaReferencia;
-import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaValor;
+import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaDeValor;
 import com.github.douglashiura.picon.preguicoso.CampoReferencia;
 import com.github.douglashiura.picon.preguicoso.CampoReferenciaLista;
 import com.github.douglashiura.picon.preguicoso.CampoValor;
@@ -121,7 +121,7 @@ public class TesteObjeto {
 	public void campoListaValorString() throws Exception {
 		qualificadores.put("douglas", new Objeto<>(Entidade.class, null));
 		contexto = new Contexto(qualificadores);
-		EstrategiaValor estrategia = new EstrategiaValor(String.class, null);
+		EstrategiaDeValor estrategia = new EstrategiaDeValor(String.class, null);
 		estrategia.adicionar("Douglas");
 		objetoEntidade.adicionar(new CampoReferenciaLista("strings", estrategia, null));
 		Entidade objeto = objetoEntidade.instanciar(contexto);
@@ -133,7 +133,7 @@ public class TesteObjeto {
 	public void campoListaValorEnumerados() throws Exception {
 		qualificadores.put("douglas", new Objeto<>(Entidade.class, null));
 		contexto = new Contexto(qualificadores);
-		EstrategiaValor estrategia = new EstrategiaValor(test.net.douglashiura.picon.Enum.class, null);
+		EstrategiaDeValor estrategia = new EstrategiaDeValor(test.net.douglashiura.picon.Enum.class, null);
 		estrategia.adicionar("A");
 		objetoEntidade.adicionar(new CampoReferenciaLista("enums", estrategia, null));
 		Entidade objeto = objetoEntidade.instanciar(contexto);

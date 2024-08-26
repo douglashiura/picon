@@ -3,6 +3,9 @@ package com.github.douglashiura.picon.preguicoso;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
 
@@ -29,12 +32,26 @@ public class Valores {
 			} catch (ParseException e) {
 				throw new ProblemaDeCompilacaoException(e, parte);
 			}
+		} else if (type.equals(LocalDateTime.class)) {
+			try {
+				Date date = TEMPO.de(valor);
+				return LocalDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
+			} catch (ParseException e) {
+				throw new ProblemaDeCompilacaoException(e, parte);
+			}
+		} else if (type.equals(LocalDate.class)) {
+			try {
+				Date date = TEMPO.de(valor);
+				LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				return localDate;
+			} catch (ParseException e) {
+				throw new ProblemaDeCompilacaoException(e, parte);
+			}
 		} else {
 			try {
 				Constructor<?> construtor = type.getDeclaredConstructor(String.class);
 				return construtor.newInstance(valor);
-			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-					| IllegalArgumentException | InvocationTargetException e) {
+			} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 				throw new ProblemaDeCompilacaoException(e, parte);
 			}
 		}

@@ -9,11 +9,11 @@ import com.github.douglashiura.picon.linguagem.Parte;
 import com.github.douglashiura.picon.preguicoso.Contexto;
 import com.github.douglashiura.picon.preguicoso.Valores;
 
-public class EstrategiaValor extends Estrategia {
+public class EstrategiaDeValor extends Estrategia {
 	private Class<?> klasse;
 	private Parte parte;
 
-	public EstrategiaValor(Class<?> tipo, Parte parte) {
+	public EstrategiaDeValor(Class<?> tipo, Parte parte) {
 		klasse = tipo;
 		this.parte = parte;
 	}

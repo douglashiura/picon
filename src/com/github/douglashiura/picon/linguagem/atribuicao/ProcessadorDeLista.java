@@ -8,7 +8,7 @@ import com.github.douglashiura.picon.linguagem.Parte;
 import com.github.douglashiura.picon.linguagem.Qualificadores;
 import com.github.douglashiura.picon.linguagem.atribuicao.lista.Estrategia;
 import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaReferencia;
-import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaValor;
+import com.github.douglashiura.picon.linguagem.atribuicao.lista.EstrategiaDeValor;
 
 public class ProcessadorDeLista {
 
@@ -25,7 +25,7 @@ public class ProcessadorDeLista {
 			throw new ProblemaDeCompilacaoException(e, parte);
 		}
 		if (klass.isEnum() || String.class.equals(klass)) {
-			estrategia = new EstrategiaValor(klass, parte);
+			estrategia = new EstrategiaDeValor(klass, parte);
 		} else {
 			estrategia = new EstrategiaReferencia(contexto, klass);
 		}

@@ -28,6 +28,7 @@ import com.github.douglashiura.picon.linguagem.atribuicao.ProcessadorDeCampos;
 import com.github.douglashiura.picon.preguicoso.Campo;
 import com.github.douglashiura.picon.preguicoso.CampoReferencia;
 import com.github.douglashiura.picon.preguicoso.CampoReferenciaLista;
+import com.github.douglashiura.picon.preguicoso.CampoValor;
 import com.github.douglashiura.picon.preguicoso.Contexto;
 import com.github.douglashiura.picon.preguicoso.Objeto;
 import com.github.douglashiura.picon.preguicoso.ParametroReferecia;
@@ -220,6 +221,7 @@ public class TesteProcessadorDeCampos {
 		assertEquals(ParametroValor.class, francisco.getParametros().get(1).getClass());
 		assertTrue(emQualificador.isEmpty());
 	}
+
 	@Test
 	public void compostoComConstrutorProcessarComUmParametroInicio() throws Exception {
 		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
@@ -232,6 +234,7 @@ public class TesteProcessadorDeCampos {
 		assertEquals(ParametroValor.class, preguicoso.getParametros().get(0).getClass());
 		assertTrue(emQualificador.isEmpty());
 	}
+
 	@Test
 	public void compostoComConstrutorProcessarComDoisParametroInicio() throws Exception {
 		preguicoso = new Objeto<>(EntidadeComConstrutor.class, null);
@@ -445,7 +448,7 @@ public class TesteProcessadorDeCampos {
 		assertEquals("[uid1, uid2]", campoEntidades.getValor());
 		assertTrue(iterator.isEmpty());
 	}
-	
+
 	@Test
 	public void entidadeComConstrutorString() throws Exception {
 		String texto = "test.net.douglashiura.picon.EntidadeComConstrutor{ douglas<Douglas>[] }";
@@ -456,11 +459,31 @@ public class TesteProcessadorDeCampos {
 		assertEquals("Douglas", entidade.instanciar(contexto));
 	}
 
-
+	@Test
+	public void entidadeComLocalDateTime() throws Exception {
+		String texto = "[entidades test.net.douglashiura.picon.Entidade{ entidade[createdAt=now ] }]";
+		Deque<Parte> iterator = Partes.explodir(texto);
+		atribuicoes.processar(iterator, preguicoso);
+		Objeto<Entidade> entidade = qualificadores.get("entidade");
+		assertEquals(1, entidade.getCampos().size());
+		assertEquals("createdAt", entidade.getCampos().get(0).getCampo());
+		assertEquals("now", entidade.getCampos().get(0).getValor());
+		assertEquals(CampoValor.class, entidade.getCampos().get(0).getClass());
+	}
+	@Test
+	public void entidadeComLocalDate() throws Exception {
+		String texto = "[entidades test.net.douglashiura.picon.Entidade{ entidade[birthdate=-18/12/25 ] }]";
+		Deque<Parte> iterator = Partes.explodir(texto);
+		atribuicoes.processar(iterator, preguicoso);
+		Objeto<Entidade> entidade = qualificadores.get("entidade");
+		assertEquals(1, entidade.getCampos().size());
+		assertEquals("birthdate", entidade.getCampos().get(0).getCampo());
+		assertEquals("-18/12/25", entidade.getCampos().get(0).getValor());
+		assertEquals(CampoValor.class, entidade.getCampos().get(0).getClass());
+	}
 	@Test
 	public void entidadeListaCom2EntidadeComNomeLista() throws Exception {
-		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid1[nome Douglas; entidades test.net.douglashiura.picon.Entidade{}]uid2[nome Hiura;"
-				+ " entidades test.net.douglashiura.picon.Entidade{uid3[];#uid1;uid4[nome=Cabral]}]}]";
+		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid1[nome Douglas; entidades test.net.douglashiura.picon.Entidade{}]uid2[nome Hiura;" + " entidades test.net.douglashiura.picon.Entidade{uid3[];#uid1;uid4[nome=Cabral]}]}]";
 		Deque<Parte> iterator = Partes.explodir(texto);
 		atribuicoes.processar(iterator, preguicoso);
 		Objeto<Entidade> uid1 = qualificadores.get("uid1");

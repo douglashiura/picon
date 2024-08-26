@@ -9,6 +9,8 @@
  * */
 package test.net.douglashiura.picon;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -24,9 +26,19 @@ public class Entidade extends SuperClasse {
 	private List<String> strings;
 	private Date natal;
 	private Set<Entidade> conjunto;
+	private LocalDateTime createdAt;
+	private LocalDate birthdate;
 
 	public List<Enum> getEnums() {
 		return enums;
+	}
+
+	public LocalDate getBirthdate() {
+		return birthdate;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
 	}
 
 	public String getNome() {
@@ -57,7 +69,7 @@ public class Entidade extends SuperClasse {
 	public Date getNatal() {
 		return natal;
 	}
-	
+
 	public Set<Entidade> getConjunto() {
 		return conjunto;
 	}
