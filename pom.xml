@@ -1,8 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.github.douglashiura</groupId>
 	<artifactId>picon</artifactId>
-	<version>5.10.4-SNAPSHOT</version>
+	<version>5.10.4</version>
 	<name>Picon</name>
 	<description>
 		Picon extension for Junit 5 and Java 1.8
@@ -21,13 +23,11 @@
 		</license>
 	</licenses>
 
-
 	<scm>
-		<connection>scm:git:git://github.io/douglashiura/picon.git</connection>
-		<developerConnection>scm:git:ssh://github.io/douglashiura/picon.git</developerConnection>
-		<url>https://github.io/douglashiura/picon</url>
-  </scm>
-
+		<connection>scm:git:git://github.com/douglashiura/picon.git</connection>
+		<developerConnection>scm:git:ssh://github.com:douglashiura/picon.git</developerConnection>
+		<url>http://github.com/douglashiura/picon/tree/version-lazy</url>
+	</scm>
 	<issueManagement>
 		<system>GitHub Issues</system>
 		<url>https://github.com/douglashiura/picon/issues</url>
@@ -43,17 +43,6 @@
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>
-				https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<testSourceDirectory>test</testSourceDirectory>
@@ -82,14 +71,12 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.7</version>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.5.0</version>
 				<extensions>true</extensions>
 				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>false</autoReleaseAfterClose>
+					<publishingServerId>central</publishingServerId>
 				</configuration>
 			</plugin>
 			<plugin>
