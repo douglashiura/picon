@@ -7,7 +7,7 @@
 	<description>
 		Picon extension for Junit 5 and Java 1.8
 	</description>
-	<url>https://github.com/douglashiura</url>
+	<url>https://github.io/douglashiura</url>
 	<developers>
 		<developer>
 			<id>douglashiura</id>
@@ -23,10 +23,9 @@
 
 
 	<scm>
-		<connection>scm:git:git://github.com/douglashiura/picon.git</connection>
-		<developerConnection>scm:git:ssh://github.com/douglashiura/picon.git</developerConnection>
-		<url>https://github.com/douglashiura/picon</url>
-	  <tag>picon-5.10.3</tag>
+		<connection>scm:git:git://github.io/douglashiura/picon.git</connection>
+		<developerConnection>scm:git:ssh://github.io/douglashiura/picon.git</developerConnection>
+		<url>https://github.io/douglashiura/picon</url>
   </scm>
 
 	<issueManagement>
