@@ -37,6 +37,7 @@ test.net.douglashiura.picon.Entidade{
 	agora[natal=now]
 	proximo:ano[natal='+1/12/25']
 	mes:anterior[natal='2017/-1/25']
+	datas[offsetDateTime=now offsetTime=now instant=now]
 }
 
 test.net.douglashiura.picon.EntidadeComConstrutor{

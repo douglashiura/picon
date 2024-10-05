@@ -458,6 +458,18 @@ public class TesteProcessadorDeCampos {
 		Contexto contexto = new Contexto(qualificadores);
 		assertEquals("Douglas", entidade.instanciar(contexto));
 	}
+	
+	@Test
+	public void entidadeComOffsetDateTime() throws Exception {
+		String texto = "[entidades test.net.douglashiura.picon.Entidade{ entidade[offsetDateTime=now ] }]";
+		Deque<Parte> iterator = Partes.explodir(texto);
+		atribuicoes.processar(iterator, preguicoso);
+		Objeto<Entidade> entidade = qualificadores.get("entidade");
+		assertEquals(1, entidade.getCampos().size());
+		assertEquals("offsetDateTime", entidade.getCampos().get(0).getCampo());
+		assertEquals("now", entidade.getCampos().get(0).getValor());
+		assertEquals(CampoValor.class, entidade.getCampos().get(0).getClass());
+	}
 
 	@Test
 	public void entidadeComLocalDateTime() throws Exception {

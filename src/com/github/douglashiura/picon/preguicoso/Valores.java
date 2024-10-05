@@ -3,8 +3,11 @@ package com.github.douglashiura.picon.preguicoso;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
@@ -47,7 +50,39 @@ public class Valores {
 			} catch (ParseException e) {
 				throw new ProblemaDeCompilacaoException(e, parte);
 			}
-		} else {
+		}
+
+		else if (type.equals(OffsetDateTime.class)) {
+			try {
+				Date date = TEMPO.de(valor);
+				OffsetDateTime localDate = date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime();
+				return localDate;
+			} catch (ParseException e) {
+				throw new ProblemaDeCompilacaoException(e, parte);
+			}
+		}
+
+		else if (type.equals(OffsetTime.class)) {
+			try {
+				Date date = TEMPO.de(valor);
+				OffsetTime localDate = date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime().toOffsetTime();
+				return localDate;
+			} catch (ParseException e) {
+				throw new ProblemaDeCompilacaoException(e, parte);
+			}
+		}
+
+		else if (type.equals(Instant.class)) {
+			try {
+				Date date = TEMPO.de(valor);
+				Instant localDate = date.toInstant();
+				return localDate;
+			} catch (ParseException e) {
+				throw new ProblemaDeCompilacaoException(e, parte);
+			}
+		}
+
+		else {
 			try {
 				Constructor<?> construtor = type.getDeclaredConstructor(String.class);
 				return construtor.newInstance(valor);

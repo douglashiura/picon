@@ -9,8 +9,11 @@
  * */
 package test.net.douglashiura.picon;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +31,21 @@ public class Entidade extends SuperClasse {
 	private Set<Entidade> conjunto;
 	private LocalDateTime createdAt;
 	private LocalDate birthdate;
+	private OffsetDateTime offsetDateTime;
+	private OffsetTime offsetTime;
+	private Instant instant;
+
+	public Instant getInstant() {
+		return instant;
+	}
+
+	public OffsetTime getOffsetTime() {
+		return offsetTime;
+	}
+
+	public OffsetDateTime getOffsetDateTime() {
+		return offsetDateTime;
+	}
 
 	public List<Enum> getEnums() {
 		return enums;
