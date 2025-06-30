@@ -472,7 +472,7 @@ public class TesteProcessadorDeCampos {
 		assertEquals("now", entidade.getCampos().get(0).getValor());
 		assertEquals(CampoValor.class, entidade.getCampos().get(0).getClass());
 	}
-	
+
 	@Test
 	public void entidadeComYearMonth() throws Exception {
 		String texto = "[entidades test.net.douglashiura.picon.Entidade{ entidade[expiration=now ] }]";
@@ -510,9 +510,19 @@ public class TesteProcessadorDeCampos {
 	}
 
 	@Test
+	public void entidadeComYearMonthxpiration() throws Exception {
+		String texto = "[entidades test.net.douglashiura.picon.Entidade{ entidade[expiration=-18/12/25 ] }]";
+		Deque<Parte> iterator = Partes.explodir(texto);
+		atribuicoes.processar(iterator, preguicoso);
+		Objeto<Entidade> entidade = qualificadores.get("entidade");
+		Entidade objeto = new Entidade();
+		entidade.getCampos().getFirst().configure(objeto, new Contexto(qualificadores));
+		assertNotNull(objeto.getExpiration());
+	}
+
+	@Test
 	public void entidadeListaCom2EntidadeComNomeLista() throws Exception {
-		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid1[nome Douglas; entidades test.net.douglashiura.picon.Entidade{}]uid2[nome Hiura;"
-				+ " entidades test.net.douglashiura.picon.Entidade{uid3[];#uid1;uid4[nome=Cabral]}]}]";
+		String texto = "[entidades test.net.douglashiura.picon.Entidade{uid1[nome Douglas; entidades test.net.douglashiura.picon.Entidade{}]uid2[nome Hiura;" + " entidades test.net.douglashiura.picon.Entidade{uid3[];#uid1;uid4[nome=Cabral]}]}]";
 		Deque<Parte> iterator = Partes.explodir(texto);
 		atribuicoes.processar(iterator, preguicoso);
 		Objeto<Entidade> uid1 = qualificadores.get("uid1");
