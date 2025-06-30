@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
@@ -67,6 +68,14 @@ public class Valores {
 				Date date = TEMPO.de(valor);
 				OffsetTime localDate = date.toInstant().atZone(ZoneId.systemDefault()).toOffsetDateTime().toOffsetTime();
 				return localDate;
+			} catch (ParseException e) {
+				throw new ProblemaDeCompilacaoException(e, parte);
+			}
+		} else if (type.equals(YearMonth.class)) {
+			try {
+				Date date = TEMPO.de(valor);
+				YearMonth yearMonth = YearMonth.from(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+				return yearMonth;
 			} catch (ParseException e) {
 				throw new ProblemaDeCompilacaoException(e, parte);
 			}

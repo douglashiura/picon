@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.OffsetTime;
+import java.time.YearMonth;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -34,9 +35,14 @@ public class Entidade extends SuperClasse {
 	private OffsetDateTime offsetDateTime;
 	private OffsetTime offsetTime;
 	private Instant instant;
+	private YearMonth expiration;
 
 	public Instant getInstant() {
 		return instant;
+	}
+
+	public YearMonth getExpiration() {
+		return expiration;
 	}
 
 	public OffsetTime getOffsetTime() {
